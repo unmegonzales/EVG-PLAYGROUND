@@ -3,16 +3,14 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Levy Banquets — Email Signature Preview</title>
+  <title>Levy at UNM — Email Signature Preview</title>
   <style>
     :root {
-      --navy: #0f172a;
-      --forest: #1b5e3b;
-      --paper: #f1f5f9;
+      --levy-red: #cc1f36;
+      --ink: #111111;
+      --paper: #f3f3f3;
       --panel: #ffffff;
-      --muted: #64748b;
-      --line: #e2e8f0;
-      --copper: #c4a574;
+      --line: #e5e5e5;
     }
 
     * { box-sizing: border-box; }
@@ -20,18 +18,17 @@
     body {
       margin: 0;
       min-height: 100vh;
-      color: var(--navy);
+      color: var(--ink);
       background:
-        radial-gradient(1200px 500px at 10% -10%, rgba(27, 94, 59, 0.12), transparent 55%),
-        radial-gradient(900px 420px at 100% 0%, rgba(196, 165, 116, 0.16), transparent 50%),
-        linear-gradient(180deg, #eef2f7 0%, var(--paper) 45%, #e8edf3 100%);
+        radial-gradient(900px 420px at 0% 0%, rgba(204, 31, 54, 0.10), transparent 55%),
+        linear-gradient(180deg, #fafafa 0%, var(--paper) 100%);
       font-family: Georgia, "Times New Roman", serif;
     }
 
     .shell {
-      width: min(920px, calc(100% - 2rem));
+      width: min(900px, calc(100% - 2rem));
       margin: 0 auto;
-      padding: 3.5rem 0 4rem;
+      padding: 3rem 0 3.5rem;
     }
 
     .brand {
@@ -39,32 +36,31 @@
       font-family: Arial, Helvetica, sans-serif;
       font-size: 0.72rem;
       font-weight: 700;
-      letter-spacing: 0.22em;
+      letter-spacing: 0.18em;
       text-transform: uppercase;
-      color: var(--forest);
+      color: var(--levy-red);
     }
 
     h1 {
-      margin: 0 0 0.75rem;
-      font-size: clamp(2rem, 4vw, 2.75rem);
+      margin: 0 0 0.7rem;
+      font-size: clamp(1.9rem, 4vw, 2.6rem);
       line-height: 1.05;
       letter-spacing: -0.02em;
-      font-weight: 700;
     }
 
     .lede {
-      margin: 0 0 2rem;
+      margin: 0 0 1.75rem;
       max-width: 38rem;
       font-family: Arial, Helvetica, sans-serif;
-      font-size: 1rem;
+      font-size: 0.98rem;
       line-height: 1.55;
-      color: var(--muted);
+      color: #666;
     }
 
     .stage {
       background: var(--panel);
       border: 1px solid var(--line);
-      box-shadow: 0 18px 50px rgba(15, 23, 42, 0.08);
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.06);
       overflow: hidden;
     }
 
@@ -73,177 +69,156 @@
       align-items: center;
       justify-content: space-between;
       gap: 1rem;
-      padding: 0.85rem 1.1rem;
-      background: linear-gradient(90deg, #0b3d28, var(--forest) 55%, #247a4d);
+      padding: 0.8rem 1.1rem;
+      background: var(--levy-red);
       color: #fff;
       font-family: Arial, Helvetica, sans-serif;
       font-size: 0.78rem;
-      letter-spacing: 0.04em;
+      letter-spacing: 0.03em;
     }
 
-    .stage-bar span {
-      opacity: 0.85;
-    }
+    .stage-bar span { opacity: 0.88; }
 
     .mail {
-      padding: 1.5rem 1.35rem 1.75rem;
+      padding: 1.5rem 1.35rem 1.8rem;
       font-family: Arial, Helvetica, sans-serif;
       font-size: 14px;
       line-height: 1.55;
-      color: #334155;
-      background:
-        linear-gradient(180deg, #fff 0%, #fbfdff 100%);
+      color: #333;
+      background: #fff;
     }
 
-    .mail p {
-      margin: 0 0 0.85rem;
-    }
+    .mail p { margin: 0 0 0.85rem; }
 
-    .sig-wrap {
-      margin-top: 1.5rem;
-      padding-top: 0.25rem;
-    }
-
-    .grid {
-      display: grid;
-      grid-template-columns: 1.15fr 0.85fr;
-      gap: 1.25rem;
-      margin-top: 1.5rem;
-    }
+    .sig-wrap { margin-top: 1.35rem; }
 
     .card {
-      padding: 1.25rem 1.2rem 1.35rem;
-      background: rgba(255, 255, 255, 0.72);
+      margin-top: 1.25rem;
+      padding: 1.2rem 1.15rem 1.3rem;
+      background: rgba(255, 255, 255, 0.85);
       border: 1px solid var(--line);
-      backdrop-filter: blur(6px);
     }
 
     .card h2 {
-      margin: 0 0 0.65rem;
+      margin: 0 0 0.6rem;
       font-family: Arial, Helvetica, sans-serif;
-      font-size: 0.78rem;
+      font-size: 0.75rem;
       letter-spacing: 0.14em;
       text-transform: uppercase;
-      color: var(--forest);
+      color: var(--levy-red);
     }
 
-    .card ol,
-    .card ul {
+    .card ol {
       margin: 0;
       padding-left: 1.15rem;
       font-family: Arial, Helvetica, sans-serif;
       font-size: 0.92rem;
       line-height: 1.55;
-      color: #475569;
+      color: #555;
     }
 
-    .card li + li { margin-top: 0.4rem; }
+    .card li + li { margin-top: 0.35rem; }
 
     code {
       font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
       font-size: 0.84em;
-      color: var(--navy);
-      background: #e8eef5;
+      background: #eee;
       padding: 0.08em 0.35em;
-    }
-
-    .swatches {
-      display: flex;
-      gap: 0.55rem;
-      margin-top: 0.9rem;
-      flex-wrap: wrap;
-    }
-
-    .swatch {
-      width: 2.4rem;
-      height: 2.4rem;
-      border: 1px solid rgba(15, 23, 42, 0.12);
-    }
-
-    .swatch.forest { background: #1b5e3b; }
-    .swatch.navy { background: #0f172a; }
-    .swatch.slate { background: #64748b; }
-    .swatch.copper { background: #c4a574; }
-    .swatch.line { background: #e2e8f0; }
-
-    @media (max-width: 760px) {
-      .grid { grid-template-columns: 1fr; }
-      .shell { padding-top: 2.25rem; }
     }
   </style>
 </head>
 <body>
   <div class="shell">
-    <p class="brand">Levy Banquets · Reserve by Infor</p>
-    <h1>Electronic email signature</h1>
+    <p class="brand">Levy · University of New Mexico · Reserve by Infor</p>
+    <h1>Email signature</h1>
     <p class="lede">
-      A sharp, modern HTML signature for digital banquet correspondence.
-      Built with nested tables and inline styles so it survives Outlook, Gmail, and the Reserve signature editor.
+      Matched to your existing Levy signature — logo, contact block, live footer links, and bilingual confidentiality notice.
     </p>
 
     <div class="stage" id="signature-preview">
       <div class="stage-bar">
-        <strong>Preview · New event email</strong>
+        <strong>Preview · Outbound email</strong>
         <span>Include Signature in New Emails</span>
       </div>
       <div class="mail">
-        <p>Hi Jordan,</p>
-        <p>Thank you for confirming the Saturday reception. I’ve attached the latest banquet event details and will follow up once BEO revisions are locked.</p>
-        <p>Best regards,</p>
+        <p>Hi team,</p>
+        <p>Confirming the banquet details for this weekend. Let me know if anything else is needed on the finance side.</p>
+        <p>Thanks,</p>
         <div class="sig-wrap">
-          <!-- BEGIN SIGNATURE (same markup as paste-into-reserve.html) -->
-          <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;mso-table-lspace:0pt;mso-table-rspace:0pt;font-family:Arial,Helvetica,sans-serif;max-width:520px;width:100%;">
+          <!-- BEGIN SIGNATURE -->
+          <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;mso-table-lspace:0pt;mso-table-rspace:0pt;font-family:Arial,Helvetica,sans-serif;max-width:580px;width:100%;">
             <tr>
-              <td valign="top" width="4" style="width:4px;background-color:#1B5E3B;font-size:0;line-height:0;">&nbsp;</td>
-              <td valign="top" style="padding:0 0 0 16px;">
-                <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;mso-table-lspace:0pt;mso-table-rspace:0pt;width:100%;">
+              <td valign="middle" style="padding:0 14px 0 0;">
+                <img
+                  src="https://unmegonzales.github.io/ZERO-Communications/email/assets/Levy-Logo.png"
+                  alt="Levy"
+                  width="110"
+                  style="display:block;border:0;outline:none;text-decoration:none;width:110px;height:auto;"
+                />
+              </td>
+              <td valign="top" width="2" style="width:2px;border-left:2px solid #CC1F36;font-size:0;line-height:0;padding:0;">&nbsp;</td>
+              <td valign="middle" style="padding:2px 0 2px 14px;">
+                <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;mso-table-lspace:0pt;mso-table-rspace:0pt;">
                   <tr>
-                    <td style="padding:0 0 2px 0;font-family:Arial,Helvetica,sans-serif;font-size:18px;line-height:24px;font-weight:700;letter-spacing:0.2px;color:#0F172A;">
-                      Trey Smith
+                    <td style="font-family:Arial,Helvetica,sans-serif;font-size:16px;line-height:20px;font-weight:700;color:#CC1F36;">
+                      Evan E. Gonzales
                     </td>
                   </tr>
                   <tr>
-                    <td style="padding:0 0 2px 0;font-family:Arial,Helvetica,sans-serif;font-size:13px;line-height:18px;font-weight:400;color:#334155;">
-                      Controller &amp; HR Manager
+                    <td style="padding:1px 0 8px 0;font-family:Arial,Helvetica,sans-serif;font-size:12px;line-height:16px;font-weight:400;color:#9A9A9A;">
+                      Finance &amp; Human Resources Manager
                     </td>
                   </tr>
                   <tr>
-                    <td style="padding:0 0 10px 0;font-family:Arial,Helvetica,sans-serif;font-size:12px;line-height:16px;font-weight:700;letter-spacing:0.8px;text-transform:uppercase;color:#1B5E3B;">
-                      Levy Banquets
-                      <span style="font-weight:400;letter-spacing:0;text-transform:none;color:#94A3B8;">&nbsp;&nbsp;|&nbsp;&nbsp;</span>
-                      <span style="font-weight:400;letter-spacing:0;text-transform:none;color:#64748B;">Finance</span>
+                    <td style="padding:0 0 8px 0;border-bottom:1px dashed #111111;font-size:0;line-height:0;height:1px;">&nbsp;</td>
+                  </tr>
+                  <tr>
+                    <td style="padding:8px 0 2px 0;font-family:Arial,Helvetica,sans-serif;font-size:12px;line-height:16px;font-weight:700;letter-spacing:0.4px;text-transform:uppercase;color:#CC1F36;">
+                      University of New Mexico
                     </td>
                   </tr>
                   <tr>
-                    <td style="padding:0 0 12px 0;border-bottom:1px solid #E2E8F0;font-size:0;line-height:0;height:1px;">&nbsp;</td>
-                  </tr>
-                  <tr>
-                    <td style="padding:12px 0 0 0;font-family:Arial,Helvetica,sans-serif;font-size:12px;line-height:20px;color:#475569;">
-                      <a href="tel:+15555550100" style="color:#0F172A;text-decoration:none;">(555) 555-0100</a>
-                      <span style="color:#CBD5E1;">&nbsp;&nbsp;·&nbsp;&nbsp;</span>
-                      <a href="mailto:trey.smith@levyrestaurants.com" style="color:#0F172A;text-decoration:none;">trey.smith@levyrestaurants.com</a>
+                    <td style="padding:0 0 6px 0;font-family:Arial,Helvetica,sans-serif;font-size:12px;line-height:16px;font-weight:400;color:#111111;">
+                      1111 University Blvd SE Albuquerque, NM 87106
                     </td>
                   </tr>
                   <tr>
-                    <td style="padding:2px 0 0 0;font-family:Arial,Helvetica,sans-serif;font-size:12px;line-height:20px;color:#475569;">
-                      <a href="https://www.levyrestaurants.com/plan-an-event" style="color:#1B5E3B;text-decoration:none;font-weight:700;">Plan an event</a>
-                      <span style="color:#CBD5E1;">&nbsp;&nbsp;·&nbsp;&nbsp;</span>
-                      <a href="https://www.levyrestaurants.com" style="color:#64748B;text-decoration:none;">levyrestaurants.com</a>
+                    <td style="font-family:Arial,Helvetica,sans-serif;font-size:12px;line-height:18px;color:#111111;">
+                      <span style="font-weight:700;color:#CC1F36;">OFFICE:</span>&nbsp;505.925.1576
+                      &nbsp;&nbsp;
+                      <span style="font-weight:700;color:#CC1F36;">CELL:</span>&nbsp;505.549.6545
                     </td>
                   </tr>
                   <tr>
-                    <td style="padding:14px 0 0 0;font-family:Arial,Helvetica,sans-serif;font-size:11px;line-height:16px;letter-spacing:1.6px;text-transform:uppercase;font-weight:700;color:#0F172A;">
-                      Levy
-                      <span style="display:inline-block;width:6px;height:6px;margin:0 6px 1px 6px;background-color:#C4A574;border-radius:50%;font-size:0;line-height:0;vertical-align:middle;">&nbsp;</span>
-                      <span style="letter-spacing:0.4px;font-weight:400;text-transform:none;color:#64748B;">Restaurants</span>
+                    <td style="padding:0 0 8px 0;font-family:Arial,Helvetica,sans-serif;font-size:12px;line-height:18px;color:#111111;">
+                      <span style="font-weight:700;color:#CC1F36;">EMAIL:</span>&nbsp;<a href="mailto:egonzales@levyrestaurants.com" style="color:#0563C1;text-decoration:underline;">egonzales@levyrestaurants.com</a>
                     </td>
                   </tr>
                   <tr>
-                    <td style="padding:4px 0 0 0;font-family:Arial,Helvetica,sans-serif;font-size:11px;line-height:15px;color:#94A3B8;">
-                      Banquet &amp; catering experiences
+                    <td style="font-family:Arial,Helvetica,sans-serif;font-size:11px;line-height:16px;">
+                      <a href="https://new.express.adobe.com/webpage/m2nlJXIvP4xV8" style="color:#111111;text-decoration:underline;">Non-Profit Groups</a>
+                      <span style="color:#111111;">&nbsp;|&nbsp;</span>
+                      <a href="https://bit.ly/3Yhapvv" style="color:#111111;text-decoration:underline;">Careers</a>
+                      <span style="color:#111111;">&nbsp;|&nbsp;</span>
+                      <a href="https://golobos.com/" style="color:#111111;text-decoration:underline;">GoLobos.com</a>
                     </td>
                   </tr>
                 </table>
+              </td>
+            </tr>
+          </table>
+
+          <br />
+
+          <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;mso-table-lspace:0pt;mso-table-rspace:0pt;font-family:Arial,Helvetica,sans-serif;max-width:580px;width:100%;">
+            <tr>
+              <td style="padding:10px 0 0 0;font-family:Arial,Helvetica,sans-serif;font-size:10px;line-height:14px;color:#666666;">
+                <strong>Confidentiality Notice:</strong>&nbsp;This e-mail/fax, including all attachments, is for the sole use of the intended recipient(s) and may contain confidential and privileged information.&nbsp;Any unauthorized review, use, disclosure or distribution is prohibited unless specifically provided for under the New Mexico Inspection of Public Records Act.&nbsp;If you are not the intended recipient, please contact the sender and destroy all copies of this message.
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:8px 0 0 0;font-family:Arial,Helvetica,sans-serif;font-size:10px;line-height:14px;color:#666666;">
+                <strong>Aviso de la Confidencialidad:</strong>&nbsp;Este mensaje (incluyendo los archivos adjuntos) es dirigido solo al destinatario y puede contener información privilegiada, privada o confidencial. Cualquier revisión, uso, divulgación o distribución sin previa autorización es prohibida, con la excepción de la autoridad de la Ley de Inspección de Archivos Públicos de Nuevo México. Si Ud. No es el destinatario indicado, por favor comuníquese con el remitente y destruya cualquier copia de este mensaje.
               </td>
             </tr>
           </table>
@@ -252,32 +227,14 @@
       </div>
     </div>
 
-    <div class="grid">
-      <div class="card">
-        <h2>Install in Reserve</h2>
-        <ol>
-          <li>Open <strong>Settings → Edit User → Email Signature</strong>.</li>
-          <li>Select the <strong>HTML</strong> tab, then open source view (<code>&lt;&gt;</code>).</li>
-          <li>Paste the contents of <code>paste-into-reserve.html</code>.</li>
-          <li>Replace the phone and email with your live contact details.</li>
-          <li>Keep <strong>Include Signature in New Emails</strong> checked, then save.</li>
-        </ol>
-      </div>
-      <div class="card">
-        <h2>Palette</h2>
-        <ul>
-          <li>Forest green accent from Levy org branding in Reserve</li>
-          <li>Ink navy for name hierarchy</li>
-          <li>Copper dot for a warm banquet accent</li>
-        </ul>
-        <div class="swatches" aria-hidden="true">
-          <div class="swatch forest" title="#1B5E3B"></div>
-          <div class="swatch navy" title="#0F172A"></div>
-          <div class="swatch slate" title="#64748B"></div>
-          <div class="swatch copper" title="#C4A574"></div>
-          <div class="swatch line" title="#E2E8F0"></div>
-        </div>
-      </div>
+    <div class="card">
+      <h2>Install in Reserve</h2>
+      <ol>
+        <li>Open <strong>Settings → Edit User → Email Signature</strong>.</li>
+        <li>Select the <strong>HTML</strong> tab, then open source view (<code>&lt;&gt;</code>).</li>
+        <li>Paste the contents of <code>paste-into-reserve.html</code>.</li>
+        <li>Keep <strong>Include Signature in New Emails</strong> checked, then save.</li>
+      </ol>
     </div>
   </div>
 </body>

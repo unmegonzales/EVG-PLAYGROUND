@@ -1,29 +1,27 @@
-# Levy Banquets — Reserve email signature
+# Levy at UNM — Reserve email signature
 
-Paste-ready HTML for **Reserve by Infor** electronic signatures, styled for Levy banquet event correspondence.
+Paste-ready HTML matching Evan E. Gonzales’s existing Levy signature for **Reserve by Infor**.
 
 ## Files
 
 | File | Use |
 | --- | --- |
-| `paste-into-reserve.html` | Copy this markup into the signature HTML source editor |
-| `preview.html` | Open in a browser to review the design in a mock email |
+| `paste-into-reserve.html` | Copy into the signature HTML source editor |
+| `preview.html` | Browser preview in a mock outbound email |
 
-## Design
+## Includes
 
-- Forest green left rail aligned with Levy branding in Reserve
-- Clear name → title → **Levy Banquets** hierarchy
-- Contact row + plan-an-event CTA
-- Table-based, inline CSS for Outlook / Gmail / Reserve compatibility
-- No hosted images required (survives restricted email clients)
+- Levy script logo (transparent PNG via GitHub Pages)
+- Red vertical divider + contact block
+- Footer links:
+  - [Non-Profit Groups](https://new.express.adobe.com/webpage/m2nlJXIvP4xV8)
+  - [Careers](https://bit.ly/3Yhapvv)
+  - [GoLobos.com](https://golobos.com/)
+- English + Spanish confidentiality notices
 
-## Customize
+## Logo
 
-Edit these strings in `paste-into-reserve.html` before pasting:
-
-- Name / title / department
-- Phone (`tel:`) and email (`mailto:`)
-- Venue line under the Levy wordmark (optional)
+`https://unmegonzales.github.io/ZERO-Communications/email/assets/Levy-Logo.png`
 
 ## Install in Reserve
 
