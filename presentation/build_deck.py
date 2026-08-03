@@ -16,8 +16,8 @@ ROOT = Path(__file__).resolve().parents[1]
 OUT_DIR = ROOT / "presentation"
 ARTIFACTS = Path("/opt/cursor/artifacts")
 IMG_SRC = ROOT / "assets" / "culinary-review.png"
-IMG_HERO = OUT_DIR / "hero-widescreen.png"
-IMG_PANEL = OUT_DIR / "hero-panel.png"
+IMG_HERO = OUT_DIR / "hero-widescreen.jpg"
+IMG_PANEL = OUT_DIR / "hero-panel.jpg"
 PPTX_PATH = OUT_DIR / "Visitor-File-Submissions.pptx"
 
 # Brand system from the portal
@@ -46,14 +46,14 @@ def prepare_images() -> None:
     target_ratio = 16 / 9
     crop_h = int(w / target_ratio)
     top = max(0, min(h - crop_h, int(h * 0.34)))
-    hero = img.crop((0, top, w, top + crop_h)).resize((1920, 1080), Image.Resampling.LANCZOS)
-    hero.save(IMG_HERO, "PNG", optimize=True)
+    hero = img.crop((0, top, w, top + crop_h)).resize((1600, 900), Image.Resampling.LANCZOS)
+    hero.save(IMG_HERO, "JPEG", quality=85, optimize=True)
 
     # Side panel: chef focus for split layouts
     panel_w = int(w * 0.78)
     left = max(0, w - panel_w)
-    panel = img.crop((left, int(h * 0.05), w, int(h * 0.78))).resize((900, 1200), Image.Resampling.LANCZOS)
-    panel.save(IMG_PANEL, "PNG", optimize=True)
+    panel = img.crop((left, int(h * 0.05), w, int(h * 0.78))).resize((720, 960), Image.Resampling.LANCZOS)
+    panel.save(IMG_PANEL, "JPEG", quality=85, optimize=True)
 
 
 def set_run(run, *, size: int, bold: bool = False, color: RGBColor = WHITE, font: str = "Arial") -> None:
