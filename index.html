@@ -23,13 +23,13 @@
           </div>
         </div>
         <nav class="app-bar__nav" aria-label="Views">
-          <button type="button" class="tab is-active" data-view="deck">Full Deck</button>
-          <button type="button" class="tab" data-view="board">Single Board</button>
+          <button type="button" class="tab" data-view="deck">Full Deck</button>
+          <button type="button" class="tab is-active" data-view="board">Single Board</button>
           <button type="button" class="tab" data-view="promo">4 for $4 Promo</button>
         </nav>
       </header>
 
-      <section class="toolbar" id="boardToolbar" hidden>
+      <section class="toolbar" id="boardToolbar">
         <label>
           Location
           <select id="locationSelect"></select>
@@ -38,10 +38,10 @@
       </section>
 
       <!-- Deck: all location boards -->
-      <main id="view-deck" class="view view--deck" aria-label="Full menu deck"></main>
+      <main id="view-deck" class="view view--deck" hidden aria-label="Full menu deck"></main>
 
       <!-- Single board focus -->
-      <main id="view-board" class="view view--board" hidden aria-label="Single menu board"></main>
+      <main id="view-board" class="view view--board" aria-label="Single menu board"></main>
 
       <!-- Promo board -->
       <main id="view-promo" class="view view--promo" hidden aria-label="Four for four promo"></main>
