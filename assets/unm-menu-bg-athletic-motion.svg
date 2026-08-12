@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="3600" height="1200" viewBox="0 0 3600 1200" fill="none">
+  <defs>
+    <linearGradient id="base" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0A0C10"/>
+      <stop offset="55%" stop-color="#20242A"/>
+      <stop offset="100%" stop-color="#24282E"/>
+    </linearGradient>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0A0C10"/>
+      <stop offset="70%" stop-color="#281218"/>
+      <stop offset="100%" stop-color="#BA0C2F" stop-opacity="0.35"/>
+    </linearGradient>
+    <linearGradient id="rightFade" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#4A4F55" stop-opacity="0"/>
+      <stop offset="40%" stop-color="#4A4F55" stop-opacity="0.55"/>
+      <stop offset="100%" stop-color="#4A4F55"/>
+    </linearGradient>
+    <filter id="panelShadow" x="-5%" y="-5%" width="110%" height="120%">
+      <feDropShadow dx="0" dy="18" stdDeviation="24" flood-color="#000" flood-opacity="0.28"/>
+    </filter>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="28" result="b"/>
+      <feMerge>
+        <feMergeNode in="b"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Base -->
+  <rect width="3600" height="1200" fill="url(#base)"/>
+  <rect width="3600" height="420" fill="url(#sky)"/>
+
+  <!-- Left cherry power block + motion -->
+  <polygon points="0,0 620,0 420,1200 0,1200" fill="#BA0C2F"/>
+  <polygon points="80,0 280,0 120,1200 -80,1200" fill="#78081E"/>
+  <polygon points="200,0 340,0 180,1200 40,1200" fill="#C52845"/>
+
+  <!-- Silver angled motion -->
+  <polygon points="380,-40 470,-40 220,1240 130,1240" fill="#A7A8AA" opacity="0.55"/>
+  <polygon points="460,-40 550,-40 300,1240 210,1240" fill="#A7A8AA" opacity="0.35"/>
+  <polygon points="540,-40 630,-40 380,1240 290,1240" fill="#4A4F55" opacity="0.55"/>
+
+  <!-- Turquoise electric accents -->
+  <polygon points="500,-20 512,-20 300,1220 288,1220" fill="#00A8B5"/>
+  <rect x="620" y="188" width="2480" height="6" fill="#00A8B5"/>
+
+  <!-- Right metal panel -->
+  <rect x="3080" y="0" width="520" height="1200" fill="url(#rightFade)"/>
+  <polygon points="3320,0 3440,0 3560,1200 3440,1200" fill="#8C9094"/>
+  <polygon points="3180,80 3240,80 3380,1160 3320,1160" fill="#B8B9BB"/>
+  <polygon points="3260,0 3272,0 3420,1200 3408,1200" fill="#00A8B5"/>
+
+  <!-- Top stadium graphic blocks -->
+  <polygon points="900,0 1280,0 1180,160 820,160" fill="#BA0C2F"/>
+  <polygon points="1280,0 1480,0 1380,160 1180,160" fill="#4A4F55"/>
+  <polygon points="1480,0 1580,0 1500,160 1380,160" fill="#A7A8AA"/>
+  <polygon points="820,148 1500,148 1490,160 810,160" fill="#00A8B5"/>
+
+  <!-- Stadium light blooms -->
+  <g filter="url(#glow)" opacity="0.85">
+    <ellipse cx="980" cy="40" rx="70" ry="28" fill="#FFFFFF"/>
+    <ellipse cx="1400" cy="30" rx="80" ry="32" fill="#FFFFFF"/>
+    <ellipse cx="1850" cy="35" rx="75" ry="30" fill="#FFFFFF"/>
+    <ellipse cx="2300" cy="40" rx="70" ry="28" fill="#FFFFFF"/>
+    <ellipse cx="2750" cy="45" rx="65" ry="26" fill="#FFFFFF"/>
+    <ellipse cx="3200" cy="50" rx="60" ry="24" fill="#FFFFFF"/>
+  </g>
+
+  <!-- Motion chevrons -->
+  <polygon points="620,250 648,250 630,290 602,290" fill="#A7A8AA"/>
+  <polygon points="668,250 696,250 678,290 650,290" fill="#A7A8AA" opacity="0.75"/>
+  <polygon points="716,250 744,250 726,290 698,290" fill="#A7A8AA" opacity="0.5"/>
+
+  <!-- Menu text panel — open negative space -->
+  <rect x="560" y="320" width="2480" height="800" rx="12" fill="#F4F4F6" filter="url(#panelShadow)"/>
+  <path d="M560 320 H3040 V420 H560 Z" fill="#FFFFFF"/>
+  <rect x="560" y="320" width="2480" height="12" rx="12" fill="#FFFFFF"/>
+  <rect x="560" y="1110" width="2480" height="10" fill="#BA0C2F"/>
+  <rect x="560" y="1104" width="340" height="6" fill="#00A8B5"/>
+
+  <!-- Faint column guides for multi-column menus -->
+  <line x1="1387" y1="460" x2="1387" y2="1080" stroke="#A7A8AA" stroke-opacity="0.28" stroke-width="1"/>
+  <line x1="2213" y1="460" x2="2213" y2="1080" stroke="#A7A8AA" stroke-opacity="0.28" stroke-width="1"/>
+</svg>
