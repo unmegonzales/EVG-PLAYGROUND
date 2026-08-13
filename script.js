@@ -146,16 +146,37 @@
     </footer>`;
   }
 
-  function renderBoard(location, { solo = false } = {}) {
+  function renderBoard(location, { solo = false, showMeta = false } = {}) {
     const cols = columnsFor(location);
-    const boardClass = solo ? "stadium-board stadium-board--solo" : "stadium-board";
-    return `<article class="${boardClass}" data-location="${location.id}">
+    const print = location.print || {};
+    const sizeClass = print.className || "";
+    const orientClass = print.orientation === "portrait" ? "is-portrait" : "is-landscape";
+    const compactClass = print.widthIn && print.widthIn <= 24 ? "is-compact" : "";
+    const boardClass = [
+      "stadium-board",
+      solo ? "stadium-board--solo" : "",
+      sizeClass,
+      orientClass,
+      compactClass,
+    ]
+      .filter(Boolean)
+      .join(" ");
+
+    const meta = showMeta
+      ? `<div class="print-meta">
+          <span>Sheet #${location.page}</span>
+          <span>${location.placement || "—"}</span>
+          <span>${print.label || "Size TBD"}</span>
+        </div>`
+      : "";
+
+    return `${meta}<article class="${boardClass}" data-location="${location.id}" data-print="${location.printKey || ""}">
       ${renderHero(location)}
       <div class="board-cols" style="--cols:${cols.length}">
         ${cols.map(renderColumn).join("")}
       </div>
       ${renderFooter()}
-      <p class="board-tax">${data.taxNote}</p>
+      <p class="board-tax">${data.taxNote}${print.label ? ` · Print: ${print.label}` : ""}</p>
     </article>`;
   }
 
@@ -196,10 +217,10 @@
       .map(
         (loc) => `<div class="deck-card">
           <div class="deck-card__label">
-            <span>Page ${String(loc.page).padStart(2, "0")}</span>
-            <span>${loc.name} · ${loc.stand}</span>
+            <span>#${String(loc.page).padStart(2, "0")} · ${loc.placement || ""}</span>
+            <span>${loc.name} · ${loc.stand} · ${loc.print?.label || ""}</span>
           </div>
-          ${renderBoard(loc)}
+          ${renderBoard(loc, { showMeta: false })}
         </div>`
       )
       .join("");
@@ -207,16 +228,16 @@
 
   function fillSelect() {
     els.select.innerHTML = data.locations
-      .map(
-        (loc) =>
-          `<option value="${loc.id}">Page ${loc.page} — ${loc.name} — ${loc.stand}</option>`
-      )
+      .map((loc) => {
+        const size = loc.print?.label || "";
+        return `<option value="${loc.id}">#${loc.page} — ${loc.name} — ${loc.stand} — ${size}</option>`;
+      })
       .join("");
   }
 
   function showBoard(id) {
     const loc = data.locations.find((l) => l.id === id) || data.locations[0];
-    els.board.innerHTML = renderBoard(loc, { solo: true });
+    els.board.innerHTML = renderBoard(loc, { solo: true, showMeta: true });
     els.select.value = loc.id;
   }
 

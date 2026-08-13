@@ -1,6 +1,7 @@
 /* UNM Lobos 25/26 Football Concessions — menu data
-   Updated from LOBO_Football_Menu_Graphic_Designer_Change_Sheet.docx
-   Prices display WITHOUT dollar signs (production convention).
+   Print sizes from: Football Menu Printing Dimensions - Fireup.pdf
+   Content updates from: LOBO Football Menu Graphic Designer Change Sheet
+   Prices display WITHOUT dollar signs.
 */
 
 window.UNM_MENU = {
@@ -11,6 +12,7 @@ window.UNM_MENU = {
   taxNote: "All prices subject to applicable sales tax.",
   cashless: true,
   changeSheet: "LOBO Football Menu Graphic Designer Change Sheet",
+  printSpecDoc: "Football Menu Printing Dimensions - Fireup.pdf",
   brand: {
     cherry: "#BA0C2F",
     silver: "#A7A8AA",
@@ -21,6 +23,44 @@ window.UNM_MENU = {
   },
 
   sodaLogos: ["Pepsi", "Mt Dew", "Dr Pepper", "Starry", "Dasani"],
+
+  /** Named print presets (inches) → CSS aspect + orientation */
+  printPresets: {
+    "96x36-landscape": {
+      label: "96 in × 36 in Landscape",
+      widthIn: 96,
+      heightIn: 36,
+      orientation: "landscape",
+      ratio: "8 / 3",
+      className: "size-96x36",
+    },
+    "192x48-landscape": {
+      label: "192 in × 48 in Landscape (frame 196 × 48)",
+      widthIn: 192,
+      heightIn: 48,
+      frameWidthIn: 196,
+      frameHeightIn: 48,
+      orientation: "landscape",
+      ratio: "4 / 1",
+      className: "size-192x48",
+    },
+    "24x36-portrait": {
+      label: "24 in × 36 in Portrait",
+      widthIn: 24,
+      heightIn: 36,
+      orientation: "portrait",
+      ratio: "2 / 3",
+      className: "size-24x36",
+    },
+    "12x18-portrait": {
+      label: "12 in × 18 in Portrait",
+      widthIn: 12,
+      heightIn: 18,
+      orientation: "portrait",
+      ratio: "2 / 3",
+      className: "size-12x18",
+    },
+  },
 
   promo: {
     id: "four-for-four",
@@ -46,7 +86,6 @@ window.UNM_MENU = {
     payMethods: ["GPay", "Apple Pay", "Visa", "MC", "Disc", "Amex"],
   },
 
-  /** Shared building blocks (post change-sheet) */
   blocks: {
     foodStandard: {
       id: "food",
@@ -78,18 +117,6 @@ window.UNM_MENU = {
       ],
     },
     snacks: {
-      id: "snacks",
-      title: "Snacks",
-      icon: "snacks",
-      items: [
-        { name: "Popcorn — Regular", price: "4.00", highlight: true },
-        { name: "Soft Pretzel", price: "6.00" },
-        { name: "Candy", price: "7.00" },
-        { name: "Chips", price: "4.50" },
-        { name: "Peanuts", price: "5.00" },
-      ],
-    },
-    snacksNoPickle: {
       id: "snacks",
       title: "Snacks",
       icon: "snacks",
@@ -142,26 +169,27 @@ window.UNM_MENU = {
         { name: "Cocktail", price: "12.00" },
       ],
     },
+    beverageShack: {
+      id: "drinks",
+      title: "Drinks",
+      icon: "drinks",
+      logos: true,
+      items: [
+        { name: "Pepsi Product — 16 oz", price: "4.00", highlight: true },
+        { name: "Souvenir Soda", price: "8.50", note: "Free refills" },
+        { name: "Bottled Soda", price: "7.00" },
+        { name: "Water", price: "4.00", highlight: true },
+        { name: "Gatorade", price: "5.50" },
+      ],
+    },
     dawgs: {
       id: "dawgs",
       title: "Dawgs",
       icon: "food",
       items: [
-        {
-          name: "The Louie",
-          price: "15.00",
-          note: "Footlong · Frito pie style",
-        },
-        {
-          name: "The Lucy",
-          price: "14.00",
-          note: "Footlong · Hatch green chile & cheese",
-        },
-        {
-          name: "The Chomper",
-          price: "14.00",
-          note: "Footlong · roasted green chile relish",
-        },
+        { name: "The Louie", price: "15.00", note: "Footlong · Frito pie style" },
+        { name: "The Lucy", price: "14.00", note: "Footlong · Hatch green chile & cheese" },
+        { name: "The Chomper", price: "14.00", note: "Footlong · roasted green chile relish" },
         {
           name: "The Lone Wolf",
           price: "12.00",
@@ -181,171 +209,197 @@ window.UNM_MENU = {
         { name: "Add Cheese", price: "1.50", accent: true },
       ],
     },
+    value: {
+      id: "value",
+      title: "Fan Favorites",
+      icon: "star",
+      items: [
+        { name: "16 oz Pepsi", price: "4.00", highlight: true },
+        { name: "Lobo Dog", price: "4.00", highlight: true },
+        { name: "Popcorn", price: "4.00", highlight: true },
+        { name: "Water", price: "4.00", highlight: true },
+      ],
+    },
+    elotico: {
+      id: "elotico",
+      title: "Elotico",
+      icon: "food",
+      items: [
+        { name: "Elotico", price: "9.00", note: "NM red chile elote cup" },
+        { name: "Water", price: "4.00", highlight: true },
+        { name: "Pepsi Product — 16 oz", price: "4.00", highlight: true },
+      ],
+    },
+    miniMelts: {
+      id: "mini-melts",
+      title: "Mini Melts",
+      icon: "snacks",
+      items: [
+        { name: "Mini Melts", price: "8.00", note: "Ask for available flavors" },
+        { name: "Water", price: "4.00", highlight: true },
+        { name: "Pepsi Product — 16 oz", price: "4.00", highlight: true },
+      ],
+    },
   },
 
   /**
-   * 10-page production deck (matches change-sheet page numbers).
-   * Each location may override `columns`; otherwise uses standardCore().
+   * Fireup print sheet locations (exact names + measurements).
+   * page index follows the Fireup sheet order (1–12).
    */
   locations: [
     {
       page: 1,
-      id: "page-01-stadium-sips",
-      name: "Stadium Sips",
-      stand: "SW Shack",
-      tagline: "Concessions",
-      variant: "standard",
+      id: "lobo-trailer-n-scoreboard",
+      name: "Lobo Trailer",
+      stand: "N Scoreboard",
+      tagline: "Outside Price Menu",
+      placement: "OUTSIDE",
+      printKey: "24x36-portrait",
+      variant: "portrait-trailer",
     },
     {
       page: 2,
-      id: "page-02-south-tower",
-      name: "The Tower",
-      stand: "South Tower",
-      tagline: "Concessions",
-      variant: "standard",
+      id: "mbp-mobile-beer",
+      name: "MBP",
+      stand: "Mobile Beer Portables",
+      tagline: "Outside Price Menu",
+      placement: "OUTSIDE",
+      printKey: "12x18-portrait",
+      variant: "portrait-beer",
     },
     {
       page: 3,
-      id: "page-03-northeast",
-      name: "Northeast",
-      stand: "NE Concessions",
-      tagline: "Concessions",
-      variant: "standard",
+      id: "grab-go-market",
+      name: "Grab & Go Market",
+      stand: "Market",
+      tagline: "Outside Price Menu",
+      placement: "OUTSIDE",
+      printKey: "96x36-landscape",
+      variant: "grab-go",
     },
     {
       page: 4,
-      id: "page-04-grab-go",
-      name: "Grab 'N Go",
-      stand: "NW Stadium",
-      tagline: "Quick Service",
-      variant: "bottled",
+      id: "specialty-ne",
+      name: "Specialty",
+      stand: "NE",
+      tagline: "Outside Price Menu · Dawg House",
+      placement: "OUTSIDE",
+      printKey: "96x36-landscape",
+      variant: "dawg-house",
     },
     {
       page: 5,
-      id: "page-05-red-rally-a",
-      name: "Red Rally",
-      stand: "Stand A",
-      tagline: "Concessions",
-      variant: "red-rally",
+      id: "specialty-nw",
+      name: "Specialty",
+      stand: "NW",
+      tagline: "Outside Price Menu · Dawg House (mirrored)",
+      placement: "OUTSIDE",
+      printKey: "96x36-landscape",
+      variant: "dawg-house",
     },
     {
       page: 6,
-      id: "page-06-main-west",
-      name: "Main West",
-      stand: "Concessions",
-      tagline: "Concessions",
-      variant: "standard",
-    },
-    {
-      page: 7,
-      id: "page-07-dawg-house-b",
-      name: "Dawg House",
-      stand: "Rendition B",
-      tagline: "Was Nacho Mama · Mirrored menu",
-      variant: "dawg-house",
-    },
-    {
-      page: 8,
-      id: "page-08-red-rally-b",
-      name: "Red Rally",
-      stand: "Stand B",
-      tagline: "Concessions",
+      id: "red-rally-interior",
+      name: "Red Rally NE & NW",
+      stand: "Interior",
+      tagline: "Inside Price Menu",
+      placement: "INSIDE",
+      printKey: "96x36-landscape",
       variant: "red-rally",
     },
     {
+      page: 7,
+      id: "red-rally-exterior",
+      name: "Red Rally NE & NW",
+      stand: "Exterior",
+      tagline: "Outside Price Menu",
+      placement: "OUTSIDE",
+      printKey: "192x48-landscape",
+      variant: "red-rally",
+    },
+    {
+      page: 8,
+      id: "se-beverage-shack",
+      name: "Southeast Beverage Shack",
+      stand: "SE",
+      tagline: "Outside Price Menu",
+      placement: "OUTSIDE",
+      printKey: "96x36-landscape",
+      variant: "beverage-shack",
+    },
+    {
       page: 9,
-      id: "page-09-west-stand",
-      name: "West Stand",
-      stand: "Concessions",
-      tagline: "Concessions",
-      variant: "standard",
+      id: "sw-beverage-shack",
+      name: "Southwest Beverage Shack",
+      stand: "SW",
+      tagline: "Outside Price Menu",
+      placement: "OUTSIDE",
+      printKey: "96x36-landscape",
+      variant: "beverage-shack",
     },
     {
       page: 10,
-      id: "page-10-dawg-house-a",
-      name: "Dawg House",
-      stand: "Primary",
-      tagline: "Footlongs & Favorites",
-      variant: "dawg-house",
+      id: "mbp-elotico",
+      name: "MBP",
+      stand: "Mobile Portable Elotico",
+      tagline: "Outside Price Menu",
+      placement: "OUTSIDE",
+      printKey: "12x18-portrait",
+      variant: "portrait-elotico",
+    },
+    {
+      page: 11,
+      id: "mbp-mini-melts-ne",
+      name: "MBP",
+      stand: "Mini Melts NE",
+      tagline: "Outside Price Menu",
+      placement: "OUTSIDE",
+      printKey: "12x18-portrait",
+      variant: "portrait-mini-melts",
+    },
+    {
+      page: 12,
+      id: "mbp-mini-melts-nw",
+      name: "MBP",
+      stand: "Mini Melts NW",
+      tagline: "Outside Price Menu",
+      placement: "OUTSIDE",
+      printKey: "12x18-portrait",
+      variant: "portrait-mini-melts",
     },
   ],
 };
 
-/** Resolve columns per location variant after data load */
 (function resolveMenuColumns() {
   const m = window.UNM_MENU;
   const b = m.blocks;
 
-  function standard() {
-    return [b.foodStandard, b.snacks, b.coldDrinks, b.beer, {
-      id: "value",
-      title: "Fan Favorites",
-      icon: "star",
-      promo: true,
-      items: [
-        { name: "16 oz Pepsi", price: "4.00", highlight: true },
-        { name: "Lobo Dog", price: "4.00", highlight: true },
-        { name: "Popcorn", price: "4.00", highlight: true },
-        { name: "Water", price: "4.00", highlight: true },
-      ],
-    }];
-  }
-
-  function bottled() {
-    return [b.bottledDrinks, b.snacksNoPickle, b.beer, {
-      id: "food",
-      title: "Food",
-      icon: "food",
-      items: [
-        { name: "Lobo Dog", price: "4.00", highlight: true },
-        { name: "Nachos", price: "7.50" },
-        { name: "Regular Fries", price: "6.50" },
-        { name: "Cheese Fries", price: "12.00" },
-      ],
-    }, {
-      id: "value",
-      title: "Fan Favorites",
+  const variants = {
+    "grab-go": () => [b.bottledDrinks, b.snacks, b.beer, b.foodStandard, b.value],
+    "red-rally": () => [b.foodRedRally, b.snacks, b.coldDrinks, b.beer, b.value],
+    "dawg-house": () => [b.dawgs, b.dawgHouseFood, b.snacks, b.coldDrinks, b.beer],
+    "beverage-shack": () => [b.beverageShack, b.beer, b.snacks, b.value, {
+      id: "extras",
+      title: "Extras",
       icon: "star",
       items: [
-        { name: "16 oz Pepsi", price: "4.00", highlight: true },
-        { name: "Lobo Dog", price: "4.00", highlight: true },
-        { name: "Popcorn", price: "4.00", highlight: true },
-        { name: "Water", price: "4.00", highlight: true },
+        { name: "Candy", price: "7.00" },
+        { name: "Chips", price: "4.50" },
+        { name: "Peanuts", price: "5.00" },
       ],
-    }];
-  }
-
-  function redRally() {
-    // Change sheet: remove LOBO CLASSICS header on these pages
-    return [b.foodRedRally, b.snacks, b.coldDrinks, b.beer, {
-      id: "value",
-      title: "Fan Favorites",
-      icon: "star",
-      items: [
-        { name: "16 oz Pepsi", price: "4.00", highlight: true },
-        { name: "Lobo Dog", price: "4.00", highlight: true },
-        { name: "Popcorn", price: "4.00", highlight: true },
-        { name: "Water", price: "4.00", highlight: true },
-      ],
-    }];
-  }
-
-  function dawgHouse() {
-    // No nachos, no frozen Lobo Ritas; Frito Pie lives here only
-    return [b.dawgs, b.dawgHouseFood, b.snacks, b.coldDrinks, b.beer];
-  }
-
-  const map = {
-    standard,
-    bottled,
-    "red-rally": redRally,
-    "dawg-house": dawgHouse,
+    }],
+    "portrait-trailer": () => [b.value, b.foodStandard, b.snacks, b.coldDrinks],
+    "portrait-beer": () => [b.beer, b.beverageShack],
+    "portrait-elotico": () => [b.elotico],
+    "portrait-mini-melts": () => [b.miniMelts],
   };
 
   m.locations.forEach((loc) => {
-    const fn = map[loc.variant] || standard;
+    const preset = m.printPresets[loc.printKey];
+    loc.print = preset;
+    const fn = variants[loc.variant] || variants["grab-go"];
     loc.columns = fn();
   });
 
-  m.coreColumns = standard();
+  m.coreColumns = variants["red-rally"]();
 })();

@@ -147,8 +147,12 @@ button {
   margin: 0 auto;
 }
 
-.deck-card .stadium-board {
-  min-height: 560px;
+.deck-card .stadium-board.is-landscape {
+  min-height: 420px;
+}
+
+.deck-card .stadium-board.is-portrait {
+  width: min(100%, 360px);
 }
 
 .deck-card {
@@ -190,6 +194,93 @@ button {
   margin: 0 auto;
   width: 100%;
   min-height: 640px;
+}
+
+/* Fireup print aspect ratios (preview scale) */
+.stadium-board.size-96x36 {
+  aspect-ratio: 8 / 3;
+  min-height: 0;
+}
+
+.stadium-board.size-192x48 {
+  aspect-ratio: 4 / 1;
+  min-height: 0;
+  max-width: none;
+}
+
+.stadium-board.size-192x48.stadium-board--solo {
+  max-width: 1600px;
+}
+
+.stadium-board.size-24x36,
+.stadium-board.size-12x18 {
+  aspect-ratio: 2 / 3;
+  max-width: 520px;
+  min-height: 0;
+  margin-inline: auto;
+}
+
+.stadium-board.is-portrait .board-hero {
+  grid-template-columns: 1fr;
+  text-align: center;
+  gap: 10px;
+}
+
+.stadium-board.is-portrait .board-hero__brand,
+.stadium-board.is-portrait .board-hero__offer {
+  justify-content: center;
+}
+
+.stadium-board.is-portrait .board-hero__offer {
+  flex-direction: column;
+}
+
+.stadium-board.is-portrait .offer-products {
+  grid-template-columns: repeat(4, minmax(44px, 1fr));
+}
+
+.stadium-board.is-portrait .board-cols {
+  grid-template-columns: 1fr;
+}
+
+.stadium-board.is-portrait .menu-col {
+  border-right: 0;
+  border-bottom: 1px solid rgba(186, 12, 47, 0.25);
+}
+
+.stadium-board.is-portrait .menu-col:last-child {
+  border-bottom: 0;
+}
+
+.stadium-board.is-portrait .board-footer {
+  grid-template-columns: 1fr 1fr;
+}
+
+.stadium-board.is-compact .board-hero__favorites .favorites-title {
+  font-size: clamp(1.4rem, 6vw, 2.2rem);
+}
+
+.stadium-board.is-compact .offer-badge {
+  min-width: 96px;
+}
+
+.print-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 14px;
+  margin: 0 0 10px;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--metal);
+}
+
+.print-meta span {
+  background: #fff;
+  border: 1px solid #d0d3d8;
+  border-radius: 999px;
+  padding: 4px 10px;
 }
 
 /* —— Top hero tier —— */
