@@ -94,7 +94,7 @@
         <div>
           <div class="board-hero__athletics">${data.athleticsLine}</div>
           <div class="board-hero__university">${data.universityLine}</div>
-          <div class="board-hero__stand">${location.name} · ${location.stand}</div>
+          <div class="board-hero__stand">Page ${location.page || "—"} · ${location.name} · ${location.stand}</div>
         </div>
       </div>
 
@@ -194,9 +194,9 @@
   function fillDeck() {
     els.deck.innerHTML = data.locations
       .map(
-        (loc, i) => `<div class="deck-card">
+        (loc) => `<div class="deck-card">
           <div class="deck-card__label">
-            <span>Board ${String(i + 1).padStart(2, "0")}</span>
+            <span>Page ${String(loc.page).padStart(2, "0")}</span>
             <span>${loc.name} · ${loc.stand}</span>
           </div>
           ${renderBoard(loc)}
@@ -207,7 +207,10 @@
 
   function fillSelect() {
     els.select.innerHTML = data.locations
-      .map((loc) => `<option value="${loc.id}">${loc.name} — ${loc.stand}</option>`)
+      .map(
+        (loc) =>
+          `<option value="${loc.id}">Page ${loc.page} — ${loc.name} — ${loc.stand}</option>`
+      )
       .join("");
   }
 

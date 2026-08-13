@@ -783,9 +783,8 @@ button {
   line-height: 1;
 }
 
-.promo-cell__price::before {
-  content: "$";
-}
+/* Menu prices omit dollar signs per production convention.
+   Keep the $ only on the large "4 FOR $4" headline brand lockup. */
 
 .promo-cell__price::after {
   content: "";
