@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>UNM Lobos Football Menus — Print Package Guide</title>
+    <style>
+      :root {
+        --cherry: #ba0c2f;
+        --silver: #a7a8aa;
+        --metal: #4a4f55;
+        --turquoise: #00a8b5;
+        --ink: #171a1f;
+        --field: #f6f6f8;
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        font-family: Georgia, "Times New Roman", serif;
+        color: var(--ink);
+        background: var(--field);
+        line-height: 1.45;
+      }
+      .wrap { max-width: 920px; margin: 0 auto; padding: 32px 22px 64px; }
+      header {
+        background: linear-gradient(135deg, #1a1d21, #2a2e33);
+        color: #fff;
+        padding: 28px 22px;
+        border-bottom: 4px solid var(--cherry);
+      }
+      header h1 {
+        margin: 0 0 6px;
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 1.6rem;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+      }
+      header p { margin: 0; color: var(--silver); font-size: 0.95rem; }
+      h2 {
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 1.15rem;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        color: var(--cherry);
+        border-bottom: 2px solid var(--cherry);
+        padding-bottom: 6px;
+        margin-top: 2rem;
+      }
+      h3 {
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 1rem;
+        margin-bottom: 0.4rem;
+      }
+      .callout {
+        background: #fff;
+        border-left: 5px solid var(--turquoise);
+        padding: 14px 16px;
+        margin: 16px 0;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+      }
+      .warn {
+        border-left-color: var(--cherry);
+        background: #fff7f8;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        background: #fff;
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 0.85rem;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+      }
+      th, td {
+        border: 1px solid #d5d8de;
+        padding: 8px 10px;
+        text-align: left;
+        vertical-align: top;
+      }
+      th {
+        background: var(--cherry);
+        color: #fff;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        font-size: 0.75rem;
+      }
+      tr:nth-child(even) td { background: #fafbfc; }
+      code, .mono {
+        font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+        font-size: 0.86em;
+      }
+      ul { padding-left: 1.2rem; }
+      .checklist li { margin: 0.35rem 0; }
+      footer {
+        margin-top: 2.5rem;
+        padding-top: 1rem;
+        border-top: 1px solid #ccc;
+        color: var(--metal);
+        font-size: 0.9rem;
+      }
+      @media print {
+        body { background: #fff; }
+        header { break-after: avoid; }
+        table { box-shadow: none; }
+        .callout { box-shadow: none; }
+        a { color: inherit; text-decoration: none; }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="wrap" style="padding-top:0;padding-bottom:0">
+        <h1>Print Package Guide</h1>
+        <p>UNM Lobos · 25/26 Football Concessions · Fireup dimensions · Designer change sheet applied</p>
+      </div>
+    </header>
+
+    <div class="wrap">
+      <div class="callout warn">
+        <strong>Important for the printer:</strong> Browser “Save as PDF” from this HTML menu is an
+        <strong>RGB proof / layout reference</strong>, not a final press-ready CMYK package.
+        Use the table below for exact trim sizes, then rebuild or convert in your production workflow
+        (Illustrator / InDesign / RIP) to <strong>PDF/X · CMYK</strong> before output.
+      </div>
+
+      <h2>1. How to export from the HTML menu</h2>
+      <ol>
+        <li>Open <span class="mono">menu-standalone.html</span> (or the live app).</li>
+        <li>Go to <strong>Single Board</strong>.</li>
+        <li>Choose the location in the dropdown (size is listed).</li>
+        <li>Click <strong>Print / PDF</strong>.</li>
+        <li>In the print dialog: Destination = <strong>Save as PDF</strong>, enable
+          <strong>Background graphics</strong>, margins = <strong>None</strong> / default from CSS,
+          and confirm the paper size matches the Fireup size when Chrome offers a custom size.</li>
+        <li>Name files clearly, e.g. <span class="mono">05_RedRally_Interior_96x36_RGB-proof.pdf</span>.</li>
+      </ol>
+
+      <div class="callout">
+        <strong>Best practice:</strong> Export <em>one board at a time</em> from Single Board so the
+        dynamic <span class="mono">@page</span> size matches that location.
+        Full Deck print is for internal review only (shared 96×36 proof size).
+      </div>
+
+      <h2>2. Fireup trim sizes (authoritative)</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Location</th>
+            <th>Placement</th>
+            <th>Trim (W × H)</th>
+            <th>Orientation</th>
+            <th>Notes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>1</td><td>Lobo Trailer – N Scoreboard</td><td>Outside</td><td>24 × 36 in</td><td>Portrait</td><td></td></tr>
+          <tr><td>2</td><td>MBP – Mobile Beer Portables</td><td>Outside</td><td>12 × 18 in</td><td>Portrait</td><td></td></tr>
+          <tr><td>3</td><td>Grab &amp; Go Market</td><td>Outside</td><td>96 × 36 in</td><td>Landscape</td><td></td></tr>
+          <tr><td>4</td><td>Specialty – NE</td><td>Outside</td><td>96 × 36 in</td><td>Landscape</td><td>Dawg House content</td></tr>
+          <tr><td>5</td><td>Specialty – NW</td><td>Outside</td><td>96 × 36 in</td><td>Landscape</td><td>Dawg House mirrored</td></tr>
+          <tr><td>6</td><td>Red Rally NE &amp; NW – Interior</td><td>Inside</td><td>96 × 36 in</td><td>Landscape</td><td></td></tr>
+          <tr>
+            <td>7</td>
+            <td>Red Rally NE &amp; NW – Exterior</td>
+            <td>Outside</td>
+            <td>192 × 48 in</td>
+            <td>Landscape</td>
+            <td>Frame: <strong>196 × 48 in</strong></td>
+          </tr>
+          <tr><td>8</td><td>Southeast Beverage Shack</td><td>Outside</td><td>96 × 36 in</td><td>Landscape</td><td></td></tr>
+          <tr><td>9</td><td>Southwest Beverage Shack</td><td>Outside</td><td>96 × 36 in</td><td>Landscape</td><td></td></tr>
+          <tr><td>10</td><td>MBP – Elotico</td><td>Outside</td><td>12 × 18 in</td><td>Portrait</td><td></td></tr>
+          <tr><td>11</td><td>MBP – Mini Melts NE</td><td>Outside</td><td>12 × 18 in</td><td>Portrait</td><td></td></tr>
+          <tr><td>12</td><td>MBP – Mini Melts NW</td><td>Outside</td><td>12 × 18 in</td><td>Portrait</td><td></td></tr>
+        </tbody>
+      </table>
+
+      <h2>3. Color: RGB vs CMYK</h2>
+      <ul>
+        <li><strong>HTML / browser PDF = RGB.</strong> UNM brand hex values used in file:
+          Cherry <span class="mono">#BA0C2F</span>,
+          Silver <span class="mono">#A7A8AA</span>,
+          Metal <span class="mono">#4A4F55</span>,
+          Turquoise <span class="mono">#00A8B5</span>,
+          Light <span class="mono">#F4F4F6</span>.</li>
+        <li><strong>Final print files should be CMYK</strong> (or as specified by Fireup / your RIP),
+          converted with a agreed profile (e.g. SWOP / GRACoL / printer-supplied ICC).</li>
+        <li>Expect slight shifts on Cherry Red and Turquoise after conversion — soft-proof before press.</li>
+        <li>Do <strong>not</strong> assume browser PDF color management = press color.</li>
+      </ul>
+
+      <h2>4. Recommended production export settings</h2>
+      <h3>For Fireup / commercial output</h3>
+      <ul class="checklist">
+        <li>Rebuild or place art at <strong>100% trim size in inches</strong> (see table).</li>
+        <li>Add bleed if required by Fireup (confirm; not in the dimension sheet — ask if unsure; common is 0.125&quot;–0.25&quot;).</li>
+        <li>Export <strong>PDF/X-1a or PDF/X-4</strong>, CMYK, fonts outlined or embedded.</li>
+        <li>Raster effects / photos ≥ <strong>150–300 ppi at final size</strong> (large boards can use 100–150 ppi if viewing distance is far — confirm with printer).</li>
+        <li>Keep vector type for prices/headers whenever possible.</li>
+        <li>Include the Red Rally Exterior <strong>frame size 196 × 48</strong> in the job ticket if they mount into that frame.</li>
+      </ul>
+
+      <h3>Chrome “Save as PDF” checklist (proofs only)</h3>
+      <ul class="checklist">
+        <li>☑ Background graphics ON</li>
+        <li>☑ Margins none / zero</li>
+        <li>☑ Layout = Landscape or Portrait to match board</li>
+        <li>☑ Custom paper size = Fireup inches when available</li>
+        <li>☑ Scale = 100% / Default (avoid “Fit to printable area” if custom size works)</li>
+        <li>☑ Filename includes location + size + <span class="mono">RGB-proof</span></li>
+      </ul>
+
+      <h2>5. What this package is / isn’t</h2>
+      <table>
+        <thead>
+          <tr><th>Deliverable</th><th>Use for</th><th>Not for</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>HTML menu + browser PDF</td>
+            <td>Layout proof, copy/price check, aspect ratio, internal approvals</td>
+            <td>Direct CMYK press without conversion</td>
+          </tr>
+          <tr>
+            <td>Fireup dimension sheet</td>
+            <td>Authoritative trim sizes</td>
+            <td>Art files</td>
+          </tr>
+          <tr>
+            <td>Designer change sheet</td>
+            <td>Pricing &amp; item change authority</td>
+            <td>Print color management</td>
+          </tr>
+          <tr>
+            <td>Final AI/ID PDF/X</td>
+            <td>Production print</td>
+            <td>—</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2>6. Suggested folder naming for handoff</h2>
+      <pre class="mono" style="background:#fff;padding:14px;border:1px solid #d5d8de;overflow:auto">UNM_Football_Menus_2526_PrintPackage/
+  00_GUIDES/
+    PRINT_PACKAGE_GUIDE.html
+    Football_Menu_Printing_Dimensions_Fireup.pdf
+    LOBO_Football_Menu_Graphic_Designer_Change_Sheet.docx
+  01_RGB_PROOFS_from_HTML/
+    01_LoboTrailer_N-Scoreboard_24x36_RGB-proof.pdf
+    02_MBP_Beer_12x18_RGB-proof.pdf
+    …
+  02_PRODUCTION_CMYK/   ← printer or designer drops finals here
+    01_LoboTrailer_N-Scoreboard_24x36_CMYK.pdf
+    …</pre>
+
+      <h2>7. Content authority</h2>
+      <ul>
+        <li>Pricing / item changes: <strong>LOBO Football Menu Graphic Designer Change Sheet</strong></li>
+        <li>Sizes / placement: <strong>Football Menu Printing Dimensions – Fireup</strong></li>
+        <li>If copy and size conflict with an older PDF markup, prefer these two source docs.</li>
+      </ul>
+
+      <footer>
+        Lobos Athletics brand colors for on-screen reference only until CMYK conversion.
+        Questions on bleed, substrate, or outdoor laminate — confirm directly with Fireup before final output.
+      </footer>
+    </div>
+  </body>
+</html>

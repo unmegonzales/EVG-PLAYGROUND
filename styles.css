@@ -133,6 +133,15 @@ button {
   font-weight: 800;
   letter-spacing: 0.04em;
   text-transform: uppercase;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+}
+
+.btn--ghost {
+  background: transparent;
+  color: var(--cherry);
+  border: 2px solid var(--cherry);
 }
 
 .view {
@@ -962,18 +971,28 @@ button {
   }
 }
 
+/* —— Print / PDF (Fireup page sizes applied dynamically via #printPageStyle) —— */
 @media print {
   .app-bar,
-  .toolbar {
+  .toolbar,
+  .print-meta,
+  .deck-card__label,
+  .no-print {
     display: none !important;
   }
 
+  html,
   body {
-    background: white;
+    background: #fff !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+    color-adjust: exact;
   }
 
   .view {
-    padding: 0;
+    padding: 0 !important;
   }
 
   .view[hidden] {
@@ -982,11 +1001,42 @@ button {
 
   .stadium-board,
   .promo-board {
-    box-shadow: none;
+    box-shadow: none !important;
+    border: 0 !important;
     break-inside: avoid;
+    page-break-inside: avoid;
+    width: 100% !important;
+    max-width: none !important;
+    margin: 0 !important;
+    min-height: 0 !important;
+    height: 100vh;
+    aspect-ratio: auto !important;
+  }
+
+  .stadium-board--solo {
+    max-width: none !important;
   }
 
   .view--deck {
-    grid-template-columns: 1fr;
+    display: block !important;
+    max-width: none !important;
+  }
+
+  .deck-card {
+    break-after: page;
+    page-break-after: always;
+  }
+
+  .deck-card:last-child {
+    break-after: auto;
+    page-break-after: auto;
+  }
+
+  /* Prefer full-bleed board fill on the target page size */
+  .board-hero,
+  .board-cols,
+  .board-footer {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
   }
 }

@@ -249,15 +249,90 @@
     els.toolbar.hidden = view !== "board";
   }
 
+  function ensurePrintStyleEl() {
+    let el = document.getElementById("printPageStyle");
+    if (!el) {
+      el = document.createElement("style");
+      el.id = "printPageStyle";
+      document.head.appendChild(el);
+    }
+    return el;
+  }
+
+  /** Set @page to Fireup inches for the active board (or letter for deck/promo). */
+  function applyPrintPageSize(location) {
+    const el = ensurePrintStyleEl();
+    if (!location?.print) {
+      el.textContent = `@media print { @page { size: letter landscape; margin: 0.25in; } }`;
+      document.documentElement.dataset.printSize = "letter-landscape";
+      return;
+    }
+    const { widthIn, heightIn, orientation, label } = location.print;
+    const sizeValue =
+      orientation === "portrait" ? `${widthIn}in ${heightIn}in` : `${widthIn}in ${heightIn}in`;
+    el.textContent = `
+@media print {
+  @page {
+    size: ${sizeValue};
+    margin: 0;
+  }
+}
+`.trim();
+    document.documentElement.dataset.printSize = label || `${widthIn}x${heightIn}`;
+  }
+
+  function printCurrentView() {
+    const activeTab = els.tabs.find((t) => t.classList.contains("is-active"));
+    const view = activeTab?.dataset.view || "board";
+
+    if (view === "board") {
+      const loc =
+        data.locations.find((l) => l.id === els.select.value) || data.locations[0];
+      applyPrintPageSize(loc);
+      // Brief beat so the style tag is in the DOM before the print dialog
+      requestAnimationFrame(() => window.print());
+      return;
+    }
+
+    if (view === "deck") {
+      // Deck uses one shared page size (largest common landscape proof).
+      // For final production, print Single Board one location at a time.
+      applyPrintPageSize({
+        print: {
+          widthIn: 96,
+          heightIn: 36,
+          orientation: "landscape",
+          label: "96 in × 36 in Landscape (deck proof)",
+        },
+      });
+      requestAnimationFrame(() => window.print());
+      return;
+    }
+
+    // Promo poster — tabloid-friendly proof
+    ensurePrintStyleEl().textContent = `
+@media print {
+  @page { size: tabloid portrait; margin: 0.4in; }
+}
+`.trim();
+    document.documentElement.dataset.printSize = "tabloid-portrait";
+    requestAnimationFrame(() => window.print());
+  }
+
   fillDeck();
   fillSelect();
   showBoard(data.locations[0].id);
+  applyPrintPageSize(data.locations[0]);
   els.promo.innerHTML = renderPromoPoster();
   setView("board");
 
   els.tabs.forEach((tab) => {
     tab.addEventListener("click", () => setView(tab.dataset.view));
   });
-  els.select.addEventListener("change", () => showBoard(els.select.value));
-  els.printBtn.addEventListener("click", () => window.print());
+  els.select.addEventListener("change", () => {
+    showBoard(els.select.value);
+    const loc = data.locations.find((l) => l.id === els.select.value);
+    applyPrintPageSize(loc);
+  });
+  els.printBtn.addEventListener("click", printCurrentView);
 })();

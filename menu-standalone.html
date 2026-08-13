@@ -148,6 +148,15 @@ button {
   font-weight: 800;
   letter-spacing: 0.04em;
   text-transform: uppercase;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+}
+
+.btn--ghost {
+  background: transparent;
+  color: var(--cherry);
+  border: 2px solid var(--cherry);
 }
 
 .view {
@@ -977,18 +986,28 @@ button {
   }
 }
 
+/* —— Print / PDF (Fireup page sizes applied dynamically via #printPageStyle) —— */
 @media print {
   .app-bar,
-  .toolbar {
+  .toolbar,
+  .print-meta,
+  .deck-card__label,
+  .no-print {
     display: none !important;
   }
 
+  html,
   body {
-    background: white;
+    background: #fff !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+    color-adjust: exact;
   }
 
   .view {
-    padding: 0;
+    padding: 0 !important;
   }
 
   .view[hidden] {
@@ -997,12 +1016,43 @@ button {
 
   .stadium-board,
   .promo-board {
-    box-shadow: none;
+    box-shadow: none !important;
+    border: 0 !important;
     break-inside: avoid;
+    page-break-inside: avoid;
+    width: 100% !important;
+    max-width: none !important;
+    margin: 0 !important;
+    min-height: 0 !important;
+    height: 100vh;
+    aspect-ratio: auto !important;
+  }
+
+  .stadium-board--solo {
+    max-width: none !important;
   }
 
   .view--deck {
-    grid-template-columns: 1fr;
+    display: block !important;
+    max-width: none !important;
+  }
+
+  .deck-card {
+    break-after: page;
+    page-break-after: always;
+  }
+
+  .deck-card:last-child {
+    break-after: auto;
+    page-break-after: auto;
+  }
+
+  /* Prefer full-bleed board fill on the target page size */
+  .board-hero,
+  .board-cols,
+  .board-footer {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
   }
 }
 
@@ -1015,7 +1065,7 @@ button {
           <span class="app-bar__script">Lobos</span>
           <div>
             <strong>25/26 Football Concessions</strong>
-            <p>Standalone · Fireup print sizes · change-sheet pricing · no server needed</p>
+            <p>Standalone · Fireup @page print sizes · Print Package Guide included</p>
           </div>
         </div>
         <nav class="app-bar__nav" aria-label="Views">
@@ -1031,6 +1081,9 @@ button {
           <select id="locationSelect"></select>
         </label>
         <button type="button" class="btn" id="printBtn">Print / PDF</button>
+        <a class="btn btn--ghost" href="PRINT_PACKAGE_GUIDE.html" target="_blank" rel="noopener">
+          Print Package Guide
+        </a>
       </section>
 
       <main id="view-deck" class="view view--deck" hidden aria-label="Full menu deck"></main>
@@ -1698,17 +1751,92 @@ window.UNM_MENU = {
     els.toolbar.hidden = view !== "board";
   }
 
+  function ensurePrintStyleEl() {
+    let el = document.getElementById("printPageStyle");
+    if (!el) {
+      el = document.createElement("style");
+      el.id = "printPageStyle";
+      document.head.appendChild(el);
+    }
+    return el;
+  }
+
+  /** Set @page to Fireup inches for the active board (or letter for deck/promo). */
+  function applyPrintPageSize(location) {
+    const el = ensurePrintStyleEl();
+    if (!location?.print) {
+      el.textContent = `@media print { @page { size: letter landscape; margin: 0.25in; } }`;
+      document.documentElement.dataset.printSize = "letter-landscape";
+      return;
+    }
+    const { widthIn, heightIn, orientation, label } = location.print;
+    const sizeValue =
+      orientation === "portrait" ? `${widthIn}in ${heightIn}in` : `${widthIn}in ${heightIn}in`;
+    el.textContent = `
+@media print {
+  @page {
+    size: ${sizeValue};
+    margin: 0;
+  }
+}
+`.trim();
+    document.documentElement.dataset.printSize = label || `${widthIn}x${heightIn}`;
+  }
+
+  function printCurrentView() {
+    const activeTab = els.tabs.find((t) => t.classList.contains("is-active"));
+    const view = activeTab?.dataset.view || "board";
+
+    if (view === "board") {
+      const loc =
+        data.locations.find((l) => l.id === els.select.value) || data.locations[0];
+      applyPrintPageSize(loc);
+      // Brief beat so the style tag is in the DOM before the print dialog
+      requestAnimationFrame(() => window.print());
+      return;
+    }
+
+    if (view === "deck") {
+      // Deck uses one shared page size (largest common landscape proof).
+      // For final production, print Single Board one location at a time.
+      applyPrintPageSize({
+        print: {
+          widthIn: 96,
+          heightIn: 36,
+          orientation: "landscape",
+          label: "96 in × 36 in Landscape (deck proof)",
+        },
+      });
+      requestAnimationFrame(() => window.print());
+      return;
+    }
+
+    // Promo poster — tabloid-friendly proof
+    ensurePrintStyleEl().textContent = `
+@media print {
+  @page { size: tabloid portrait; margin: 0.4in; }
+}
+`.trim();
+    document.documentElement.dataset.printSize = "tabloid-portrait";
+    requestAnimationFrame(() => window.print());
+  }
+
   fillDeck();
   fillSelect();
   showBoard(data.locations[0].id);
+  applyPrintPageSize(data.locations[0]);
   els.promo.innerHTML = renderPromoPoster();
   setView("board");
 
   els.tabs.forEach((tab) => {
     tab.addEventListener("click", () => setView(tab.dataset.view));
   });
-  els.select.addEventListener("change", () => showBoard(els.select.value));
-  els.printBtn.addEventListener("click", () => window.print());
+  els.select.addEventListener("change", () => {
+    showBoard(els.select.value);
+    const loc = data.locations.find((l) => l.id === els.select.value);
+    applyPrintPageSize(loc);
+  });
+  els.printBtn.addEventListener("click", printCurrentView);
 })();
 
     </script>
