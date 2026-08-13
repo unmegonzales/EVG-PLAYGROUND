@@ -435,13 +435,13 @@ button {
 
 .offer-products {
   display: grid;
-  grid-template-columns: repeat(4, minmax(52px, 1fr));
-  gap: 8px;
+  grid-template-columns: repeat(4, minmax(56px, 1fr));
+  gap: 10px;
 }
 
 .offer-product {
   display: grid;
-  gap: 4px;
+  gap: 6px;
   justify-items: center;
   text-align: center;
 }
@@ -454,28 +454,60 @@ button {
   color: var(--metal);
 }
 
+/* Taller “photo feature” frames — gradient focal + white line icon */
 .offer-product__shot {
-  width: 54px;
-  height: 54px;
-  border-radius: 10px;
+  position: relative;
+  width: 56px;
+  height: 86px;
+  border-radius: 12px;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  border: 2px solid rgba(255, 255, 255, 0.55);
+  box-shadow:
+    0 8px 18px rgba(0, 0, 0, 0.22),
+    inset 0 1px 0 rgba(255, 255, 255, 0.28);
   background:
-    linear-gradient(160deg, rgba(255, 255, 255, 0.35), transparent 50%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.28), transparent 42%),
     var(--metal);
-  border: 2px solid var(--silver);
-  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.18);
+}
+
+.offer-product__shot::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 55%, rgba(0, 0, 0, 0.22));
+  pointer-events: none;
+}
+
+.offer-product__shot .offer-icon {
+  position: relative;
+  z-index: 1;
+  width: 60%;
+  height: auto;
+  color: #fff;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.35));
 }
 
 .offer-product__shot[data-product="Pepsi"] {
-  background: linear-gradient(160deg, #1c4f9c, #0b2148);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.22), transparent 40%),
+    linear-gradient(180deg, #2a63b8 0%, #123a7a 48%, #0b2148 100%);
 }
 .offer-product__shot[data-product="Lobo Dog"] {
-  background: linear-gradient(160deg, #d9a06a, #8a4b28);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.2), transparent 40%),
+    linear-gradient(180deg, #e0b07a 0%, #b8733d 50%, #7a421f 100%);
 }
 .offer-product__shot[data-product="Popcorn"] {
-  background: linear-gradient(160deg, #f2d56b, #ba0c2f 70%);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.25), transparent 38%),
+    linear-gradient(180deg, #f6d76a 0%, #e07a2f 45%, #ba0c2f 100%);
 }
 .offer-product__shot[data-product="Water"] {
-  background: linear-gradient(160deg, #8fd0ef, #2a6f96);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.3), transparent 40%),
+    linear-gradient(180deg, #b9e4f7 0%, #5ab8d4 50%, #2a6f96 100%);
 }
 
 /* —— 5-column menu tier —— */

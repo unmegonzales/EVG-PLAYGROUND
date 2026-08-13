@@ -20,6 +20,32 @@
     star: `<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="m12 3 2.4 6.6H21l-5.2 4 2 6.4L12 16.8 6.2 20l2-6.4L3 9.6h6.6z"/></svg>`,
   };
 
+  /** White line icons for 4-for-$4 gradient frames */
+  const OFFER_ICONS = {
+    Pepsi: `<svg class="offer-icon" viewBox="0 0 48 48" fill="none" aria-hidden="true">
+      <path d="M18 8h12l2 4v28a3 3 0 0 1-3 3H19a3 3 0 0 1-3-3V12l2-4z" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/>
+      <path d="M17 16h14M20 8c0 3 8 3 8 0" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+      <circle cx="24" cy="28" r="5" stroke="currentColor" stroke-width="2.2"/>
+    </svg>`,
+    "Lobo Dog": `<svg class="offer-icon" viewBox="0 0 48 48" fill="none" aria-hidden="true">
+      <path d="M8 28c6-8 26-8 32 0" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+      <path d="M10 30c5 6 23 6 28 0" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+      <path d="M14 26c2 3 4 3 6 0M22 24c2 3 4 3 6 0M30 26c2 3 4 3 6 0" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+    </svg>`,
+    Popcorn: `<svg class="offer-icon" viewBox="0 0 48 48" fill="none" aria-hidden="true">
+      <path d="M16 20h16l-2 22H18L16 20z" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/>
+      <path d="M18 28h12M17 34h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      <circle cx="20" cy="15" r="3.2" stroke="currentColor" stroke-width="2"/>
+      <circle cx="28" cy="13" r="3.5" stroke="currentColor" stroke-width="2"/>
+      <circle cx="24" cy="18" r="2.8" stroke="currentColor" stroke-width="2"/>
+    </svg>`,
+    Water: `<svg class="offer-icon" viewBox="0 0 48 48" fill="none" aria-hidden="true">
+      <path d="M20 6h8v5l3 3v26a3 3 0 0 1-3 3h-8a3 3 0 0 1-3-3V14l3-3V6z" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/>
+      <path d="M20 6h8M18 20h12" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+      <path d="M24 26v10" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+    </svg>`,
+  };
+
   function money(value) {
     if (value == null) return "";
     const n = Number(value);
@@ -112,12 +138,15 @@
         </div>
         <div class="offer-products">
           ${p.products
-            .map(
-              (prod) => `<div class="offer-product">
-                <div class="offer-product__shot" data-product="${prod.name}"></div>
+            .map((prod) => {
+              const icon = OFFER_ICONS[prod.name] || "";
+              return `<div class="offer-product">
+                <div class="offer-product__shot" data-product="${prod.name}">
+                  ${icon}
+                </div>
                 <span>${prod.label}</span>
-              </div>`
-            )
+              </div>`;
+            })
             .join("")}
         </div>
       </div>
