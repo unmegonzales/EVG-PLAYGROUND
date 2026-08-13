@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="4800" height="1800" viewBox="0 0 4800 1800">
+  <title>UNM Menu Layout Shell — 96×36 — Illustrator</title>
+  <desc>Empty structural template for Canva / Adobe Illustrator. No prices. Photo slots labeled.</desc>
+  <defs>
+    <style>
+      .label { font-family: Arial, Helvetica, sans-serif; fill: #4A4F55; font-size: 50.4px; font-weight: 700; }
+      .label-sm { font-family: Arial, Helvetica, sans-serif; fill: #6b7280; font-size: 36.0px; font-weight: 600; }
+      .label-inv { font-family: Arial, Helvetica, sans-serif; fill: #ffffff; font-size: 46.8px; font-weight: 700; }
+      .title { font-family: Arial, Helvetica, sans-serif; fill: #171a1f; font-size: 126.0px; font-weight: 800; font-style: italic; }
+    </style>
+  </defs>
+
+  <!-- Field -->
+  <rect width="4800" height="1800" fill="#F6F6F8"/>
+
+  <!-- HERO -->
+  <rect x="0" y="0" width="4800" height="396" fill="#ECEEF1"/>
+  <line x1="0" y1="396" x2="4800" y2="396" stroke="#BA0C2F" stroke-width="18.0"/>
+
+  <!-- Brand block -->
+  <rect x="96.0" y="71.3" width="217.8" height="217.8" rx="106.9" fill="#4A4F55" stroke="#A7A8AA" stroke-width="2"/>
+  <text class="label-inv" x="204.9" y="205.9" text-anchor="middle">LOGO</text>
+  <text class="label" x="373.2" y="150.5">LOBOS ATHLETICS</text>
+  <text class="label-sm" x="373.2" y="217.8">University of New Mexico</text>
+  <text class="label-sm" x="373.2" y="285.1">Location / Stand name</text>
+
+  <!-- Fan Favorites center -->
+  <rect x="1824.0" y="47.5" width="768.0" height="87.1" fill="#00A8B5"/>
+  <text class="label-inv" x="2208.0" y="110.9" text-anchor="middle">VALUE MENU</text>
+  <text class="title" x="2208.0" y="245.5" text-anchor="middle">FAN FAVORITES</text>
+  <text class="label-sm" x="2208.0" y="324.7" text-anchor="middle" fill="#BA0C2F">Tagline</text>
+
+  <!-- 4 for $4 badge -->
+  <path d="M3264.0,47.5 H3744.0 V308.9 L3648.0,356.4 H3168.0 V95.0 Z" fill="#BA0C2F"/>
+  <text class="label-inv" x="3456.0" y="217.8" text-anchor="middle" font-size="90.0">4 FOR $4</text>
+
+  <!-- PHOTO SLOTS (the "random boxes") -->
+  <g id="four-for-four-photo-slots">
+    <title>Replace these four boxes with product photos: Pepsi, Lobo Dog, Popcorn, Water</title>
+    <rect x="3840.0" y="71.3" width="192.0" height="178.2" rx="4" fill="#A7A8AA" stroke="#4A4F55" stroke-width="1" stroke-dasharray="4 3"/>
+    <text class="label-sm" x="3936.0" y="166.3" text-anchor="middle" fill="#fff">PHOTO</text>
+    <text class="label-sm" x="3936.0" y="308.9" text-anchor="middle">Pepsi</text>
+    <rect x="4056.0" y="71.3" width="192.0" height="178.2" rx="4" fill="#A7A8AA" stroke="#4A4F55" stroke-width="1" stroke-dasharray="4 3"/>
+    <text class="label-sm" x="4152.0" y="166.3" text-anchor="middle" fill="#fff">PHOTO</text>
+    <text class="label-sm" x="4152.0" y="308.9" text-anchor="middle">Dog</text>
+    <rect x="4272.0" y="71.3" width="192.0" height="178.2" rx="4" fill="#A7A8AA" stroke="#4A4F55" stroke-width="1" stroke-dasharray="4 3"/>
+    <text class="label-sm" x="4368.0" y="166.3" text-anchor="middle" fill="#fff">PHOTO</text>
+    <text class="label-sm" x="4368.0" y="308.9" text-anchor="middle">Popcorn</text>
+    <rect x="4488.0" y="71.3" width="192.0" height="178.2" rx="4" fill="#A7A8AA" stroke="#4A4F55" stroke-width="1" stroke-dasharray="4 3"/>
+    <text class="label-sm" x="4584.0" y="166.3" text-anchor="middle" fill="#fff">PHOTO</text>
+    <text class="label-sm" x="4584.0" y="308.9" text-anchor="middle">Water</text>
+  </g>
+
+  <!-- 5 COLUMNS -->
+  <rect x="0" y="396" width="4800" height="1116" fill="#ffffff" fill-opacity="0.85"/>
+  <g id="col-1">
+    <line x1="960.0" y1="404" x2="960.0" y2="1504" stroke="#BA0C2F" stroke-opacity="0.35"/>
+    <circle cx="24.0" cy="424.0" r="12" fill="#BA0C2F"/>
+    <text class="label" x="44.0" y="430.0">FOOD</text>
+    <text class="label-sm" x="16.0" y="466.0">Item ........ price</text>
+    <text class="label-sm" x="16.0" y="491.0">Item ........ price</text>
+    <text class="label-sm" x="16.0" y="516.0">Item ........ price</text>
+  </g>
+  <g id="col-2">
+    <line x1="1920.0" y1="404" x2="1920.0" y2="1504" stroke="#BA0C2F" stroke-opacity="0.35"/>
+    <circle cx="984.0" cy="424.0" r="12" fill="#BA0C2F"/>
+    <text class="label" x="1004.0" y="430.0">SNACKS</text>
+    <text class="label-sm" x="976.0" y="466.0">Item ........ price</text>
+    <text class="label-sm" x="976.0" y="491.0">Item ........ price</text>
+    <text class="label-sm" x="976.0" y="516.0">Item ........ price</text>
+  </g>
+  <g id="col-3">
+    <line x1="2880.0" y1="404" x2="2880.0" y2="1504" stroke="#BA0C2F" stroke-opacity="0.35"/>
+    <circle cx="1944.0" cy="424.0" r="12" fill="#BA0C2F"/>
+    <text class="label" x="1964.0" y="430.0">COLD DRINKS</text>
+    <text class="label-sm" x="1936.0" y="466.0">Item ........ price</text>
+    <text class="label-sm" x="1936.0" y="491.0">Item ........ price</text>
+    <text class="label-sm" x="1936.0" y="516.0">Item ........ price</text>
+  </g>
+  <g id="col-4">
+    <line x1="3840.0" y1="404" x2="3840.0" y2="1504" stroke="#BA0C2F" stroke-opacity="0.35"/>
+    <circle cx="2904.0" cy="424.0" r="12" fill="#BA0C2F"/>
+    <text class="label" x="2924.0" y="430.0">BEER + BOOZE</text>
+    <text class="label-sm" x="2896.0" y="466.0">Item ........ price</text>
+    <text class="label-sm" x="2896.0" y="491.0">Item ........ price</text>
+    <text class="label-sm" x="2896.0" y="516.0">Item ........ price</text>
+  </g>
+  <g id="col-5">
+    <line x1="4800.0" y1="404" x2="4800.0" y2="1504" stroke="#BA0C2F" stroke-opacity="0.35"/>
+    <circle cx="3864.0" cy="424.0" r="12" fill="#BA0C2F"/>
+    <text class="label" x="3884.0" y="430.0">COLUMN 5</text>
+    <text class="label-sm" x="3856.0" y="466.0">Item ........ price</text>
+    <text class="label-sm" x="3856.0" y="491.0">Item ........ price</text>
+    <text class="label-sm" x="3856.0" y="516.0">Item ........ price</text>
+  </g>
+
+  <!-- FOOTER -->
+  <rect x="0" y="1512" width="1200.0" height="216" fill="#BA0C2F"/>
+  <text class="label-inv" x="600.0" y="1630.8" text-anchor="middle">CASHLESS</text>
+  <rect x="1200.0" y="1512" width="960.0" height="216" fill="#12151A"/>
+  <text class="label-inv" x="1680.0" y="1630.8" text-anchor="middle">WE FUEL CHAMPIONS</text>
+  <rect x="2160.0" y="1512" width="1344.0" height="216" fill="#4A4F55"/>
+  <text class="label-inv" x="2832.0" y="1630.8" text-anchor="middle">PAY YOUR WAY</text>
+  <rect x="3504.0" y="1512" width="1296.0" height="216" fill="#00A8B5"/>
+  <text class="label-inv" x="4152.0" y="1630.8" text-anchor="middle">THANK YOU</text>
+
+  <rect x="0" y="1728" width="4800" height="72" fill="#ECEEF1"/>
+  <text class="label-sm" x="12" y="1774.8">Tax note · Print: 96 in × 36 in Landscape · Empty shell for Canva / Illustrator</text>
+</svg>
