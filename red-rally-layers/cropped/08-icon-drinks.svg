@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="156" viewBox="0 0 256.00 156.00" fill="none">
+<g transform="translate(-1552.00 -132.00)">
+<g id="icon-drinks"><g transform="translate(1680.00 208.00) scale(1.180)" fill="none" stroke="#E21B24" stroke-width="6" stroke-linejoin="round" stroke-linecap="round">
+  <ellipse cx="-24" cy="-16" rx="18" ry="6"/>
+  <path d="M-40 -16l6 54c1 8 8 12 10 12h8c2 0 9-4 10-12l6-54"/>
+  <path d="M-12 -16l8 -20"/>
+  <ellipse cx="22" cy="-10" rx="18" ry="6"/>
+  <path d="M6 -10l6 50c1 8 8 12 10 12h8c2 0 9-4 10-12l6-50"/>
+  <path d="M34 -10l8 -18"/>
+  <path d="M-32 8h16M14 14h16"/>
+</g></g>
+</g>
+</svg>

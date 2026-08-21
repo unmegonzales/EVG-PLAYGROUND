@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="480" viewBox="0 0 1920 480" fill="none">
+<g id="price-slots">
+<style>text{font-family:Arial,Helvetica,sans-serif;font-weight:800;letter-spacing:.12em;text-anchor:middle;fill:#ffffff;}</style>
+<text x="240" y="318" font-size="15" opacity="0.42">ITEM / PRICE</text>
+<text x="240" y="358" font-size="28">$ --</text>
+<text x="720" y="318" font-size="15" opacity="0.42">ITEM / PRICE</text>
+<text x="720" y="358" font-size="28">$ --</text>
+<text x="1200" y="318" font-size="15" opacity="0.42">ITEM / PRICE</text>
+<text x="1200" y="358" font-size="28">$ --</text>
+<text x="1680" y="318" font-size="15" opacity="0.42">ITEM / PRICE</text>
+<text x="1680" y="358" font-size="28">$ --</text>
+</g>
+</svg>

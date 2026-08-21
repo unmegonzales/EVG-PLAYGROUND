@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Red Rally — layered SVG preview</title>
+  <style>
+    :root { color-scheme: dark; }
+    body { margin: 0; font-family: Arial, sans-serif; background: #111; color: #eee; }
+    header { padding: 20px 24px 8px; }
+    h1 { margin: 0 0 8px; font-size: 22px; letter-spacing: .04em; text-transform: uppercase; }
+    p { margin: 0 0 16px; color: #bbb; max-width: 820px; line-height: 1.5; }
+    .board-wrap { margin: 0 24px 24px; background: #000; outline: 1px solid #333; }
+    .board { position: relative; width: min(1920px, 100%); aspect-ratio: 1920 / 480; }
+    .board img { position: absolute; inset: 0; width: 100%; height: 100%; }
+    .toggles { display: flex; flex-wrap: wrap; gap: 10px 16px; padding: 0 24px 24px; }
+    label { font-size: 13px; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Red Rally layer stack</h1>
+    <p>Toggle layers to preview the Canva inlay order. Import every file from <code>layers/</code> onto a 1920×480 Canva design at position 0,0. Use the redesign promo instead of the classic promo unless you want the original lockup.</p>
+  </header>
+  <div class="board-wrap"><div class="board" id="board">
+    <img src="../layers/01-background.svg" data-layer="01-background" alt="01-background"><img src="../layers/02-grid-lines.svg" data-layer="02-grid-lines" alt="02-grid-lines"><img src="../layers/03-header-red-rally.svg" data-layer="03-header-red-rally" alt="03-header-red-rally"><img src="../layers/04-promo-4for4-redesign.svg" data-layer="04-promo-4for4-redesign" alt="04-promo-4for4-redesign"><img src="../layers/05-icon-hot-dog.svg" data-layer="05-icon-hot-dog" alt="05-icon-hot-dog"><img src="../layers/06-icon-pretzel.svg" data-layer="06-icon-pretzel" alt="06-icon-pretzel"><img src="../layers/07-icon-nachos.svg" data-layer="07-icon-nachos" alt="07-icon-nachos"><img src="../layers/08-icon-drinks.svg" data-layer="08-icon-drinks" alt="08-icon-drinks"><img src="../layers/09-footer-bar.svg" data-layer="09-footer-bar" alt="09-footer-bar"><img src="../layers/10-footer-cashless.svg" data-layer="10-footer-cashless" alt="10-footer-cashless"><img src="../layers/11-footer-payments.svg" data-layer="11-footer-payments" alt="11-footer-payments"><img src="../layers/12-footer-sponsors.svg" data-layer="12-footer-sponsors" alt="12-footer-sponsors"><img src="../layers/13-price-slots-editable-text.svg" data-layer="13-price-slots-editable-text" alt="13-price-slots-editable-text">
+  </div></div>
+  <div class="toggles"><label><input type="checkbox" data-layer="01-background" checked> 01-background</label><label><input type="checkbox" data-layer="02-grid-lines" checked> 02-grid-lines</label><label><input type="checkbox" data-layer="03-header-red-rally" checked> 03-header-red-rally</label><label><input type="checkbox" data-layer="04-promo-4for4-redesign" checked> 04-promo-4for4-redesign</label><label><input type="checkbox" data-layer="05-icon-hot-dog" checked> 05-icon-hot-dog</label><label><input type="checkbox" data-layer="06-icon-pretzel" checked> 06-icon-pretzel</label><label><input type="checkbox" data-layer="07-icon-nachos" checked> 07-icon-nachos</label><label><input type="checkbox" data-layer="08-icon-drinks" checked> 08-icon-drinks</label><label><input type="checkbox" data-layer="09-footer-bar" checked> 09-footer-bar</label><label><input type="checkbox" data-layer="10-footer-cashless" checked> 10-footer-cashless</label><label><input type="checkbox" data-layer="11-footer-payments" checked> 11-footer-payments</label><label><input type="checkbox" data-layer="12-footer-sponsors" checked> 12-footer-sponsors</label><label><input type="checkbox" data-layer="13-price-slots-editable-text" checked> 13-price-slots-editable-text</label></div>
+  <script>
+    document.querySelectorAll("input[type=checkbox]").forEach((box) => {
+      box.addEventListener("change", () => {
+        document.querySelectorAll("img[data-layer='" + box.dataset.layer + "']").forEach((img) => {
+          img.style.display = box.checked ? "block" : "none";
+        });
+      });
+    });
+  </script>
+</body>
+</html>

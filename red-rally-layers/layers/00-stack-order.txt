@@ -1,0 +1,21 @@
+Red Rally Canva stack — import onto a 1920 x 480 design.
+Place every file from this folder at X 0, Y 0.
+
+Bottom to top:
+  01-background.svg
+  02-grid-lines.svg
+  03-header-red-rally.svg
+  04-promo-4for4-redesign.svg     (use this, or swap for 04-promo-4for4-classic.svg)
+  05-icon-hot-dog.svg
+  06-icon-pretzel.svg
+  07-icon-nachos.svg
+  08-icon-drinks.svg
+  09-footer-bar.svg
+  10-footer-cashless.svg
+  11-footer-payments.svg
+  12-footer-sponsors.svg
+  13-price-slots-editable-text.svg
+
+Optional: 05-08-icon-grid.svg replaces 05 through 08 as a single chunk.
+
+Payment and sponsor marks are placeholders. Drop official brand files on top before production.

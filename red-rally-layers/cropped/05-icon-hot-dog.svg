@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="156" viewBox="0 0 256.00 156.00" fill="none">
+<g transform="translate(-112.00 -132.00)">
+<g id="icon-hot-dog"><g transform="translate(240.00 208.00) scale(1.180)" fill="none" stroke="#E21B24" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M-50 10c2 16 98 16 100 0" stroke-width="7"/>
+  <path d="M-56 0c2-12 108-12 112 0 0 8-16 14-56 14S-56 8-56 0z" stroke-width="7"/>
+  <path d="M-48 -6c4-16 92-16 96 0" stroke-width="7"/>
+  <path d="M-30 -4c8 8 14-8 22 0s14-8 22 0 12-6 20 2" stroke-width="4.5"/>
+</g></g>
+</g>
+</svg>
