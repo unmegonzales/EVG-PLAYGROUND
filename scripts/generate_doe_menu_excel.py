@@ -75,22 +75,12 @@ MENU_SECTIONS = [
                 180,
                 "Grilled Hot Dogs, Traditional Condiments; 2 DOGS PER GUEST",
             ),
-        ],
-    ),
-    (
-        "UPCHARGE",
-        [
             (
                 99216,
                 "Upgrade your Lobo Dogs: Frito Pie Red Chile",
                 40,
                 "Add-on upgrade for Lobo Dogs",
             ),
-        ],
-    ),
-    (
-        "ENTREES",
-        [
             (
                 2303580,
                 "Louie's Legendary Frito Pie",
