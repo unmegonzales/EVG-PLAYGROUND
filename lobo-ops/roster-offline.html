@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lobo Ops Roster (Offline)</title>
+  <style>
+    :root { --bg:#0f1117; --surface:#171b24; --border:#2a3344; --text:#e8ecf4; --muted:#8b95a8; --accent:#ba0c2f; --ok:#22a06b; --bad:#e2483d; --warn:#cf9f02; }
+    * { box-sizing: border-box; }
+    body { margin:0; font:13px/1.4 "Segoe UI",system-ui,sans-serif; background:var(--bg); color:var(--text); }
+    header { padding:16px 20px; background:var(--surface); border-bottom:1px solid var(--border); display:flex; flex-wrap:wrap; gap:12px; align-items:center; }
+    header h1 { margin:0; font-size:18px; }
+    header p { margin:0; color:var(--muted); font-size:11px; }
+    .stats { display:flex; gap:16px; margin-left:auto; }
+    .stats span { font-size:11px; color:var(--muted); }
+    .stats strong { display:block; font-size:16px; }
+    .toolbar { padding:10px 20px; display:flex; gap:8px; flex-wrap:wrap; background:var(--surface); border-bottom:1px solid var(--border); }
+    button, label.file { padding:7px 12px; border-radius:5px; border:1px solid var(--border); background:var(--surface); color:var(--text); cursor:pointer; font-size:12px; }
+    button.primary { background:var(--accent); border-color:var(--accent); color:#fff; }
+    input, select { padding:6px 8px; background:#1e2430; border:1px solid var(--border); color:var(--text); border-radius:4px; }
+    .wrap { overflow:auto; max-height:calc(100vh - 140px); }
+    table { width:100%; border-collapse:collapse; font-size:12px; }
+    th { position:sticky; top:0; background:#12161e; text-align:left; padding:8px; border-bottom:2px solid var(--border); color:var(--muted); font-size:10px; text-transform:uppercase; }
+    td { padding:6px 8px; border-bottom:1px solid var(--border); white-space:nowrap; }
+    tr:hover { background:#1e2430; }
+    .ok { color:var(--ok); font-weight:600; }
+    .bad { color:var(--bad); font-weight:600; }
+    .warn { color:var(--warn); }
+    .pct-ready { color:var(--ok); font-weight:700; }
+    footer { padding:12px 20px; color:var(--muted); font-size:11px; }
+  </style>
+</head>
+<body>
+  <header>
+    <div>
+      <h1>Lobo Ops Roster</h1>
+      <p>Offline tracker - no install. Save via Export CSV.</p>
+    </div>
+    <div class="stats">
+      <div><strong id="s-total">0</strong><span>Active</span></div>
+      <div><strong id="s-ready" style="color:var(--ok)">0</strong><span>Event Ready</span></div>
+      <div><strong id="s-missing" style="color:var(--bad)">0</strong><span>Missing Permits</span></div>
+    </div>
+  </header>
+  <div class="toolbar">
+    <label class="file">Import CSV<input type="file" id="import" accept=".csv" hidden></label>
+    <button type="button" id="export">Export CSV</button>
+    <button type="button" class="primary" id="add">+ Add Row</button>
+    <select id="filter">
+      <option value="all">All</option>
+      <option value="missing">Missing Permits</option>
+      <option value="ready">Event Ready</option>
+      <option value="notready">Not Ready</option>
+    </select>
+    <input type="search" id="search" placeholder="Search name or email..." style="min-width:200px">
+  </div>
+  <div class="wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Ready</th><th>Name</th><th>Email</th><th>Dept</th><th>CL</th><th>Alcohol</th><th>Food</th><th>Security</th><th>SF</th><th>I-9</th><th>HR</th><th>Notes</th><th></th>
+        </tr>
+      </thead>
+      <tbody id="body"></tbody>
+    </table>
+  </div>
+  <footer>Event-ready = CL + SF Signature + I-9 + Alcohol valid + Food uploaded + Security validated + HR cleared (shirt not required). Pair with SEND-EMAIL.bat for Outlook.</footer>
+  <script>
+    const DEPTS = {'36127':'Concessions','36128':'Group Sales','36129':'Suites','57039':'Warehouse','34964':'Admin','34963':'Management','NPO':'NPO'};
+    let rows = [];
+
+    function readiness(r) {
+      let n = 0;
+      if (r.creating_legends === 'complete') n++;
+      if (['signature_step','post_hire_verification'].includes(r.sf_stage)) n++;
+      if (r.i9_status === 'complete') n++;
+      if (r.alcohol_status === 'valid') n++;
+      if (['uploaded','valid'].includes(r.food_handler_status)) n++;
+      if (r.security_photo_status === 'validated') n++;
+      if (r.hr_cleared === '1' || r.hr_cleared === 'yes') n++;
+      return { pct: Math.round(100 * n / 7), ready: n === 7 };
+    }
+
+    function esc(s) { return String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;'); }
+    function cls(v, good) {
+      if (good.includes(v)) return 'ok';
+      if (['missing','no_match','not_started'].includes(v)) return 'bad';
+      return 'warn';
+    }
+
+    function render() {
+      const q = document.getElementById('search').value.toLowerCase();
+      const f = document.getElementById('filter').value;
+      const body = document.getElementById('body');
+      let ready = 0, missing = 0;
+      body.innerHTML = '';
+      rows.forEach((r, i) => {
+        const rd = readiness(r);
+        if (rd.ready) ready++;
+        if (['missing','no_match','expired'].includes(r.alcohol_status) || r.food_handler_status === 'missing' || r.security_photo_status !== 'validated') missing++;
+        const name = `${r.last_name}, ${r.first_name}`;
+        if (q && !name.toLowerCase().includes(q) && !(r.email||'').toLowerCase().includes(q)) return;
+        if (f === 'ready' && !rd.ready) return;
+        if (f === 'notready' && rd.ready) return;
+        if (f === 'missing' && rd.ready) return;
+        if (f === 'missing' && !(['missing','no_match','expired'].includes(r.alcohol_status) || r.food_handler_status === 'missing' || !['validated'].includes(r.security_photo_status))) return;
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td class="${rd.ready ? 'pct-ready' : ''}">${rd.ready ? 'READY' : rd.pct + '%'}</td>
+          <td><input value="${esc(r.last_name)}" data-i="${i}" data-f="last_name" style="width:90px"> <input value="${esc(r.first_name)}" data-i="${i}" data-f="first_name" style="width:80px"></td>
+          <td><input value="${esc(r.email)}" data-i="${i}" data-f="email" style="width:160px"></td>
+          <td><select data-i="${i}" data-f="department_code">${Object.entries(DEPTS).map(([k,v])=>`<option value="${k}" ${r.department_code===k?'selected':''}>${k}</option>`).join('')}</select></td>
+          <td class="${cls(r.creating_legends,['complete'])}"><select data-i="${i}" data-f="creating_legends"><option value="missing">missing</option><option value="in_progress">in prog</option><option value="complete">complete</option></select></td>
+          <td class="${cls(r.alcohol_status,['valid'])}"><select data-i="${i}" data-f="alcohol_status"><option value="missing">missing</option><option value="no_match">no match</option><option value="valid">valid</option></select></td>
+          <td class="${cls(r.food_handler_status,['uploaded','valid'])}"><select data-i="${i}" data-f="food_handler_status"><option value="missing">missing</option><option value="uploaded">uploaded</option></select></td>
+          <td class="${cls(r.security_photo_status,['validated'])}"><select data-i="${i}" data-f="security_photo_status"><option value="missing">missing</option><option value="uploaded">uploaded</option><option value="validated">validated</option></select></td>
+          <td><select data-i="${i}" data-f="sf_stage"><option value="new_employee">new emp</option><option value="orientation_step">orient</option><option value="signature_step">signature</option><option value="post_hire_verification">post hire</option></select></td>
+          <td class="${cls(r.i9_status,['complete'])}"><select data-i="${i}" data-f="i9_status"><option value="not_started">not started</option><option value="complete">complete</option></select></td>
+          <td><select data-i="${i}" data-f="hr_cleared"><option value="0">no</option><option value="1">yes</option></select></td>
+          <td><input value="${esc(r.notes)}" data-i="${i}" data-f="notes" style="width:120px"></td>
+          <td><button type="button" data-del="${i}">x</button></td>`;
+        body.appendChild(tr);
+        tr.querySelectorAll('[data-f]').forEach(el => { el.value = r[el.dataset.f] ?? el.value; el.onchange = () => { rows[+el.dataset.i][el.dataset.f] = el.value; render(); }; });
+        tr.querySelector('[data-del]').onclick = () => { rows.splice(i,1); render(); };
+      });
+      document.getElementById('s-total').textContent = rows.length;
+      document.getElementById('s-ready').textContent = ready;
+      document.getElementById('s-missing').textContent = missing;
+    }
+
+    function toCsv() {
+      const h = ['first_name','last_name','email','phone','employee_id','department_code','classification','position','manager','hire_date','creating_legends','sf_stage','i9_status','alcohol_status','food_handler_status','security_photo_status','hr_cleared','notes'];
+      const lines = [h.join(',')];
+      rows.forEach(r => lines.push(h.map(k => `"${String(r[k]??'').replace(/"/g,'""')}"`).join(',')));
+      return lines.join('\n');
+    }
+
+    document.getElementById('export').onclick = () => {
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(new Blob([toCsv()], {type:'text/csv'}));
+      a.download = 'roster.csv';
+      a.click();
+    };
+
+    document.getElementById('import').onchange = e => {
+      const f = e.target.files[0]; if (!f) return;
+      const reader = new FileReader();
+      reader.onload = () => {
+        const lines = reader.result.trim().split(/\r?\n/);
+        const hdr = lines[0].split(',').map(s => s.replace(/^"|"$/g,''));
+        rows = lines.slice(1).filter(Boolean).map(line => {
+          const vals = line.match(/("([^"]|"")*"|[^,]*)/g).map(s => s.replace(/^"|"$/g,'').replace(/""/g,'"'));
+          const o = {}; hdr.forEach((k,i) => o[k] = vals[i] ?? ''); return o;
+        });
+        render();
+      };
+      reader.readAsText(f);
+    };
+
+    document.getElementById('add').onclick = () => {
+      rows.push({ first_name:'', last_name:'', email:'', department_code:'36127', creating_legends:'missing', sf_stage:'new_employee', i9_status:'not_started', alcohol_status:'missing', food_handler_status:'missing', security_photo_status:'missing', hr_cleared:'0', notes:'' });
+      render();
+    };
+
+    document.getElementById('filter').onchange = render;
+    document.getElementById('search').oninput = render;
+
+    fetch('scripts/roster-template.csv').then(r => r.text()).then(t => {
+      const lines = t.trim().split(/\r?\n/);
+      const hdr = lines[0].split(',');
+      rows = lines.slice(1).map(line => {
+        const vals = line.split(',');
+        const o = {}; hdr.forEach((k,i) => o[k] = vals[i] ?? ''); return o;
+      });
+      render();
+    }).catch(() => {
+      rows = [{ first_name:'Example', last_name:'New Hire', email:'', department_code:'36127', creating_legends:'missing', sf_stage:'new_employee', i9_status:'not_started', alcohol_status:'missing', food_handler_status:'missing', security_photo_status:'missing', hr_cleared:'0', notes:'' }];
+      render();
+    });
+  </script>
+</body>
+</html>
