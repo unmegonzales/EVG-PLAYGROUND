@@ -36,9 +36,23 @@ A candidate is **event-ready** when all of the following are complete (shirt/uni
 
 **Classifications:** Levy Employee, Non-Profit Groups (NPO), Subcontractor (Vendors)
 
-## Email automation
+## Email — Microsoft Outlook
 
-Onboarding emails are generated from your template and logged. Connect Microsoft 365 (Graph API) in a future release for automatic send; until then use the preview to copy/send via Outlook.
+### No Node? Use PowerShell + Outlook (recommended for Evan's PC)
+
+```powershell
+cd lobo-ops\scripts
+.\send-onboarding-email.ps1 -To "newhire@email.com" -FirstName "Jessie" -Preview
+```
+
+Opens a draft in Outlook using your existing Levy mailbox. Remove `-Preview` to send immediately.
+
+Full setup: **[docs/OUTLOOK-SETUP.md](docs/OUTLOOK-SETUP.md)**
+
+### Automated send (Microsoft Graph API)
+
+Set env vars from `.env.example` after Levy IT registers an Azure app with `Mail.Send` permission.
+When configured, Lobo Ops sends directly from `egonzales@levyrestaurants.com` and saves to Sent Items.
 
 ## Environment
 

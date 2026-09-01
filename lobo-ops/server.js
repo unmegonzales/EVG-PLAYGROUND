@@ -8,7 +8,8 @@ const {
   SF_STAGES,
   FORM_LINKS,
 } = require('./db/constants');
-const { buildOnboardingEmail } = require('./templates/onboarding-email');
+const { buildEmail } = require('./templates/email-html');
+const { sendOutlookEmail, isConfigured } = require('./lib/outlook-mail');
 
 const app = express();
 const PORT = process.env.PORT || 3847;
@@ -79,7 +80,27 @@ function applyViewFilter(view, rows) {
 }
 
 app.get('/api/meta', (_req, res) => {
-  res.json({ departments: DEPARTMENTS, classifications: CLASSIFICATIONS, sfStages: SF_STAGES, formLinks: FORM_LINKS });
+  res.json({
+    departments: DEPARTMENTS,
+    classifications: CLASSIFICATIONS,
+    sfStages: SF_STAGES,
+    formLinks: FORM_LINKS,
+    email: {
+      outlookConfigured: isConfigured(),
+      sendAs: process.env.OUTLOOK_SEND_AS || 'egonzales@levyrestaurants.com',
+      fallbackScript: 'lobo-ops/scripts/send-onboarding-email.ps1',
+    },
+  });
+});
+
+app.get('/api/email/status', (_req, res) => {
+  res.json({
+    outlookConfigured: isConfigured(),
+    sendAs: process.env.OUTLOOK_SEND_AS || 'egonzales@levyrestaurants.com',
+    mode: isConfigured() ? 'microsoft_graph' : 'preview_only',
+    windowsScript: 'scripts/send-onboarding-email.ps1',
+    setupDoc: 'docs/OUTLOOK-SETUP.md',
+  });
 });
 
 app.get('/api/candidates', (req, res) => {
@@ -172,31 +193,62 @@ app.patch('/api/candidates/:id', (req, res) => {
   res.json(enrich(db.prepare('SELECT * FROM candidates WHERE id = ?').get(existing.id)));
 });
 
-app.post('/api/candidates/:id/send-email', (req, res) => {
+app.post('/api/candidates/:id/send-email', async (req, res) => {
   const candidate = db.prepare('SELECT * FROM candidates WHERE id = ?').get(req.params.id);
   if (!candidate) return res.status(404).json({ error: 'Not found' });
+  if (!candidate.email) return res.status(400).json({ error: 'Candidate has no email address' });
 
   const template = req.body.template || 'onboarding';
   const trigger = req.body.trigger || 'manual';
-  const email = buildOnboardingEmail(candidate);
+  const email = buildEmail(template, candidate);
 
-  db.prepare(`
-    INSERT INTO email_log (candidate_id, recipient, template, trigger_reason, status)
-    VALUES (?, ?, ?, ?, ?)
-  `).run(candidate.id, candidate.email, template, trigger, 'queued');
+  let sendResult = { sent: false, mode: 'preview_only' };
+  let logStatus = 'preview_only';
 
-  const now = new Date().toISOString();
-  if (template === 'onboarding') {
-    db.prepare(`UPDATE candidates SET onboarding_email_sent_at = ?, updated_at = datetime('now') WHERE id = ?`).run(now, candidate.id);
-  } else if (template === 'cl_reminder') {
-    db.prepare(`UPDATE candidates SET cl_reminder_sent_at = ?, updated_at = datetime('now') WHERE id = ?`).run(now, candidate.id);
+  try {
+    sendResult = await sendOutlookEmail({
+      to: email.to,
+      subject: email.subject,
+      html: email.html,
+      text: email.text,
+    });
+    logStatus = sendResult.sent ? 'sent' : 'preview_only';
+  } catch (err) {
+    logStatus = 'failed';
+    sendResult = { sent: false, mode: 'error', error: err.message };
   }
 
-  logActivity(candidate.id, 'email_sent', '', `${template} → ${candidate.email}`);
+  const logId = db.prepare(`
+    INSERT INTO email_log (candidate_id, recipient, template, trigger_reason, status)
+    VALUES (?, ?, ?, ?, ?)
+  `).run(candidate.id, candidate.email, template, trigger, logStatus).lastInsertRowid;
+
+  const now = new Date().toISOString();
+  if (sendResult.sent) {
+    if (template === 'onboarding') {
+      db.prepare(`UPDATE candidates SET onboarding_email_sent_at = ?, updated_at = datetime('now') WHERE id = ?`).run(now, candidate.id);
+    } else if (template === 'cl_reminder') {
+      db.prepare(`UPDATE candidates SET cl_reminder_sent_at = ?, updated_at = datetime('now') WHERE id = ?`).run(now, candidate.id);
+    }
+    logActivity(candidate.id, 'email_sent', '', `${template} → ${candidate.email} (sent via Outlook)`);
+  } else {
+    logActivity(candidate.id, 'email_queued', '', `${template} → ${candidate.email} (${logStatus})`);
+  }
+
+  let message;
+  if (sendResult.sent) {
+    message = `✅ Sent via Outlook to ${candidate.email}`;
+  } else if (sendResult.error) {
+    message = `Send failed: ${sendResult.error}. Use PowerShell script or preview below.`;
+  } else {
+    message = `Outlook not configured on server. Use scripts/send-onboarding-email.ps1 on your PC, or preview below.`;
+  }
 
   res.json({
-    success: true,
-    message: `Email queued for ${candidate.email}. Connect Microsoft 365 to send automatically; use preview below for manual send.`,
+    success: sendResult.sent,
+    message,
+    sendResult,
+    logId,
     preview: email,
   });
 });

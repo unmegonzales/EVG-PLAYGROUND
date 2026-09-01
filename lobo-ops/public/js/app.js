@@ -195,6 +195,9 @@ async function sendEmail(template) {
     body: JSON.stringify({ template, trigger: 'manual' }),
   });
   $('#email-status').textContent = result.message;
+  if (!result.success && result.message.includes('PowerShell')) {
+    $('#email-status').innerHTML = `${result.message}<br><br><strong>No npm needed:</strong> Run <code>lobo-ops/scripts/send-onboarding-email.ps1</code> on your Windows PC with Outlook open. See docs/OUTLOOK-SETUP.md`;
+  }
   const iframe = $('#email-preview');
   iframe.srcdoc = result.preview.html;
   $('#modal-email').showModal();
