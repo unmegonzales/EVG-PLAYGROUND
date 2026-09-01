@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Lobo Ops — Desk Reference</title>
+  <style>
+    @page { size: letter; margin: 0.45in; }
+    * { box-sizing: border-box; }
+    body {
+      font-family: "Segoe UI", Arial, sans-serif;
+      font-size: 9pt;
+      line-height: 1.35;
+      color: #111;
+      max-width: 7.5in;
+      margin: 0 auto;
+      padding: 0.35in;
+    }
+    h1 { font-size: 16pt; margin: 0 0 2px; color: #ba0c2f; }
+    .sub { font-size: 9pt; color: #555; margin-bottom: 10px; }
+    h2 { font-size: 10pt; margin: 10px 0 4px; border-bottom: 2px solid #ba0c2f; padding-bottom: 2px; }
+    .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+    .box { border: 1px solid #ccc; border-radius: 4px; padding: 6px 8px; background: #fafafa; }
+    .box strong { display: block; font-size: 8pt; text-transform: uppercase; letter-spacing: 0.05em; color: #ba0c2f; margin-bottom: 3px; }
+    table { width: 100%; border-collapse: collapse; font-size: 8pt; margin: 4px 0; }
+    th, td { border: 1px solid #ccc; padding: 3px 5px; text-align: left; }
+    th { background: #1a1a2e; color: #fff; font-size: 7pt; }
+    code, .mono { font-family: Consolas, monospace; font-size: 8pt; background: #eee; padding: 0 3px; }
+    .flow { font-family: Consolas, monospace; font-size: 7.5pt; background: #f4f4f4; border: 1px solid #ddd; padding: 8px; white-space: pre; line-height: 1.45; }
+    .check { margin: 0; padding-left: 16px; }
+    .check li { margin: 1px 0; }
+    .footer { margin-top: 8px; font-size: 7pt; color: #666; text-align: center; border-top: 1px solid #ddd; padding-top: 4px; }
+    @media print {
+      body { padding: 0; }
+      .no-print { display: none; }
+    }
+    .print-btn { margin-bottom: 10px; padding: 6px 14px; background: #ba0c2f; color: #fff; border: none; border-radius: 4px; cursor: pointer; font-size: 10pt; }
+  </style>
+</head>
+<body>
+  <button class="print-btn no-print" onclick="window.print()">Print this page</button>
+
+  <h1>Lobo Ops — Desk Reference</h1>
+  <p class="sub">Levy × UNM Athletics · 26/27 Season · Event-ready = 7 checks (shirt NOT required)</p>
+
+  <div class="grid2">
+    <div>
+      <h2>System map (what talks to what)</h2>
+      <div class="flow">YOU (HR)
+  │
+  ├─ roster.csv ◄──── edit in Excel
+  │       │
+  │       ├─► SEND-EMAIL.bat ──► Outlook ──► Candidate
+  │       │
+  │       └─► roster-offline.html (optional browser tracker)
+  │
+  └─ CHECK external systems, update CSV:
+        Smartsheet → alcohol, food, security
+        SuccessFactors → sf_stage
+        i9 platform → i9_status
+        Brainshark → creating_legends</div>
+    </div>
+    <div>
+      <h2>Event-ready checklist (all 7 required)</h2>
+      <ul class="check">
+        <li><strong>creating_legends</strong> = complete</li>
+        <li><strong>sf_stage</strong> = signature_step OR post_hire_verification</li>
+        <li><strong>i9_status</strong> = complete</li>
+        <li><strong>alcohol_status</strong> = valid</li>
+        <li><strong>food_handler_status</strong> = uploaded</li>
+        <li><strong>security_photo_status</strong> = validated</li>
+        <li><strong>hr_cleared</strong> = 1 (you check the box)</li>
+      </ul>
+      <p style="margin:4px 0;font-size:8pt;color:#666;">Shirt/uniform tracked separately — not required for clearance.</p>
+    </div>
+  </div>
+
+  <h2>Your desktop folder (keep these together)</h2>
+  <div class="grid3">
+    <div class="box"><strong>SEND-EMAIL.bat</strong>1 = Onboarding<br>2 = CL reminder<br>3 = Pick from roster</div>
+    <div class="box"><strong>roster.csv</strong>Your live data (copy from roster-template.csv)</div>
+    <div class="box"><strong>send-onboarding-email.ps1</strong>Called by .bat — don't move alone</div>
+  </div>
+
+  <div class="grid2" style="margin-top:8px;">
+    <div>
+      <h2>Department codes</h2>
+      <table>
+        <tr><th>Code</th><th>Name</th></tr>
+        <tr><td>36127</td><td>Concessions</td></tr>
+        <tr><td>36128</td><td>Group Sales</td></tr>
+        <tr><td>36129</td><td>Suites (Culinary)</td></tr>
+        <tr><td>57039</td><td>Warehouse</td></tr>
+        <tr><td>34964</td><td>Admin</td></tr>
+        <tr><td>34963</td><td>Management</td></tr>
+        <tr><td>NPO</td><td>Non-Profit Groups</td></tr>
+      </table>
+    </div>
+    <div>
+      <h2>Status values (CSV columns)</h2>
+      <table>
+        <tr><th>Column</th><th>Values</th></tr>
+        <tr><td>creating_legends</td><td>missing · in_progress · complete</td></tr>
+        <tr><td>sf_stage</td><td>new_employee · orientation_step · signature_step · post_hire_verification</td></tr>
+        <tr><td>i9_status</td><td>not_started · complete</td></tr>
+        <tr><td>alcohol_status</td><td>missing · no_match · valid · expired</td></tr>
+        <tr><td>food_handler_status</td><td>missing · uploaded</td></tr>
+        <tr><td>security_photo_status</td><td>missing · uploaded · validated</td></tr>
+        <tr><td>hr_cleared</td><td>0 = no · 1 = yes</td></tr>
+        <tr><td>classification</td><td>levy_employee · npo · sub_vendor</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <h2>Smartsheet → roster.csv (quick import)</h2>
+  <table>
+    <tr><th>Smartsheet column</th><th>roster.csv column</th><th>Transform</th></tr>
+    <tr><td>First Name / Last Name</td><td>first_name, last_name</td><td>Direct copy</td></tr>
+    <tr><td>Email / Email Address</td><td>email</td><td>Direct copy</td></tr>
+    <tr><td>Alcohol… Valid / No Match</td><td>alcohol_status</td><td>Valid→valid, No Match→no_match</td></tr>
+    <tr><td>Creating Legends ✓</td><td>creating_legends</td><td>Checked→complete, blank→missing</td></tr>
+    <tr><td>Food Handler Uploaded?</td><td>food_handler_status</td><td>Yes/✓→uploaded</td></tr>
+    <tr><td>STATUS / Photo Uploaded</td><td>security_photo_status</td><td>VALIDATED→validated</td></tr>
+    <tr><td>PeopleHub Onboarding Status</td><td>sf_stage</td><td>See import guide</td></tr>
+    <tr><td>36127 - CONCESSIONS etc.</td><td>department_code</td><td>36127, 36128, 57039, NPO…</td></tr>
+  </table>
+  <p style="font-size:8pt;">Full steps: <code>docs/IMPORT-FROM-SMARTSHEET.md</code> · Or run <code>convert-smartsheet.ps1</code></p>
+
+  <h2>Daily workflow</h2>
+  <div class="flow">1. Export / open Smartsheet roster
+2. Update roster.csv in Excel (status columns)
+3. Double-click SEND-EMAIL.bat → option 3 → pick person → Preview → Send
+4. Set hr_cleared = 1 when fully verified → readiness shows READY</div>
+
+  <p class="footer">Lobo Ops · Evan Gonzales · Levy UNM Athletics · Creating Legendary Experiences</p>
+</body>
+</html>
