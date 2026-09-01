@@ -1,0 +1,4 @@
+cd lobo-ops
+npm install
+npm run init-db
+npm start   # http://localhost:3847
