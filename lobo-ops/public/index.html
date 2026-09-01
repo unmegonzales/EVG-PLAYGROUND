@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lobo Ops — UNM Onboarding Warehouse</title>
+  <link rel="stylesheet" href="/css/lobo-ops.css">
+</head>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <div class="topbar__brand">
+        <span class="topbar__eyebrow">Levy × UNM Athletics</span>
+        <h1>Lobo Ops</h1>
+        <span class="topbar__season">26/27 Athletic Season</span>
+      </div>
+      <div class="topbar__stats" id="stats-bar">
+        <div class="stat"><strong id="stat-total">—</strong><span>Active</span></div>
+        <div class="stat stat--ok"><strong id="stat-ready">—</strong><span>Event Ready</span></div>
+        <div class="stat stat--warn"><strong id="stat-permits">—</strong><span>Missing Permits</span></div>
+        <div class="stat stat--info"><strong id="stat-hr">—</strong><span>Waiting HR</span></div>
+      </div>
+      <div class="topbar__actions">
+        <button type="button" class="btn btn--ghost" id="btn-export">Export CSV</button>
+        <button type="button" class="btn btn--primary" id="btn-add">+ Add Candidate</button>
+      </div>
+    </header>
+
+    <div class="layout">
+      <nav class="sidebar">
+        <p class="sidebar__label">Saved Views</p>
+        <button type="button" class="nav-item nav-item--active" data-view="active">All Active</button>
+        <button type="button" class="nav-item" data-view="missing_permits">Missing Permits</button>
+        <button type="button" class="nav-item" data-view="waiting_candidate">Waiting on Candidate</button>
+        <button type="button" class="nav-item" data-view="waiting_hr">Waiting on HR</button>
+        <button type="button" class="nav-item" data-view="almost_ready">Almost Ready (70%+)</button>
+        <button type="button" class="nav-item" data-view="event_ready">Event Ready ✓</button>
+
+        <p class="sidebar__label">Department</p>
+        <select id="filter-dept" class="select">
+          <option value="">All departments</option>
+        </select>
+
+        <p class="sidebar__label">Classification</p>
+        <select id="filter-class" class="select">
+          <option value="">All types</option>
+        </select>
+
+        <p class="sidebar__label">Tables</p>
+        <span class="nav-meta">Candidates · Permits · Activity</span>
+      </nav>
+
+      <main class="workspace">
+        <div class="toolbar">
+          <input type="search" id="search" class="search" placeholder="Search name, email, employee ID…" autocomplete="off">
+          <span class="toolbar__count" id="row-count">0 records</span>
+        </div>
+
+        <div class="grid-wrap">
+          <table class="datasheet" id="candidate-grid">
+            <thead>
+              <tr>
+                <th>Action Flag</th>
+                <th>CL</th>
+                <th>Alcohol</th>
+                <th>Food</th>
+                <th>Security</th>
+                <th>SF Stage</th>
+                <th>I-9</th>
+                <th>HR ✓</th>
+                <th>Ready</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Department</th>
+                <th>Classification</th>
+              </tr>
+            </thead>
+            <tbody id="grid-body"></tbody>
+          </table>
+        </div>
+      </main>
+
+      <aside class="detail" id="detail-panel" hidden>
+        <div class="detail__header">
+          <div>
+            <p class="detail__eyebrow">Candidate Record</p>
+            <h2 id="detail-name">—</h2>
+            <p class="detail__readiness" id="detail-readiness">—</p>
+          </div>
+          <button type="button" class="btn-icon" id="btn-close-detail" aria-label="Close">×</button>
+        </div>
+
+        <div class="detail__actions">
+          <button type="button" class="btn btn--primary btn--sm" id="btn-send-onboarding">Send Onboarding Email</button>
+          <button type="button" class="btn btn--ghost btn--sm" id="btn-send-cl">CL Reminder</button>
+        </div>
+
+        <div class="readiness-bars" id="readiness-bars"></div>
+
+        <form id="detail-form" class="detail-form">
+          <fieldset>
+            <legend>Identity & Job</legend>
+            <div class="field-row">
+              <label>First Name<input name="first_name" required></label>
+              <label>Last Name<input name="last_name" required></label>
+            </div>
+            <div class="field-row">
+              <label>Email<input name="email" type="email"></label>
+              <label>Phone<input name="phone"></label>
+            </div>
+            <div class="field-row">
+              <label>Employee ID<input name="employee_id"></label>
+              <label>Position<input name="position"></label>
+            </div>
+            <div class="field-row">
+              <label>Department<select name="department_code" id="form-dept"></select></label>
+              <label>Classification<select name="classification" id="form-class"></select></label>
+            </div>
+            <div class="field-row">
+              <label>Manager<input name="manager"></label>
+              <label>Hire Date<input name="hire_date" type="date"></label>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend>Compliance Status</legend>
+            <div class="field-row">
+              <label>Creating Legends<select name="creating_legends_status">
+                <option value="missing">Missing</option>
+                <option value="in_progress">In Progress</option>
+                <option value="complete">Complete</option>
+              </select></label>
+              <label>SuccessFactors<select name="sf_stage" id="form-sf"></select></label>
+            </div>
+            <div class="field-row">
+              <label>Alcohol Permit<select name="alcohol_status">
+                <option value="missing">Missing</option>
+                <option value="no_match">No Match</option>
+                <option value="uploaded">Uploaded</option>
+                <option value="valid">Valid</option>
+                <option value="expired">Expired</option>
+                <option value="temporary">Temporary</option>
+              </select></label>
+              <label>Food Handler<select name="food_handler_status">
+                <option value="missing">Missing</option>
+                <option value="uploaded">Uploaded</option>
+                <option value="valid">Valid</option>
+              </select></label>
+            </div>
+            <div class="field-row">
+              <label>Security Photo<select name="security_photo_status">
+                <option value="missing">Missing</option>
+                <option value="uploaded">Uploaded</option>
+                <option value="validated">Validated</option>
+              </select></label>
+              <label>I-9 / e-Verify<select name="i9_status">
+                <option value="not_started">Not Started</option>
+                <option value="section_1">Section 1</option>
+                <option value="section_2">Section 2</option>
+                <option value="complete">Complete</option>
+                <option value="renewal_due">Renewal Due</option>
+              </select></label>
+            </div>
+            <div class="field-row">
+              <label>Permit ID<input name="alcohol_permit_id"></label>
+              <label>Permit Expiration<input name="alcohol_expiration" type="date"></label>
+            </div>
+            <label class="checkbox-label">
+              <input type="checkbox" name="hr_cleared" value="1"> HR Cleared for Event Work
+            </label>
+            <label>Notes<textarea name="notes" rows="2"></textarea></label>
+          </fieldset>
+
+          <fieldset>
+            <legend>Optional (not required for event-ready)</legend>
+            <div class="field-row">
+              <label>Shirt / Uniform<select name="shirt_status">
+                <option value="missing">Missing</option>
+                <option value="uploaded">Uploaded</option>
+              </select></label>
+              <label>Uniform Size<input name="uniform_size"></label>
+            </div>
+          </fieldset>
+
+          <div class="form-actions">
+            <button type="submit" class="btn btn--primary">Save Changes</button>
+          </div>
+        </form>
+
+        <div class="activity" id="activity-log"></div>
+      </aside>
+    </div>
+  </div>
+
+  <dialog id="modal-add" class="modal">
+    <form id="add-form" method="dialog">
+      <h3>Add Candidate</h3>
+      <div class="field-row">
+        <label>First Name<input name="first_name" required></label>
+        <label>Last Name<input name="last_name" required></label>
+      </div>
+      <label>Email<input name="email" type="email"></label>
+      <div class="field-row">
+        <label>Department<select name="department_code" id="add-dept"></select></label>
+        <label>Classification<select name="classification" id="add-class"></select></label>
+      </div>
+      <label>Position<input name="position"></label>
+      <label>Manager<input name="manager"></label>
+      <div class="modal-actions">
+        <button type="button" class="btn btn--ghost" id="btn-cancel-add">Cancel</button>
+        <button type="submit" class="btn btn--primary">Create & Send Email?</button>
+      </div>
+      <label class="checkbox-label"><input type="checkbox" name="send_email" value="1" checked> Send onboarding email after create</label>
+    </form>
+  </dialog>
+
+  <dialog id="modal-email" class="modal modal--wide">
+    <h3>Email Preview</h3>
+    <p id="email-status" class="email-status"></p>
+    <iframe id="email-preview" title="Email preview" class="email-preview"></iframe>
+    <div class="modal-actions">
+      <button type="button" class="btn btn--primary" id="btn-close-email">Close</button>
+    </div>
+  </dialog>
+
+  <script src="/js/app.js" type="module"></script>
+</body>
+</html>

@@ -1,0 +1,3 @@
+first_name,last_name,email,phone,employee_id,department_code,classification,position,manager,hire_date,creating_legends,sf_stage,i9_status,alcohol_status,food_handler_status,security_photo_status,hr_cleared,notes
+Jessie,Johnston,jjohnston2@comcast.net,,,36127,levy_employee,EVENT STAFF,Abigail Tenorio,2026-07-17,in_progress,new_employee,not_started,valid,missing,missing,0,
+Miriam,Alvarado,Miriamalvarado127@gmail.com,505-810-7188,10743653,36127,levy_employee,CASHIER CONCESSION,Abigail Tenorio,2025-08-08,missing,new_employee,not_started,no_match,missing,missing,0,Missing Permits
