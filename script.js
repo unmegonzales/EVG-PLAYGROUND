@@ -1,182 +1,267 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Visitor File Submissions</title>
-    <link rel="stylesheet" href="styles.css">
-  </head>
-  <body>
-    <main class="site-shell">
-      <section class="hero" aria-labelledby="page-title">
-        <div class="hero__image" aria-hidden="true"></div>
-        <div class="hero__content">
-          <div class="utility-row">
-            <span>GROUP SALES · VISITOR INTAKE</span>
-            <span>FISCAL YEAR 2026</span>
-          </div>
-          <p class="eyebrow">Secure submission portal</p>
-          <h1 id="page-title">Visitor <span>file submissions</span></h1>
-          <p class="hero__copy">
-            Send venue documents, event files, and review materials to the sales team in one organized packet.
-          </p>
-          <div class="hero__stats" aria-label="Submission checklist">
-            <div>
-              <strong>01</strong>
-              <span>Visitor details</span>
-            </div>
-            <div>
-              <strong>02</strong>
-              <span>Files attached</span>
-            </div>
-            <div>
-              <strong>03</strong>
-              <span>Receipt issued</span>
-            </div>
-          </div>
-        </div>
-      </section>
+// Visitor File Submissions — client-side interactions.
+// Handles file selection (browse + drag/drop), packet completion tracking,
+// submission receipts, and a locally persisted receipt history.
 
-      <section class="submission-grid" aria-label="Submission workspace">
-        <form class="submission-form" id="submissionForm" novalidate>
-          <div class="section-heading">
-            <span>01</span>
-            <div>
-              <p>Visitor profile</p>
-              <h2>Tell us who is submitting</h2>
-            </div>
-          </div>
+const form = document.getElementById("submissionForm");
+const fileInput = document.getElementById("fileInput");
+const dropZone = document.getElementById("dropZone");
+const browseButton = document.getElementById("browseButton");
+const fileList = document.getElementById("fileList");
+const receipt = document.getElementById("receipt");
+const completionValue = document.getElementById("completionValue");
+const completionBar = document.getElementById("completionBar");
+const historyList = document.getElementById("historyList");
+const clearHistoryButton = document.getElementById("clearHistory");
+const fileTemplate = document.getElementById("fileTemplate");
 
-          <div class="field-grid">
-            <label>
-              <span>Full name</span>
-              <input name="name" autocomplete="name" required placeholder="Jordan Lee">
-            </label>
-            <label>
-              <span>Organization</span>
-              <input name="organization" autocomplete="organization" required placeholder="Campus Events Co.">
-            </label>
-            <label>
-              <span>Email</span>
-              <input name="email" type="email" autocomplete="email" required placeholder="jordan@example.com">
-            </label>
-            <label>
-              <span>Destination team</span>
-              <select name="team" required>
-                <option value="">Select a team</option>
-                <option>Group Sales</option>
-                <option>Event Operations</option>
-                <option>Finance</option>
-                <option>Culinary</option>
-                <option>Venue Leadership</option>
-              </select>
-            </label>
-            <label>
-              <span>Submission type</span>
-              <select name="category" required>
-                <option value="">Select a type</option>
-                <option>Annual business review</option>
-                <option>Venue analysis</option>
-                <option>Event photos</option>
-                <option>Contract or invoice</option>
-                <option>Menu or sales kit</option>
-              </select>
-            </label>
-            <label>
-              <span>Due date</span>
-              <input name="dueDate" type="date">
-            </label>
-          </div>
+const MAX_FILE_BYTES = 25 * 1024 * 1024;
+const HISTORY_KEY = "visitor-submissions:history";
+const REQUIRED_FIELDS = ["name", "organization", "email", "team", "category"];
 
-          <label class="full-field">
-            <span>Notes for the team</span>
-            <textarea name="notes" rows="4" placeholder="Add context, event names, requested review notes, or anything the receiving team should know."></textarea>
-          </label>
+let selectedFiles = [];
 
-          <div class="section-heading section-heading--files">
-            <span>02</span>
-            <div>
-              <p>File packet</p>
-              <h2>Attach visitor files</h2>
-            </div>
-          </div>
+function formatBytes(bytes) {
+  if (!bytes) return "0 B";
+  const units = ["B", "KB", "MB", "GB"];
+  const exponent = Math.min(
+    Math.floor(Math.log(bytes) / Math.log(1024)),
+    units.length - 1
+  );
+  const value = bytes / Math.pow(1024, exponent);
+  return `${value.toFixed(value >= 10 || exponent === 0 ? 0 : 1)} ${units[exponent]}`;
+}
 
-          <div class="drop-zone" id="dropZone">
-            <input id="fileInput" type="file" multiple>
-            <div class="drop-zone__icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" role="img">
-                <path d="M12 3v12m0-12 4.5 4.5M12 3 7.5 7.5M5 14v4a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-4"/>
-              </svg>
-            </div>
-            <div>
-              <strong>Drop files here or browse</strong>
-              <p>PDF, PPTX, DOCX, XLSX, PNG, JPG, and ZIP files are accepted up to 25 MB each.</p>
-            </div>
-            <button class="secondary-button" type="button" id="browseButton">Choose files</button>
-          </div>
+function fileKey(file) {
+  return `${file.name}:${file.size}:${file.lastModified}`;
+}
 
-          <div class="file-list" id="fileList" aria-live="polite"></div>
+function addFiles(fileCollection) {
+  const incoming = Array.from(fileCollection);
+  let rejected = 0;
 
-          <label class="consent">
-            <input name="consent" type="checkbox" required>
-            <span>I confirm these files are approved for review by the selected team.</span>
-          </label>
+  for (const file of incoming) {
+    if (file.size > MAX_FILE_BYTES) {
+      rejected += 1;
+      continue;
+    }
+    const exists = selectedFiles.some((existing) => fileKey(existing) === fileKey(file));
+    if (!exists) {
+      selectedFiles.push(file);
+    }
+  }
 
-          <div class="form-actions">
-            <button class="primary-button" type="submit">
-              <svg viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M5 12h14m-6-6 6 6-6 6"/>
-              </svg>
-              Submit packet
-            </button>
-            <button class="ghost-button" type="reset">Clear form</button>
-          </div>
-        </form>
+  if (rejected > 0) {
+    dropZone.classList.add("error");
+    setTimeout(() => dropZone.classList.remove("error"), 1600);
+  }
 
-        <aside class="review-panel" aria-label="Submission status">
-          <div class="panel-topline">Submission status</div>
-          <div class="receipt" id="receipt">
-            <span class="receipt__number">03</span>
-            <h2>Ready for files</h2>
-            <p>Complete the visitor profile and attach at least one file to generate a submission receipt.</p>
-          </div>
+  renderFiles();
+  updateCompletion();
+}
 
-          <div class="meter" aria-label="Packet completion">
-            <div class="meter__label">
-              <span>Packet completion</span>
-              <strong id="completionValue">0%</strong>
-            </div>
-            <div class="meter__track">
-              <div id="completionBar"></div>
-            </div>
-          </div>
+function removeFile(key) {
+  selectedFiles = selectedFiles.filter((file) => fileKey(file) !== key);
+  renderFiles();
+  updateCompletion();
+}
 
-          <div class="history">
-            <div class="history__header">
-              <h2>Recent receipts</h2>
-              <button type="button" id="clearHistory">Clear</button>
-            </div>
-            <div id="historyList" class="history__list"></div>
-          </div>
-        </aside>
-      </section>
-    </main>
+function renderFiles() {
+  fileList.innerHTML = "";
 
-    <template id="fileTemplate">
-      <div class="file-item">
-        <div class="file-item__mark" aria-hidden="true"></div>
-        <div>
-          <strong></strong>
-          <span></span>
-        </div>
-        <button type="button" aria-label="Remove file">
-          <svg viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M6 6l12 12M18 6 6 18"/>
-          </svg>
-        </button>
-      </div>
-    </template>
+  for (const file of selectedFiles) {
+    const node = fileTemplate.content.firstElementChild.cloneNode(true);
+    node.querySelector("strong").textContent = file.name;
+    node.querySelector("span").textContent = formatBytes(file.size);
+    node.querySelector("button").addEventListener("click", () => removeFile(fileKey(file)));
+    fileList.appendChild(node);
+  }
+}
 
-    <script src="script.js"></script>
-  </body>
-</html>
+function completionItems() {
+  const data = new FormData(form);
+  const items = [];
+
+  for (const field of REQUIRED_FIELDS) {
+    items.push(Boolean(String(data.get(field) || "").trim()));
+  }
+  items.push(selectedFiles.length > 0);
+  items.push(form.elements.consent.checked);
+
+  return items;
+}
+
+function updateCompletion() {
+  const items = completionItems();
+  const done = items.filter(Boolean).length;
+  const percent = Math.round((done / items.length) * 100);
+
+  completionValue.textContent = `${percent}%`;
+  completionBar.style.width = `${percent}%`;
+}
+
+function generateReceiptNumber() {
+  const stamp = Date.now().toString(36).toUpperCase().slice(-5);
+  const suffix = Math.floor(Math.random() * 900 + 100);
+  return `VS-${stamp}-${suffix}`;
+}
+
+function loadHistory() {
+  try {
+    const raw = localStorage.getItem(HISTORY_KEY);
+    return raw ? JSON.parse(raw) : [];
+  } catch (error) {
+    return [];
+  }
+}
+
+function saveHistory(entries) {
+  try {
+    localStorage.setItem(HISTORY_KEY, JSON.stringify(entries));
+  } catch (error) {
+    /* storage may be unavailable; history stays in-memory only */
+  }
+}
+
+function renderHistory() {
+  const entries = loadHistory();
+  historyList.innerHTML = "";
+
+  if (entries.length === 0) {
+    const empty = document.createElement("p");
+    empty.className = "history-card";
+    empty.textContent = "No receipts yet.";
+    historyList.appendChild(empty);
+    return;
+  }
+
+  for (const entry of entries) {
+    const card = document.createElement("div");
+    card.className = "history-card";
+
+    const title = document.createElement("strong");
+    title.textContent = `${entry.receipt} · ${entry.team}`;
+
+    const detail = document.createElement("span");
+    detail.textContent = `${entry.name} — ${entry.fileCount} file${entry.fileCount === 1 ? "" : "s"} · ${entry.timestamp}`;
+
+    card.append(title, detail);
+    historyList.appendChild(card);
+  }
+}
+
+function markFieldErrors() {
+  const data = new FormData(form);
+  let firstInvalid = null;
+
+  for (const field of REQUIRED_FIELDS) {
+    const element = form.elements[field];
+    const valid = Boolean(String(data.get(field) || "").trim());
+    element.classList.toggle("error", !valid);
+    if (!valid && !firstInvalid) firstInvalid = element;
+  }
+
+  if (firstInvalid) firstInvalid.focus();
+  return firstInvalid === null;
+}
+
+function showReceipt(entry) {
+  receipt.classList.add("is-complete");
+  receipt.innerHTML = "";
+
+  const number = document.createElement("span");
+  number.className = "receipt__number";
+  number.textContent = entry.receipt;
+
+  const heading = document.createElement("h2");
+  heading.textContent = "Packet received";
+
+  const detail = document.createElement("p");
+  detail.textContent = `Routed to ${entry.team} · ${entry.fileCount} file${entry.fileCount === 1 ? "" : "s"} attached. Keep ${entry.receipt} for your records.`;
+
+  receipt.append(number, heading, detail);
+}
+
+form.addEventListener("input", updateCompletion);
+form.addEventListener("change", updateCompletion);
+
+browseButton.addEventListener("click", () => fileInput.click());
+
+fileInput.addEventListener("change", (event) => {
+  addFiles(event.target.files);
+  fileInput.value = "";
+});
+
+["dragenter", "dragover"].forEach((type) => {
+  dropZone.addEventListener(type, (event) => {
+    event.preventDefault();
+    dropZone.classList.add("is-dragging");
+  });
+});
+
+["dragleave", "dragend", "drop"].forEach((type) => {
+  dropZone.addEventListener(type, (event) => {
+    event.preventDefault();
+    dropZone.classList.remove("is-dragging");
+  });
+});
+
+dropZone.addEventListener("drop", (event) => {
+  if (event.dataTransfer && event.dataTransfer.files) {
+    addFiles(event.dataTransfer.files);
+  }
+});
+
+form.addEventListener("submit", (event) => {
+  event.preventDefault();
+
+  const fieldsValid = markFieldErrors();
+  const hasFiles = selectedFiles.length > 0;
+  const consented = form.elements.consent.checked;
+
+  if (!fieldsValid || !hasFiles || !consented) {
+    if (!hasFiles) {
+      dropZone.classList.add("error");
+      setTimeout(() => dropZone.classList.remove("error"), 1600);
+    }
+    return;
+  }
+
+  const data = new FormData(form);
+  const entry = {
+    receipt: generateReceiptNumber(),
+    name: String(data.get("name")).trim(),
+    team: String(data.get("team")).trim(),
+    fileCount: selectedFiles.length,
+    timestamp: new Date().toLocaleString(),
+  };
+
+  const entries = loadHistory();
+  entries.unshift(entry);
+  saveHistory(entries.slice(0, 8));
+
+  showReceipt(entry);
+  renderHistory();
+
+  form.reset();
+  selectedFiles = [];
+  renderFiles();
+  updateCompletion();
+});
+
+form.addEventListener("reset", () => {
+  selectedFiles = [];
+  setTimeout(() => {
+    renderFiles();
+    updateCompletion();
+    REQUIRED_FIELDS.forEach((field) => form.elements[field].classList.remove("error"));
+  }, 0);
+});
+
+clearHistoryButton.addEventListener("click", () => {
+  saveHistory([]);
+  renderHistory();
+});
+
+renderFiles();
+renderHistory();
+updateCompletion();
