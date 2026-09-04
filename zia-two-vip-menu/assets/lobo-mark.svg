@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 120" role="img" aria-label="Lobo mark">
+  <defs>
+    <linearGradient id="steel" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#2a2d32"/>
+      <stop offset="55%" stop-color="#5c6168"/>
+      <stop offset="100%" stop-color="#1a1c1f"/>
+    </linearGradient>
+  </defs>
+  <!-- Stylized geometric Lobo head  print-safe VIP mark -->
+  <g fill="url(#steel)">
+    <path d="M48 98 L72 42 L96 18 L120 8 L144 18 L168 42 L192 98 L168 88 L152 102 L120 86 L88 102 L72 88 Z"/>
+    <path d="M78 46 L96 28 L112 40 L120 34 L128 40 L144 28 L162 46 L148 58 L144 78 L120 66 L96 78 L92 58 Z" fill="#1a1c1f"/>
+    <path d="M96 52 L108 48 L112 58 L102 62 Z" fill="#f4f5f7"/>
+    <path d="M128 52 L144 48 L138 62 L128 58 Z" fill="#f4f5f7"/>
+    <path d="M112 70 L120 66 L128 70 L124 78 L116 78 Z" fill="#ba0c2f"/>
+    <path d="M72 42 L64 22 L88 34 Z"/>
+    <path d="M168 42 L176 22 L152 34 Z"/>
+  </g>
+</svg>
