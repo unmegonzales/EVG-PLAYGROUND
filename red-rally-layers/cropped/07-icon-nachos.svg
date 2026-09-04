@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="156" viewBox="0 0 256.00 156.00" fill="none">
+<g transform="translate(-1072.00 -132.00)">
+<g id="icon-nachos"><g transform="translate(1200.00 208.00) scale(1.180)" fill="none" stroke="#E21B24" stroke-width="6.2" stroke-linejoin="round" stroke-linecap="round">
+  <path d="M-40 30 L-6 -38 L26 30z"/>
+  <path d="M-6 32 L28 -34 L58 32z"/>
+  <path d="M-58 34 L-30 -16 L4 34z"/>
+  <path d="M-24 10c8 10 20 12 30 3"/>
+  <path d="M10 12c8 8 18 10 26 1"/>
+  <circle cx="-18" cy="18" r="3.1" fill="#E21B24" stroke="none"/>
+  <circle cx="8" cy="20" r="3.1" fill="#E21B24" stroke="none"/>
+  <circle cx="30" cy="18" r="3.1" fill="#E21B24" stroke="none"/>
+</g></g>
+</g>
+</svg>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="480" viewBox="0 0 1920 480" fill="none">
+<g id="icon-grid">
+  <g transform="translate(240.00 208.00) scale(1.180)" fill="none" stroke="#E21B24" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M-50 10c2 16 98 16 100 0" stroke-width="7"/>
+  <path d="M-56 0c2-12 108-12 112 0 0 8-16 14-56 14S-56 8-56 0z" stroke-width="7"/>
+  <path d="M-48 -6c4-16 92-16 96 0" stroke-width="7"/>
+  <path d="M-30 -4c8 8 14-8 22 0s14-8 22 0 12-6 20 2" stroke-width="4.5"/>
+</g>
+  <g transform="translate(720.00 208.00) scale(1.180)">
+  <g transform="scale(5.1) translate(-12 -12)">
+    <path fill="#E21B24" fill-rule="evenodd" d="M5.15 15.84C3.81 14.27 3 12.23 3 10V9.97C3 7.22 5.25 5 8 5C9.64 5 11.09 5.79 12 7C12.91 5.79 14.37 5 16 5C18.76 5 21 7.24 21 10C21 12.23 20.19 14.27 18.85 15.84L20.21 17.2L18.79 18.61L17.39 17.21C15.89 18.33 14 19 12 19C10 19 8.11 18.33 6.61 17.21L5.21 18.61L3.79 17.2L5.15 15.84M15.96 15.77L12 11.82L8.04 15.77C9.17 16.55 10.53 17 12 17C13.47 17 14.83 16.55 15.96 15.77M11 10C11 8.34 9.65 7 8 7C6.34 7 5 8.34 5 10C5 11.68 5.59 13.21 6.57 14.42L11 10M17.43 14.42C18.41 13.21 19 11.68 19 10V10C19 8.33 17.65 7 16 7C14.35 7 13 8.34 13 10L17.43 14.42Z"/>
+  </g>
+</g>
+  <g transform="translate(1200.00 208.00) scale(1.180)" fill="none" stroke="#E21B24" stroke-width="6.2" stroke-linejoin="round" stroke-linecap="round">
+  <path d="M-40 30 L-6 -38 L26 30z"/>
+  <path d="M-6 32 L28 -34 L58 32z"/>
+  <path d="M-58 34 L-30 -16 L4 34z"/>
+  <path d="M-24 10c8 10 20 12 30 3"/>
+  <path d="M10 12c8 8 18 10 26 1"/>
+  <circle cx="-18" cy="18" r="3.1" fill="#E21B24" stroke="none"/>
+  <circle cx="8" cy="20" r="3.1" fill="#E21B24" stroke="none"/>
+  <circle cx="30" cy="18" r="3.1" fill="#E21B24" stroke="none"/>
+</g>
+  <g transform="translate(1680.00 208.00) scale(1.180)" fill="none" stroke="#E21B24" stroke-width="6" stroke-linejoin="round" stroke-linecap="round">
+  <ellipse cx="-24" cy="-16" rx="18" ry="6"/>
+  <path d="M-40 -16l6 54c1 8 8 12 10 12h8c2 0 9-4 10-12l6-54"/>
+  <path d="M-12 -16l8 -20"/>
+  <ellipse cx="22" cy="-10" rx="18" ry="6"/>
+  <path d="M6 -10l6 50c1 8 8 12 10 12h8c2 0 9-4 10-12l6-50"/>
+  <path d="M34 -10l8 -18"/>
+  <path d="M-32 8h16M14 14h16"/>
+</g>
+</g>
+</svg>
