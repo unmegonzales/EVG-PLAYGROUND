@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="480" height="720" viewBox="0 0 480 720">
+  <title>UNM Menu Layout Shell — 12×18 Portrait</title>
+  <rect width="480" height="720" fill="#F6F6F8"/>
+  <rect width="480" height="8" fill="#BA0C2F"/>
+  <text x="24" y="48" font-family="Arial" font-size="14" fill="#4A4F55" font-weight="700">12 in × 18 in PORTRAIT SHELL</text>
+  <text x="24" y="72" font-family="Arial" font-size="12" fill="#6b7280">Stack: Brand → Offer → Menu rows → Footer</text>
+  <rect x="24" y="100" width="432" height="80" fill="#BA0C2F"/>
+  <text x="240" y="148" text-anchor="middle" fill="#fff" font-family="Arial" font-size="22" font-weight="700">LOCATION / OFFER</text>
+  <rect x="24" y="200" width="432" height="400" fill="#fff" stroke="#A7A8AA"/>
+  <text x="40" y="240" font-family="Arial" font-size="14" fill="#171a1f" font-weight="700">MENU ITEMS (stacked)</text>
+  <text x="40" y="270" font-family="Arial" font-size="12" fill="#6b7280">Item ........................ price</text>
+  <text x="40" y="295" font-family="Arial" font-size="12" fill="#6b7280">Item ........................ price</text>
+  <rect x="0" y="640" width="480" height="80" fill="#4A4F55"/>
+  <text x="240" y="688" text-anchor="middle" fill="#fff" font-family="Arial" font-size="14" font-weight="700">FOOTER / CASHLESS</text>
+</svg>

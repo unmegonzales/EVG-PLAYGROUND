@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="4800" height="900" viewBox="0 0 4800 900" fill="none">
+  <title>UNM Lobos F&amp;B Menu Background — Quiet Core</title>
+  <desc>Calm Canva-ready board plate. Light field, thin brand accents, open columns for overlay text.</desc>
+
+  <!-- Field (flat — no pattern wash for print clarity) -->
+  <rect width="4800" height="900" fill="#F6F6F8"/>
+
+  <!-- Top brand frame -->
+  <rect x="0" y="0" width="4800" height="18" fill="#BA0C2F"/>
+  <rect x="0" y="18" width="4800" height="4" fill="#00A8B5"/>
+
+  <!-- Soft header reserve -->
+  <defs>
+    <linearGradient id="headerFade" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FFFFFF"/>
+      <stop offset="100%" stop-color="#F6F6F8"/>
+    </linearGradient>
+  </defs>
+  <rect x="0" y="22" width="4800" height="176" fill="url(#headerFade)"/>
+
+  <!-- Side rails -->
+  <rect x="0" y="22" width="17" height="878" fill="#D6D7D9"/>
+  <rect x="4783" y="22" width="17" height="878" fill="#D6D7D9"/>
+
+  <!-- Corner ticks (alignment aids) -->
+  <rect x="192" y="234" width="53" height="4" fill="#D98898"/>
+  <rect x="4555" y="234" width="53" height="4" fill="#D98898"/>
+  <rect x="192" y="810" width="53" height="4" fill="#D98898"/>
+  <rect x="4555" y="810" width="53" height="4" fill="#D98898"/>
+
+  <!-- Faint 3-column guides -->
+  <line x1="1655" y1="270" x2="1655" y2="774" stroke="#A7A8AA" stroke-opacity="0.18" stroke-width="1"/>
+  <line x1="3144" y1="270" x2="3144" y2="774" stroke="#A7A8AA" stroke-opacity="0.18" stroke-width="1"/>
+
+  <!-- Bottom edge -->
+  <rect x="0" y="888" width="4800" height="12" fill="#A7A8AA"/>
+  <rect x="0" y="888" width="266" height="12" fill="#BA0C2F"/>
+  <rect x="4534" y="888" width="266" height="12" fill="#BA0C2F"/>
+  <rect x="266" y="888" width="24" height="12" fill="#00A8B5"/>
+  <rect x="4510" y="888" width="24" height="12" fill="#00A8B5"/>
+</svg>

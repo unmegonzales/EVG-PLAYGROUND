@@ -1,0 +1,1905 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>UNM Lobos · 25/26 Football Concessions Menus</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow:wght@400;600;700;800&family=Teko:wght@500;600;700&family=Great+Vibes&display=swap"
+      rel="stylesheet"
+      media="print"
+      onload="this.media='all'"
+    />
+    <style>
+:root {
+  --cherry: #ba0c2f;
+  --cherry-deep: #8e0a24;
+  --silver: #a7a8aa;
+  --metal: #4a4f55;
+  --turquoise: #00a8b5;
+  --white: #ffffff;
+  --light: #f4f4f6;
+  --field: #f7f7f9;
+  --ink: #171a1f;
+  --muted: #5c6168;
+  --board-shadow: 0 20px 55px rgba(23, 26, 31, 0.2);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+  background: #dde0e5;
+  color: var(--ink);
+  font-family: "Barlow", system-ui, sans-serif;
+}
+
+button,
+select {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+/* —— App chrome —— */
+.app-bar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 22px;
+  background: linear-gradient(180deg, #1a1d21 0%, #2a2e33 100%);
+  color: var(--white);
+  border-bottom: 3px solid var(--cherry);
+}
+
+.app-bar__brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.app-bar__script {
+  font-family: "Great Vibes", cursive;
+  font-size: 2rem;
+  line-height: 1;
+}
+
+.app-bar__brand strong {
+  display: block;
+  font-family: "Teko", sans-serif;
+  font-size: 1.45rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.app-bar__brand p {
+  margin: 0;
+  color: var(--silver);
+  font-size: 0.78rem;
+}
+
+.app-bar__nav {
+  display: flex;
+  gap: 8px;
+}
+
+.tab {
+  border: 1px solid rgba(167, 168, 170, 0.45);
+  background: transparent;
+  color: var(--white);
+  padding: 8px 14px;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 0.85rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.tab.is-active {
+  background: var(--cherry);
+  border-color: var(--cherry);
+}
+
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: 16px;
+  padding: 14px 22px 0;
+}
+
+.toolbar label {
+  display: grid;
+  gap: 6px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.toolbar select {
+  min-width: 260px;
+  padding: 10px 12px;
+  border: 1px solid #c9ccd1;
+  border-radius: 8px;
+  background: var(--white);
+}
+
+.btn {
+  border: 0;
+  background: var(--cherry);
+  color: var(--white);
+  padding: 11px 18px;
+  border-radius: 8px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+}
+
+.btn--ghost {
+  background: transparent;
+  color: var(--cherry);
+  border: 2px solid var(--cherry);
+}
+
+.view {
+  padding: 22px;
+}
+
+.view--deck {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 28px;
+  max-width: 1480px;
+  margin: 0 auto;
+}
+
+.deck-card .stadium-board.is-landscape {
+  min-height: 420px;
+}
+
+.deck-card .stadium-board.is-portrait {
+  width: min(100%, 360px);
+}
+
+.deck-card {
+  display: grid;
+  gap: 10px;
+}
+
+.deck-card__label {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--metal);
+}
+
+/* =========================================================
+   STADIUM BOARD — matches sample: hero / 5-col / footer
+   ========================================================= */
+.stadium-board {
+  position: relative;
+  display: grid;
+  grid-template-rows: auto 1fr auto auto;
+  background:
+    radial-gradient(ellipse at 8% 0%, rgba(255, 255, 255, 0.55), transparent 42%),
+    radial-gradient(ellipse at 92% 8%, rgba(186, 12, 47, 0.12), transparent 40%),
+    linear-gradient(180deg, #eceef1 0%, var(--field) 28%, #fbfbfc 100%);
+  color: var(--ink);
+  border: 1px solid #cfd2d7;
+  box-shadow: var(--board-shadow);
+  overflow: hidden;
+  min-height: 360px;
+}
+
+.stadium-board--solo {
+  max-width: 1480px;
+  margin: 0 auto;
+  width: 100%;
+  min-height: 640px;
+}
+
+/* Fireup print aspect ratios (preview scale) */
+.stadium-board.size-96x36 {
+  aspect-ratio: 8 / 3;
+  min-height: 0;
+}
+
+.stadium-board.size-192x48 {
+  aspect-ratio: 4 / 1;
+  min-height: 0;
+  max-width: none;
+}
+
+.stadium-board.size-192x48.stadium-board--solo {
+  max-width: 1600px;
+}
+
+.stadium-board.size-24x36,
+.stadium-board.size-12x18 {
+  aspect-ratio: 2 / 3;
+  max-width: 520px;
+  min-height: 0;
+  margin-inline: auto;
+}
+
+.stadium-board.is-portrait .board-hero {
+  grid-template-columns: 1fr;
+  text-align: center;
+  gap: 10px;
+}
+
+.stadium-board.is-portrait .board-hero__brand,
+.stadium-board.is-portrait .board-hero__offer {
+  justify-content: center;
+}
+
+.stadium-board.is-portrait .board-hero__offer {
+  flex-direction: column;
+}
+
+.stadium-board.is-portrait .offer-products {
+  grid-template-columns: repeat(4, minmax(44px, 1fr));
+}
+
+.stadium-board.is-portrait .board-cols {
+  grid-template-columns: 1fr;
+}
+
+.stadium-board.is-portrait .menu-col {
+  border-right: 0;
+  border-bottom: 1px solid rgba(186, 12, 47, 0.25);
+}
+
+.stadium-board.is-portrait .menu-col:last-child {
+  border-bottom: 0;
+}
+
+.stadium-board.is-portrait .board-footer {
+  grid-template-columns: 1fr 1fr;
+}
+
+.stadium-board.is-compact .board-hero__favorites .favorites-title {
+  font-size: clamp(1.4rem, 6vw, 2.2rem);
+}
+
+.stadium-board.is-compact .offer-badge {
+  min-width: 96px;
+}
+
+.print-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 14px;
+  margin: 0 0 10px;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--metal);
+}
+
+.print-meta span {
+  background: #fff;
+  border: 1px solid #d0d3d8;
+  border-radius: 999px;
+  padding: 4px 10px;
+}
+
+/* —— Top hero tier —— */
+.board-hero {
+  display: grid;
+  grid-template-columns: 1.05fr 1.35fr 1.35fr;
+  gap: 14px;
+  align-items: center;
+  padding: 16px 18px 12px;
+  border-bottom: 3px solid var(--cherry);
+}
+
+.board-hero__brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.wolf-mark {
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(145deg, var(--metal), #2d3238);
+  color: var(--white);
+  font-family: "Anton", sans-serif;
+  font-size: 1.1rem;
+  letter-spacing: 0.04em;
+  border: 2px solid var(--silver);
+  flex-shrink: 0;
+}
+
+.board-hero__athletics {
+  font-family: "Anton", sans-serif;
+  font-size: clamp(0.95rem, 1.8vw, 1.35rem);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-style: italic;
+  color: var(--ink);
+}
+
+.board-hero__university {
+  font-size: clamp(0.58rem, 1vw, 0.72rem);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--metal);
+}
+
+.board-hero__stand {
+  margin-top: 4px;
+  font-size: clamp(0.62rem, 1.1vw, 0.78rem);
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--cherry);
+}
+
+.board-hero__favorites {
+  text-align: center;
+}
+
+.value-banner {
+  display: inline-block;
+  background: var(--turquoise);
+  color: var(--white);
+  font-size: clamp(0.62rem, 1.1vw, 0.78rem);
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 4px 14px;
+  transform: skewX(-10deg);
+}
+
+.favorites-title {
+  margin: 6px 0 4px;
+  font-family: "Anton", sans-serif;
+  font-size: clamp(1.8rem, 4.2vw, 3.4rem);
+  line-height: 0.92;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  font-style: italic;
+  color: var(--ink);
+  text-shadow: 2px 2px 0 rgba(186, 12, 47, 0.18);
+}
+
+.favorites-title::first-letter {
+  color: var(--cherry);
+}
+
+.favorites-tagline {
+  margin: 0;
+  font-family: "Teko", sans-serif;
+  font-size: clamp(0.95rem, 1.8vw, 1.35rem);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--cherry);
+}
+
+.board-hero__offer {
+  display: flex;
+  align-items: center;
+  justify-content: end;
+  gap: 12px;
+}
+
+.offer-badge {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto auto;
+  grid-template-rows: auto auto;
+  align-items: center;
+  justify-items: start;
+  gap: 0 6px;
+  padding: 10px 16px 12px;
+  background: var(--cherry);
+  color: var(--white);
+  clip-path: polygon(8% 0, 100% 0, 100% 78%, 92% 100%, 0 100%, 0 18%);
+  min-width: 118px;
+}
+
+.offer-badge__four {
+  grid-row: 1 / 3;
+  font-family: "Anton", sans-serif;
+  font-size: clamp(2.8rem, 5vw, 4.2rem);
+  line-height: 0.85;
+  font-style: italic;
+}
+
+.offer-badge__for {
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+}
+
+.offer-badge__price {
+  font-family: "Anton", sans-serif;
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  line-height: 1;
+  font-style: italic;
+}
+
+.offer-products {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(56px, 1fr));
+  gap: 10px;
+}
+
+.offer-product {
+  display: grid;
+  gap: 6px;
+  justify-items: center;
+  text-align: center;
+}
+
+.offer-product span {
+  font-size: 0.58rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--metal);
+}
+
+/* Taller “photo feature” frames — gradient focal + white line icon */
+.offer-product__shot {
+  position: relative;
+  width: 56px;
+  height: 86px;
+  border-radius: 12px;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  border: 2px solid rgba(255, 255, 255, 0.55);
+  box-shadow:
+    0 8px 18px rgba(0, 0, 0, 0.22),
+    inset 0 1px 0 rgba(255, 255, 255, 0.28);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.28), transparent 42%),
+    var(--metal);
+}
+
+.offer-product__shot::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 55%, rgba(0, 0, 0, 0.22));
+  pointer-events: none;
+}
+
+.offer-product__shot .offer-icon {
+  position: relative;
+  z-index: 1;
+  width: 60%;
+  height: auto;
+  color: #fff;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.35));
+}
+
+.offer-product__shot[data-product="Pepsi"] {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.22), transparent 40%),
+    linear-gradient(180deg, #2a63b8 0%, #123a7a 48%, #0b2148 100%);
+}
+.offer-product__shot[data-product="Lobo Dog"] {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.2), transparent 40%),
+    linear-gradient(180deg, #e0b07a 0%, #b8733d 50%, #7a421f 100%);
+}
+.offer-product__shot[data-product="Popcorn"] {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.25), transparent 38%),
+    linear-gradient(180deg, #f6d76a 0%, #e07a2f 45%, #ba0c2f 100%);
+}
+.offer-product__shot[data-product="Water"] {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.3), transparent 40%),
+    linear-gradient(180deg, #b9e4f7 0%, #5ab8d4 50%, #2a6f96 100%);
+}
+
+/* —— 5-column menu tier —— */
+.board-cols {
+  display: grid;
+  grid-template-columns: repeat(var(--cols, 5), minmax(0, 1fr));
+  gap: 0;
+  padding: 10px 12px 8px;
+  min-height: 0;
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.menu-col {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 8px 12px 10px;
+  border-right: 1px solid rgba(186, 12, 47, 0.35);
+  min-width: 0;
+}
+
+.menu-col:last-child {
+  border-right: 0;
+}
+
+.menu-col__head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.menu-col__icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--cherry);
+  color: var(--white);
+  flex-shrink: 0;
+}
+
+.menu-col__icon svg {
+  width: 16px;
+  height: 16px;
+}
+
+.menu-col__title {
+  margin: 0;
+  font-family: "Anton", sans-serif;
+  font-size: clamp(1rem, 1.8vw, 1.45rem);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-style: italic;
+  color: var(--ink);
+}
+
+.item-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 7px;
+}
+
+.item__row {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: end;
+  gap: 6px;
+}
+
+.item__name {
+  font-weight: 800;
+  font-size: clamp(0.68rem, 1.15vw, 0.88rem);
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.item__leader {
+  border-bottom: 1px dotted rgba(74, 79, 85, 0.45);
+  margin-bottom: 4px;
+  min-width: 8px;
+}
+
+.item__price {
+  font-family: "Teko", sans-serif;
+  font-size: clamp(1rem, 1.7vw, 1.35rem);
+  color: var(--cherry);
+  line-height: 1;
+  font-weight: 600;
+}
+
+.item__price--empty {
+  min-width: 0;
+}
+
+.item__note {
+  margin-top: 1px;
+  color: var(--muted);
+  font-size: clamp(0.55rem, 0.95vw, 0.68rem);
+  font-weight: 600;
+}
+
+.item__sizes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 10px;
+  color: var(--metal);
+  font-size: clamp(0.58rem, 1vw, 0.72rem);
+  font-weight: 700;
+}
+
+.item.is-highlight .item__name::after {
+  content: "VALUE";
+  display: inline-block;
+  margin-left: 6px;
+  padding: 1px 5px;
+  border-radius: 3px;
+  background: var(--turquoise);
+  color: var(--white);
+  font-size: 0.55rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  vertical-align: middle;
+}
+
+.item.is-accent .item__name,
+.item.is-accent .item__price {
+  color: var(--turquoise);
+}
+
+.age-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.age-badge {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--ink);
+  color: var(--white);
+  font-size: 0.55rem;
+  font-weight: 800;
+}
+
+.brand-chip {
+  padding: 3px 8px;
+  background: var(--metal);
+  color: var(--white);
+  font-size: 0.58rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  border-radius: 3px;
+}
+
+.logo-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-top: auto;
+  padding-top: 6px;
+}
+
+.logo-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 38px;
+  height: 22px;
+  padding: 0 7px;
+  border-radius: 999px;
+  background: var(--white);
+  border: 1px solid #d0d3d8;
+  color: var(--metal);
+  font-size: 0.52rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+/* —— Footer tier —— */
+.board-footer {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr 1.3fr 1.3fr;
+  gap: 0;
+  min-height: 64px;
+}
+
+.board-footer > div {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4px;
+  padding: 10px 14px;
+  color: var(--white);
+}
+
+.board-footer strong {
+  font-family: "Teko", sans-serif;
+  font-size: clamp(0.95rem, 1.6vw, 1.25rem);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+.board-footer__cashless {
+  background: var(--cherry);
+}
+
+.board-footer__fuel {
+  background: #12151a;
+}
+
+.board-footer__pay {
+  background: var(--metal);
+}
+
+.board-footer__thanks {
+  background: linear-gradient(120deg, #0e7f89, var(--turquoise));
+}
+
+.contactless {
+  width: 22px;
+  height: 14px;
+  border: 2px solid rgba(255, 255, 255, 0.85);
+  border-radius: 40%;
+  position: relative;
+}
+
+.contactless::before,
+.contactless::after {
+  content: "";
+  position: absolute;
+  inset: 2px;
+  border: 2px solid transparent;
+  border-right-color: rgba(255, 255, 255, 0.85);
+  border-radius: 40%;
+}
+
+.contactless::after {
+  inset: 5px;
+}
+
+.pay-methods {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.pay-methods span {
+  font-size: 0.55rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  background: rgba(255, 255, 255, 0.14);
+  padding: 2px 6px;
+  border-radius: 3px;
+}
+
+.board-tax {
+  margin: 0;
+  padding: 4px 14px 6px;
+  font-size: 0.58rem;
+  font-weight: 700;
+  color: var(--muted);
+  background: #eceef1;
+}
+
+/* —— Standalone promo poster (tab) —— */
+.promo-board {
+  max-width: 760px;
+  margin: 0 auto;
+  background: #0e1013;
+  color: var(--white);
+  box-shadow: var(--board-shadow);
+  overflow: hidden;
+  border: 1px solid #2a2e33;
+}
+
+.promo-board__hero {
+  position: relative;
+  padding: 36px 28px 28px;
+  background:
+    radial-gradient(ellipse at 70% 20%, rgba(255, 255, 255, 0.22), transparent 45%),
+    radial-gradient(ellipse at 30% 0%, rgba(186, 12, 47, 0.55), transparent 50%),
+    linear-gradient(160deg, #3a0a14 0%, #12080c 45%, #0e1013 100%);
+  min-height: 260px;
+}
+
+.promo-board__hero::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0;
+  height: 4px;
+  background: var(--turquoise);
+}
+
+.promo-kicker {
+  margin: 0 0 8px;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--silver);
+}
+
+.promo-headline {
+  margin: 0;
+  font-family: "Anton", sans-serif;
+  font-size: clamp(3.4rem, 10vw, 6rem);
+  line-height: 0.9;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  font-style: italic;
+}
+
+.promo-headline span {
+  color: var(--cherry);
+  -webkit-text-stroke: 2px var(--white);
+  paint-order: stroke fill;
+}
+
+.promo-sub {
+  margin: 12px 0 0;
+  font-family: "Teko", sans-serif;
+  font-size: 1.5rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--silver);
+}
+
+.promo-board__menu {
+  padding: 22px 22px 28px;
+  background: #14171c;
+}
+
+.promo-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  background: var(--cherry);
+  padding: 8px 14px;
+  margin-bottom: 10px;
+}
+
+.promo-bar strong {
+  font-family: "Anton", sans-serif;
+  font-size: 1.35rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-style: italic;
+}
+
+.promo-bar em {
+  font-style: normal;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  background: #0e1013;
+  padding: 4px 10px;
+  border-radius: 999px;
+}
+
+.promo-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  border-top: 1px solid rgba(186, 12, 47, 0.65);
+}
+
+.promo-cell {
+  padding: 16px 10px;
+  text-align: center;
+  border-right: 1px solid rgba(186, 12, 47, 0.65);
+}
+
+.promo-cell:last-child {
+  border-right: 0;
+}
+
+.promo-cell__name {
+  display: block;
+  color: var(--cherry);
+  font-weight: 800;
+  font-size: 0.82rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.promo-cell__price {
+  display: inline-block;
+  margin-top: 8px;
+  font-family: "Anton", sans-serif;
+  font-size: 2.4rem;
+  line-height: 1;
+}
+
+/* Menu prices omit dollar signs per production convention.
+   Keep the $ only on the large "4 FOR $4" headline brand lockup. */
+
+.promo-cell__price::after {
+  content: "";
+  display: block;
+  width: 42px;
+  height: 4px;
+  margin: 8px auto 0;
+  background: var(--cherry);
+  border-radius: 2px;
+  transform: skewX(-18deg);
+}
+
+.promo-foot {
+  margin: 18px 0 0;
+  text-align: center;
+}
+
+.promo-foot p {
+  margin: 0;
+  font-family: "Anton", sans-serif;
+  font-size: 1.15rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--cherry);
+  font-style: italic;
+}
+
+.promo-foot .hash {
+  margin-top: 6px;
+  color: var(--white);
+  font-weight: 800;
+  letter-spacing: 0.12em;
+}
+
+.promo-foot .note {
+  margin-top: 10px;
+  color: var(--silver);
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+/* —— Responsive —— */
+@media (max-width: 1100px) {
+  .stadium-board--solo {
+    aspect-ratio: auto;
+    min-height: 0;
+  }
+
+  .board-hero {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .board-hero__brand,
+  .board-hero__offer {
+    justify-content: center;
+  }
+
+  .board-cols {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .menu-col {
+    border-right: 0;
+    border-bottom: 1px solid rgba(186, 12, 47, 0.25);
+  }
+
+  .board-footer {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 700px) {
+  .board-cols {
+    grid-template-columns: 1fr;
+  }
+
+  .promo-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .offer-products {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* —— Print / PDF (Fireup page sizes applied dynamically via #printPageStyle) —— */
+@media print {
+  .app-bar,
+  .toolbar,
+  .print-meta,
+  .deck-card__label,
+  .no-print {
+    display: none !important;
+  }
+
+  html,
+  body {
+    background: #fff !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+    color-adjust: exact;
+  }
+
+  .view {
+    padding: 0 !important;
+  }
+
+  .view[hidden] {
+    display: none !important;
+  }
+
+  .stadium-board,
+  .promo-board {
+    box-shadow: none !important;
+    border: 0 !important;
+    break-inside: avoid;
+    page-break-inside: avoid;
+    width: 100% !important;
+    max-width: none !important;
+    margin: 0 !important;
+    min-height: 0 !important;
+    height: 100vh;
+    aspect-ratio: auto !important;
+  }
+
+  .stadium-board--solo {
+    max-width: none !important;
+  }
+
+  .view--deck {
+    display: block !important;
+    max-width: none !important;
+  }
+
+  .deck-card {
+    break-after: page;
+    page-break-after: always;
+  }
+
+  .deck-card:last-child {
+    break-after: auto;
+    page-break-after: auto;
+  }
+
+  /* Prefer full-bleed board fill on the target page size */
+  .board-hero,
+  .board-cols,
+  .board-footer {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+}
+
+    </style>
+  </head>
+  <body>
+    <div class="app">
+      <header class="app-bar">
+        <div class="app-bar__brand">
+          <span class="app-bar__script">Lobos</span>
+          <div>
+            <strong>25/26 Football Concessions</strong>
+            <p>Standalone · taller gradient frames + white line icons</p>
+          </div>
+        </div>
+        <nav class="app-bar__nav" aria-label="Views">
+          <button type="button" class="tab" data-view="deck">Full Deck</button>
+          <button type="button" class="tab is-active" data-view="board">Single Board</button>
+          <button type="button" class="tab" data-view="promo">4 for $4 Promo</button>
+        </nav>
+      </header>
+
+      <section class="toolbar" id="boardToolbar">
+        <label>
+          Location / Print Size
+          <select id="locationSelect"></select>
+        </label>
+        <button type="button" class="btn" id="printBtn">Print / PDF</button>
+        <a class="btn btn--ghost" href="PRINT_PACKAGE_GUIDE.html" target="_blank" rel="noopener">
+          Print Package Guide
+        </a>
+      </section>
+
+      <main id="view-deck" class="view view--deck" hidden aria-label="Full menu deck"></main>
+      <main id="view-board" class="view view--board" aria-label="Single menu board"></main>
+      <main id="view-promo" class="view view--promo" hidden aria-label="Four for four promo"></main>
+    </div>
+
+    <script>
+/* UNM Lobos 25/26 Football Concessions — menu data
+   Print sizes from: Football Menu Printing Dimensions - Fireup.pdf
+   Content updates from: LOBO Football Menu Graphic Designer Change Sheet
+   Prices display WITHOUT dollar signs.
+*/
+
+window.UNM_MENU = {
+  season: "25/26",
+  title: "Lobo Football Menu",
+  athleticsLine: "Lobos Athletics",
+  universityLine: "University of New Mexico",
+  taxNote: "All prices subject to applicable sales tax.",
+  cashless: true,
+  changeSheet: "LOBO Football Menu Graphic Designer Change Sheet",
+  printSpecDoc: "Football Menu Printing Dimensions - Fireup.pdf",
+  brand: {
+    cherry: "#BA0C2F",
+    silver: "#A7A8AA",
+    metal: "#4A4F55",
+    turquoise: "#00A8B5",
+    white: "#FFFFFF",
+    light: "#F4F4F6",
+  },
+
+  sodaLogos: ["Pepsi", "Mt Dew", "Dr Pepper", "Starry", "Dasani"],
+
+  /** Named print presets (inches) → CSS aspect + orientation */
+  printPresets: {
+    "96x36-landscape": {
+      label: "96 in × 36 in Landscape",
+      widthIn: 96,
+      heightIn: 36,
+      orientation: "landscape",
+      ratio: "8 / 3",
+      className: "size-96x36",
+    },
+    "192x48-landscape": {
+      label: "192 in × 48 in Landscape (frame 196 × 48)",
+      widthIn: 192,
+      heightIn: 48,
+      frameWidthIn: 196,
+      frameHeightIn: 48,
+      orientation: "landscape",
+      ratio: "4 / 1",
+      className: "size-192x48",
+    },
+    "24x36-portrait": {
+      label: "24 in × 36 in Portrait",
+      widthIn: 24,
+      heightIn: 36,
+      orientation: "portrait",
+      ratio: "2 / 3",
+      className: "size-24x36",
+    },
+    "12x18-portrait": {
+      label: "12 in × 18 in Portrait",
+      widthIn: 12,
+      heightIn: 18,
+      orientation: "portrait",
+      ratio: "2 / 3",
+      className: "size-12x18",
+    },
+  },
+
+  promo: {
+    id: "four-for-four",
+    valueLabel: "Value Menu",
+    headline: "Fan Favorites",
+    tagline: "Great Game. Great Food. Go Lobos.",
+    offer: "4 for $4",
+    products: [
+      { name: "Pepsi", label: "16 oz Pepsi" },
+      { name: "Lobo Dog", label: "Lobo Dog" },
+      { name: "Popcorn", label: "Popcorn" },
+      { name: "Water", label: "Water" },
+    ],
+    hashtag: "#GOLOBOS",
+    note: "Available at main west, northwest & northeast concession areas.",
+  },
+
+  footer: {
+    cashless: "Cashless Facility",
+    fuel: "We Fuel Champions",
+    pay: "Pay Your Way",
+    thanks: "Thank you for supporting Lobo Athletics!",
+    payMethods: ["GPay", "Apple Pay", "Visa", "MC", "Disc", "Amex"],
+  },
+
+  blocks: {
+    foodStandard: {
+      id: "food",
+      title: "Food",
+      icon: "food",
+      items: [
+        { name: "Lobo Dog", price: "4.00", highlight: true },
+        { name: "Nachos", price: "7.50" },
+        { name: "Regular Fries", price: "6.50" },
+        { name: "Add Cheese", price: "1.50", accent: true },
+        { name: "Cheese Fries", price: "12.00" },
+      ],
+    },
+    foodRedRally: {
+      id: "food",
+      title: "Food",
+      icon: "food",
+      items: [
+        { name: "Lobo Dog", price: "4.00", highlight: true },
+        { name: "Nachos", price: "7.50" },
+        { name: "Regular Fries", price: "6.50" },
+        { name: "Add Cheese", price: "1.50", accent: true },
+        {
+          name: "Grit Hammer Bites",
+          price: "15.00",
+          note: "Popcorn chicken & fries — choice of spicy buffalo or classic.",
+        },
+        { name: "Cheese Fries", price: "12.00" },
+      ],
+    },
+    snacks: {
+      id: "snacks",
+      title: "Snacks",
+      icon: "snacks",
+      items: [
+        { name: "Popcorn — Regular", price: "4.00", highlight: true },
+        { name: "Soft Pretzel", price: "6.00" },
+        { name: "Candy", price: "7.00" },
+        { name: "Chips", price: "4.50" },
+        { name: "Peanuts", price: "5.00" },
+      ],
+    },
+    coldDrinks: {
+      id: "cold-drinks",
+      title: "Cold Drinks",
+      icon: "drinks",
+      logos: true,
+      items: [
+        { name: "Pepsi Product — 16 oz", price: "4.00", highlight: true },
+        { name: "Souvenir Soda", price: "8.50", note: "Free refills" },
+        { name: "Bottled Soda", price: "7.00" },
+        { name: "Water", price: "4.00", highlight: true },
+        { name: "Gatorade", price: "5.50" },
+        { name: "Monster Energy", price: "6.00" },
+      ],
+    },
+    bottledDrinks: {
+      id: "cold-drinks",
+      title: "Bottled Drinks",
+      icon: "drinks",
+      logos: true,
+      items: [
+        { name: "Bottled Soda", price: "7.00" },
+        { name: "Pepsi Product — 16 oz", price: "4.00", highlight: true },
+        { name: "Water", price: "4.00", highlight: true },
+        { name: "Gatorade", price: "5.50" },
+        { name: "Monster Energy", price: "6.00" },
+      ],
+    },
+    beer: {
+      id: "beer",
+      title: "Beer + Booze",
+      icon: "beer",
+      ageGate: true,
+      brands: ["Bud Light", "Coors Light"],
+      items: [
+        { name: "Domestic Beer — 16 oz", price: "12.00" },
+        { name: "Premium Beer — 16 oz", price: "13.00" },
+        { name: "Domestic Can", price: "9.00" },
+        { name: "Seltzer / RTD", price: "10.00" },
+        { name: "Cocktail", price: "12.00" },
+      ],
+    },
+    beverageShack: {
+      id: "drinks",
+      title: "Drinks",
+      icon: "drinks",
+      logos: true,
+      items: [
+        { name: "Pepsi Product — 16 oz", price: "4.00", highlight: true },
+        { name: "Souvenir Soda", price: "8.50", note: "Free refills" },
+        { name: "Bottled Soda", price: "7.00" },
+        { name: "Water", price: "4.00", highlight: true },
+        { name: "Gatorade", price: "5.50" },
+      ],
+    },
+    dawgs: {
+      id: "dawgs",
+      title: "Dawgs",
+      icon: "food",
+      items: [
+        { name: "The Louie", price: "15.00", note: "Footlong · Frito pie style" },
+        { name: "The Lucy", price: "14.00", note: "Footlong · Hatch green chile & cheese" },
+        { name: "The Chomper", price: "14.00", note: "Footlong · roasted green chile relish" },
+        {
+          name: "The Lone Wolf",
+          price: "12.00",
+          note: "Footlong all-beef dog · classic stadium style",
+        },
+        { name: "Lobo Dog", price: "4.00", highlight: true },
+      ],
+    },
+    dawgHouseFood: {
+      id: "food",
+      title: "Food",
+      icon: "food",
+      items: [
+        { name: "Frito Pie", price: "12.00" },
+        { name: "Regular Fries", price: "6.50" },
+        { name: "Cheese Fries", price: "12.00" },
+        { name: "Add Cheese", price: "1.50", accent: true },
+      ],
+    },
+    value: {
+      id: "value",
+      title: "Fan Favorites",
+      icon: "star",
+      items: [
+        { name: "16 oz Pepsi", price: "4.00", highlight: true },
+        { name: "Lobo Dog", price: "4.00", highlight: true },
+        { name: "Popcorn", price: "4.00", highlight: true },
+        { name: "Water", price: "4.00", highlight: true },
+      ],
+    },
+    elotico: {
+      id: "elotico",
+      title: "Elotico",
+      icon: "food",
+      items: [
+        { name: "Elotico", price: "9.00", note: "NM red chile elote cup" },
+        { name: "Water", price: "4.00", highlight: true },
+        { name: "Pepsi Product — 16 oz", price: "4.00", highlight: true },
+      ],
+    },
+    miniMelts: {
+      id: "mini-melts",
+      title: "Mini Melts",
+      icon: "snacks",
+      items: [
+        { name: "Mini Melts", price: "8.00", note: "Ask for available flavors" },
+        { name: "Water", price: "4.00", highlight: true },
+        { name: "Pepsi Product — 16 oz", price: "4.00", highlight: true },
+      ],
+    },
+  },
+
+  /**
+   * Fireup print sheet locations (exact names + measurements).
+   * page index follows the Fireup sheet order (1–12).
+   */
+  locations: [
+    {
+      page: 1,
+      id: "lobo-trailer-n-scoreboard",
+      name: "Lobo Trailer",
+      stand: "N Scoreboard",
+      tagline: "Outside Price Menu",
+      placement: "OUTSIDE",
+      printKey: "24x36-portrait",
+      variant: "portrait-trailer",
+    },
+    {
+      page: 2,
+      id: "mbp-mobile-beer",
+      name: "MBP",
+      stand: "Mobile Beer Portables",
+      tagline: "Outside Price Menu",
+      placement: "OUTSIDE",
+      printKey: "12x18-portrait",
+      variant: "portrait-beer",
+    },
+    {
+      page: 3,
+      id: "grab-go-market",
+      name: "Grab & Go Market",
+      stand: "Market",
+      tagline: "Outside Price Menu",
+      placement: "OUTSIDE",
+      printKey: "96x36-landscape",
+      variant: "grab-go",
+    },
+    {
+      page: 4,
+      id: "specialty-ne",
+      name: "Specialty",
+      stand: "NE",
+      tagline: "Outside Price Menu · Dawg House",
+      placement: "OUTSIDE",
+      printKey: "96x36-landscape",
+      variant: "dawg-house",
+    },
+    {
+      page: 5,
+      id: "specialty-nw",
+      name: "Specialty",
+      stand: "NW",
+      tagline: "Outside Price Menu · Dawg House (mirrored)",
+      placement: "OUTSIDE",
+      printKey: "96x36-landscape",
+      variant: "dawg-house",
+    },
+    {
+      page: 6,
+      id: "red-rally-interior",
+      name: "Red Rally NE & NW",
+      stand: "Interior",
+      tagline: "Inside Price Menu",
+      placement: "INSIDE",
+      printKey: "96x36-landscape",
+      variant: "red-rally",
+    },
+    {
+      page: 7,
+      id: "red-rally-exterior",
+      name: "Red Rally NE & NW",
+      stand: "Exterior",
+      tagline: "Outside Price Menu",
+      placement: "OUTSIDE",
+      printKey: "192x48-landscape",
+      variant: "red-rally",
+    },
+    {
+      page: 8,
+      id: "se-beverage-shack",
+      name: "Southeast Beverage Shack",
+      stand: "SE",
+      tagline: "Outside Price Menu",
+      placement: "OUTSIDE",
+      printKey: "96x36-landscape",
+      variant: "beverage-shack",
+    },
+    {
+      page: 9,
+      id: "sw-beverage-shack",
+      name: "Southwest Beverage Shack",
+      stand: "SW",
+      tagline: "Outside Price Menu",
+      placement: "OUTSIDE",
+      printKey: "96x36-landscape",
+      variant: "beverage-shack",
+    },
+    {
+      page: 10,
+      id: "mbp-elotico",
+      name: "MBP",
+      stand: "Mobile Portable Elotico",
+      tagline: "Outside Price Menu",
+      placement: "OUTSIDE",
+      printKey: "12x18-portrait",
+      variant: "portrait-elotico",
+    },
+    {
+      page: 11,
+      id: "mbp-mini-melts-ne",
+      name: "MBP",
+      stand: "Mini Melts NE",
+      tagline: "Outside Price Menu",
+      placement: "OUTSIDE",
+      printKey: "12x18-portrait",
+      variant: "portrait-mini-melts",
+    },
+    {
+      page: 12,
+      id: "mbp-mini-melts-nw",
+      name: "MBP",
+      stand: "Mini Melts NW",
+      tagline: "Outside Price Menu",
+      placement: "OUTSIDE",
+      printKey: "12x18-portrait",
+      variant: "portrait-mini-melts",
+    },
+  ],
+};
+
+(function resolveMenuColumns() {
+  const m = window.UNM_MENU;
+  const b = m.blocks;
+
+  const variants = {
+    "grab-go": () => [b.bottledDrinks, b.snacks, b.beer, b.foodStandard, b.value],
+    "red-rally": () => [b.foodRedRally, b.snacks, b.coldDrinks, b.beer, b.value],
+    "dawg-house": () => [b.dawgs, b.dawgHouseFood, b.snacks, b.coldDrinks, b.beer],
+    "beverage-shack": () => [b.beverageShack, b.beer, b.snacks, b.value, {
+      id: "extras",
+      title: "Extras",
+      icon: "star",
+      items: [
+        { name: "Candy", price: "7.00" },
+        { name: "Chips", price: "4.50" },
+        { name: "Peanuts", price: "5.00" },
+      ],
+    }],
+    "portrait-trailer": () => [b.value, b.foodStandard, b.snacks, b.coldDrinks],
+    "portrait-beer": () => [b.beer, b.beverageShack],
+    "portrait-elotico": () => [b.elotico],
+    "portrait-mini-melts": () => [b.miniMelts],
+  };
+
+  m.locations.forEach((loc) => {
+    const preset = m.printPresets[loc.printKey];
+    loc.print = preset;
+    const fn = variants[loc.variant] || variants["grab-go"];
+    loc.columns = fn();
+  });
+
+  m.coreColumns = variants["red-rally"]();
+})();
+
+    </script>
+    <script>
+(() => {
+  const data = window.UNM_MENU;
+  if (!data) return;
+
+  const els = {
+    deck: document.getElementById("view-deck"),
+    board: document.getElementById("view-board"),
+    promo: document.getElementById("view-promo"),
+    toolbar: document.getElementById("boardToolbar"),
+    select: document.getElementById("locationSelect"),
+    printBtn: document.getElementById("printBtn"),
+    tabs: [...document.querySelectorAll(".tab")],
+  };
+
+  const ICONS = {
+    food: `<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M4 14h16v2H4zm1-3h2l1-6h2l1 6h2l1-7h2l1 7h2v2H5z"/></svg>`,
+    snacks: `<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M8 21h8l1-9H7zm1-11h6l-.6-3H9.6zM11 4h2v2h-2z"/></svg>`,
+    drinks: `<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M7 3h10l-1 18H8zm2.2 2-.7 14h7l-.7-14z"/></svg>`,
+    beer: `<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M5 6h10v12a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2zm12 2h2a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2z"/></svg>`,
+    star: `<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="m12 3 2.4 6.6H21l-5.2 4 2 6.4L12 16.8 6.2 20l2-6.4L3 9.6h6.6z"/></svg>`,
+  };
+
+  /** White line icons for 4-for-$4 gradient frames */
+  const OFFER_ICONS = {
+    Pepsi: `<svg class="offer-icon" viewBox="0 0 48 48" fill="none" aria-hidden="true">
+      <path d="M18 8h12l2 4v28a3 3 0 0 1-3 3H19a3 3 0 0 1-3-3V12l2-4z" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/>
+      <path d="M17 16h14M20 8c0 3 8 3 8 0" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+      <circle cx="24" cy="28" r="5" stroke="currentColor" stroke-width="2.2"/>
+    </svg>`,
+    "Lobo Dog": `<svg class="offer-icon" viewBox="0 0 48 48" fill="none" aria-hidden="true">
+      <path d="M8 28c6-8 26-8 32 0" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+      <path d="M10 30c5 6 23 6 28 0" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+      <path d="M14 26c2 3 4 3 6 0M22 24c2 3 4 3 6 0M30 26c2 3 4 3 6 0" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+    </svg>`,
+    Popcorn: `<svg class="offer-icon" viewBox="0 0 48 48" fill="none" aria-hidden="true">
+      <path d="M16 20h16l-2 22H18L16 20z" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/>
+      <path d="M18 28h12M17 34h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      <circle cx="20" cy="15" r="3.2" stroke="currentColor" stroke-width="2"/>
+      <circle cx="28" cy="13" r="3.5" stroke="currentColor" stroke-width="2"/>
+      <circle cx="24" cy="18" r="2.8" stroke="currentColor" stroke-width="2"/>
+    </svg>`,
+    Water: `<svg class="offer-icon" viewBox="0 0 48 48" fill="none" aria-hidden="true">
+      <path d="M20 6h8v5l3 3v26a3 3 0 0 1-3 3h-8a3 3 0 0 1-3-3V14l3-3V6z" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/>
+      <path d="M20 6h8M18 20h12" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+      <path d="M24 26v10" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+    </svg>`,
+  };
+
+  function money(value) {
+    if (value == null) return "";
+    const n = Number(value);
+    if (Number.isFinite(n)) return n.toFixed(2);
+    return String(value);
+  }
+
+  function columnsFor(location) {
+    return location.columns || data.coreColumns;
+  }
+
+  function renderItems(items = []) {
+    return `<ul class="item-list">${items
+      .map((item) => {
+        const mods = [
+          item.highlight ? "is-highlight" : "",
+          item.accent ? "is-accent" : "",
+        ]
+          .filter(Boolean)
+          .join(" ");
+        const note = item.note ? `<div class="item__note">${item.note}</div>` : "";
+        const sizes = item.sizes
+          ? `<div class="item__sizes">${item.sizes.map((s) => `<span>${s}</span>`).join("")}</div>`
+          : "";
+        const price =
+          item.price != null
+            ? `<span class="item__price">${money(item.price)}</span>`
+            : `<span class="item__price item__price--empty"></span>`;
+        return `<li class="item ${mods}">
+          <div class="item__row">
+            <span class="item__name">${item.name}</span>
+            <span class="item__leader" aria-hidden="true"></span>
+            ${price}
+          </div>
+          ${note}
+          ${sizes}
+        </li>`;
+      })
+      .join("")}</ul>`;
+  }
+
+  function renderColumn(col) {
+    const icon = ICONS[col.icon] || ICONS.star;
+    const age = col.ageGate
+      ? `<div class="age-row">
+          <span class="age-badge">21+</span>
+          ${(col.brands || []).map((b) => `<span class="brand-chip">${b}</span>`).join("")}
+        </div>`
+      : "";
+    const logos = col.logos
+      ? `<div class="logo-row" aria-hidden="true">${data.sodaLogos
+          .map((name) => `<span class="logo-pill">${name}</span>`)
+          .join("")}</div>`
+      : "";
+
+    return `<section class="menu-col" data-type="${col.id || col.type || ""}">
+      <header class="menu-col__head">
+        <span class="menu-col__icon">${icon}</span>
+        <h3 class="menu-col__title">${col.title}</h3>
+      </header>
+      ${age}
+      ${renderItems(col.items)}
+      ${logos}
+    </section>`;
+  }
+
+  function renderHero(location) {
+    const p = data.promo;
+    return `<header class="board-hero">
+      <div class="board-hero__brand">
+        <div class="wolf-mark" aria-hidden="true">LA</div>
+        <div>
+          <div class="board-hero__athletics">${data.athleticsLine}</div>
+          <div class="board-hero__university">${data.universityLine}</div>
+          <div class="board-hero__stand">Page ${location.page || "—"} · ${location.name} · ${location.stand}</div>
+        </div>
+      </div>
+
+      <div class="board-hero__favorites">
+        <span class="value-banner">${p.valueLabel}</span>
+        <h1 class="favorites-title">${p.headline}</h1>
+        <p class="favorites-tagline">${p.tagline}</p>
+      </div>
+
+      <div class="board-hero__offer">
+        <div class="offer-badge">
+          <span class="offer-badge__four">4</span>
+          <span class="offer-badge__for">FOR</span>
+          <span class="offer-badge__price">$4</span>
+        </div>
+        <div class="offer-products">
+          ${p.products
+            .map((prod) => {
+              const icon = OFFER_ICONS[prod.name] || "";
+              return `<div class="offer-product">
+                <div class="offer-product__shot" data-product="${prod.name}">
+                  ${icon}
+                </div>
+                <span>${prod.label}</span>
+              </div>`;
+            })
+            .join("")}
+        </div>
+      </div>
+    </header>`;
+  }
+
+  function renderFooter() {
+    const f = data.footer;
+    return `<footer class="board-footer">
+      <div class="board-footer__cashless">
+        <strong>${f.cashless}</strong>
+        <span class="contactless" aria-hidden="true"></span>
+      </div>
+      <div class="board-footer__fuel">
+        <strong>${f.fuel}</strong>
+      </div>
+      <div class="board-footer__pay">
+        <strong>${f.pay}</strong>
+        <div class="pay-methods">
+          ${f.payMethods.map((m) => `<span>${m}</span>`).join("")}
+        </div>
+      </div>
+      <div class="board-footer__thanks">
+        <strong>${f.thanks}</strong>
+      </div>
+    </footer>`;
+  }
+
+  function renderBoard(location, { solo = false, showMeta = false } = {}) {
+    const cols = columnsFor(location);
+    const print = location.print || {};
+    const sizeClass = print.className || "";
+    const orientClass = print.orientation === "portrait" ? "is-portrait" : "is-landscape";
+    const compactClass = print.widthIn && print.widthIn <= 24 ? "is-compact" : "";
+    const boardClass = [
+      "stadium-board",
+      solo ? "stadium-board--solo" : "",
+      sizeClass,
+      orientClass,
+      compactClass,
+    ]
+      .filter(Boolean)
+      .join(" ");
+
+    const meta = showMeta
+      ? `<div class="print-meta">
+          <span>Sheet #${location.page}</span>
+          <span>${location.placement || "—"}</span>
+          <span>${print.label || "Size TBD"}</span>
+        </div>`
+      : "";
+
+    return `${meta}<article class="${boardClass}" data-location="${location.id}" data-print="${location.printKey || ""}">
+      ${renderHero(location)}
+      <div class="board-cols" style="--cols:${cols.length}">
+        ${cols.map(renderColumn).join("")}
+      </div>
+      ${renderFooter()}
+      <p class="board-tax">${data.taxNote}${print.label ? ` · Print: ${print.label}` : ""}</p>
+    </article>`;
+  }
+
+  function renderPromoPoster() {
+    const p = data.promo;
+    return `<article class="promo-board" data-promo="${p.id}">
+      <div class="promo-board__hero">
+        <p class="promo-kicker">All Season Long</p>
+        <h1 class="promo-headline">4 FOR <span>$4</span></h1>
+        <p class="promo-sub">${p.headline} · ${p.valueLabel}</p>
+      </div>
+      <div class="promo-board__menu">
+        <div class="promo-bar">
+          <strong>${p.headline}</strong>
+          <em>${p.valueLabel}</em>
+        </div>
+        <div class="promo-grid">
+          ${p.products
+            .map(
+              (item) => `<div class="promo-cell">
+                <span class="promo-cell__name">${item.label}</span>
+                <span class="promo-cell__price">4</span>
+              </div>`
+            )
+            .join("")}
+        </div>
+        <div class="promo-foot">
+          <p>${p.tagline}</p>
+          <div class="hash">${p.hashtag}</div>
+          <div class="note">${p.note}</div>
+        </div>
+      </div>
+    </article>`;
+  }
+
+  function fillDeck() {
+    els.deck.innerHTML = data.locations
+      .map(
+        (loc) => `<div class="deck-card">
+          <div class="deck-card__label">
+            <span>#${String(loc.page).padStart(2, "0")} · ${loc.placement || ""}</span>
+            <span>${loc.name} · ${loc.stand} · ${loc.print?.label || ""}</span>
+          </div>
+          ${renderBoard(loc, { showMeta: false })}
+        </div>`
+      )
+      .join("");
+  }
+
+  function fillSelect() {
+    els.select.innerHTML = data.locations
+      .map((loc) => {
+        const size = loc.print?.label || "";
+        return `<option value="${loc.id}">#${loc.page} — ${loc.name} — ${loc.stand} — ${size}</option>`;
+      })
+      .join("");
+  }
+
+  function showBoard(id) {
+    const loc = data.locations.find((l) => l.id === id) || data.locations[0];
+    els.board.innerHTML = renderBoard(loc, { solo: true, showMeta: true });
+    els.select.value = loc.id;
+  }
+
+  function setView(view) {
+    els.tabs.forEach((tab) => tab.classList.toggle("is-active", tab.dataset.view === view));
+    els.deck.hidden = view !== "deck";
+    els.board.hidden = view !== "board";
+    els.promo.hidden = view !== "promo";
+    els.toolbar.hidden = view !== "board";
+  }
+
+  function ensurePrintStyleEl() {
+    let el = document.getElementById("printPageStyle");
+    if (!el) {
+      el = document.createElement("style");
+      el.id = "printPageStyle";
+      document.head.appendChild(el);
+    }
+    return el;
+  }
+
+  /** Set @page to Fireup inches for the active board (or letter for deck/promo). */
+  function applyPrintPageSize(location) {
+    const el = ensurePrintStyleEl();
+    if (!location?.print) {
+      el.textContent = `@media print { @page { size: letter landscape; margin: 0.25in; } }`;
+      document.documentElement.dataset.printSize = "letter-landscape";
+      return;
+    }
+    const { widthIn, heightIn, orientation, label } = location.print;
+    const sizeValue =
+      orientation === "portrait" ? `${widthIn}in ${heightIn}in` : `${widthIn}in ${heightIn}in`;
+    el.textContent = `
+@media print {
+  @page {
+    size: ${sizeValue};
+    margin: 0;
+  }
+}
+`.trim();
+    document.documentElement.dataset.printSize = label || `${widthIn}x${heightIn}`;
+  }
+
+  function printCurrentView() {
+    const activeTab = els.tabs.find((t) => t.classList.contains("is-active"));
+    const view = activeTab?.dataset.view || "board";
+
+    if (view === "board") {
+      const loc =
+        data.locations.find((l) => l.id === els.select.value) || data.locations[0];
+      applyPrintPageSize(loc);
+      // Brief beat so the style tag is in the DOM before the print dialog
+      requestAnimationFrame(() => window.print());
+      return;
+    }
+
+    if (view === "deck") {
+      // Deck uses one shared page size (largest common landscape proof).
+      // For final production, print Single Board one location at a time.
+      applyPrintPageSize({
+        print: {
+          widthIn: 96,
+          heightIn: 36,
+          orientation: "landscape",
+          label: "96 in × 36 in Landscape (deck proof)",
+        },
+      });
+      requestAnimationFrame(() => window.print());
+      return;
+    }
+
+    // Promo poster — tabloid-friendly proof
+    ensurePrintStyleEl().textContent = `
+@media print {
+  @page { size: tabloid portrait; margin: 0.4in; }
+}
+`.trim();
+    document.documentElement.dataset.printSize = "tabloid-portrait";
+    requestAnimationFrame(() => window.print());
+  }
+
+  fillDeck();
+  fillSelect();
+  showBoard(data.locations[0].id);
+  applyPrintPageSize(data.locations[0]);
+  els.promo.innerHTML = renderPromoPoster();
+  setView("board");
+
+  els.tabs.forEach((tab) => {
+    tab.addEventListener("click", () => setView(tab.dataset.view));
+  });
+  els.select.addEventListener("change", () => {
+    showBoard(els.select.value);
+    const loc = data.locations.find((l) => l.id === els.select.value);
+    applyPrintPageSize(loc);
+  });
+  els.printBtn.addEventListener("click", printCurrentView);
+})();
+
+    </script>
+  </body>
+</html>
