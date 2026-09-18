@@ -94,13 +94,21 @@ def unmerge_overlapping(ws, min_row, max_row):
 
 
 def match_index_formula(k: int) -> str:
-    """Return 1-based index into CONTRACT CALC rows 13:112 for the k-th
-    assignment matching selected Event Date ($B$10) and Payee ($E$10)."""
+    """Return 1-based index into EVENT ASSIGNMENT / CONTRACT CALC data rows
+    for the k-th assignment matching Event Date ($B$10) and Payee ($E$10).
+
+    Match against EVENT ASSIGNMENT (source values), not CONTRACT CALC formula
+    results — AGGREGATE cross-sheet array compares are unreliable in Excel and
+    were returning no rows. CONTRACT CALC rows mirror EVENT ASSIGNMENT 1:1
+    (EA row 2 ↔ CC row 13), so the same index pulls validated amounts.
+    """
+    # INT() normalizes date/time so dropdown dates still match source dates.
     return (
-        f'IFERROR(AGGREGATE(15,6,'
-        f"(ROW('CONTRACT CALC'!$A$13:$A$112)-ROW('CONTRACT CALC'!$A$13)+1)"
-        f"/((('CONTRACT CALC'!$A$13:$A$112)=$B$10)"
-        f"*(('CONTRACT CALC'!$B$13:$B$112)=$E$10)),{k}),\"\")"
+        "IFERROR(INDEX(FILTER("
+        "ROW('EVENT ASSIGNMENT'!$A$2:$A$101)-ROW('EVENT ASSIGNMENT'!$A$2)+1,"
+        "(IFERROR(INT('EVENT ASSIGNMENT'!$A$2:$A$101),0)=INT($B$10))*"
+        "(TRIM('EVENT ASSIGNMENT'!$F$2:$F$101)=TRIM($E$10))"
+        f"),{k}),\"\")"
     )
 
 
@@ -108,10 +116,13 @@ def location_formulas(row: int, k: int) -> dict[str, str]:
     """Validated commission math, driven by filtered CONTRACT CALC row."""
     idx = f"$A{row}"
     return {
-        # Hidden helper: nth matching CONTRACT CALC row for Event+Payee
+        # Hidden helper: nth matching assignment index for Event+Payee
         "A": f"={match_index_formula(k)}",
-        # Service area / location description from EVENT ASSIGNMENT via CONTRACT CALC
-        "B": f'=IF({idx}="","",IFERROR(INDEX(\'CONTRACT CALC\'!$D$13:$D$112,{idx}),""))',
+        # Service area from EVENT ASSIGNMENT (source), same index as CONTRACT CALC
+        "B": (
+            f'=IF({idx}="","",'
+            f"IFERROR(INDEX('EVENT ASSIGNMENT'!$D$2:$D$101,{idx}),\"\"))"
+        ),
         # Allocated Net Sales = MSR Total Net × Allocation %
         "C": (
             f'=IF(OR({idx}="",B{row}=""),"",'
@@ -141,15 +152,18 @@ def location_formulas(row: int, k: int) -> dict[str, str]:
             f'=IF(OR({idx}="",B{row}=""),"",'
             f'IF(COUNTIFS(\'TIPS DATA\'!$A$2:$A$101,$B$10,'
             f"'TIPS DATA'!$C$2:$C$101,$E$10,"
-            f"'TIPS DATA'!$D$2:$D$101,INDEX('CONTRACT CALC'!$C$13:$C$112,{idx}))>0,"
+            f"'TIPS DATA'!$D$2:$D$101,"
+            f"INDEX('EVENT ASSIGNMENT'!$C$2:$C$101,{idx}))>0,"
             f"SUMIFS('TIPS DATA'!$H$2:$H$101,"
             f"'TIPS DATA'!$A$2:$A$101,$B$10,"
             f"'TIPS DATA'!$C$2:$C$101,$E$10,"
-            f"'TIPS DATA'!$D$2:$D$101,INDEX('CONTRACT CALC'!$C$13:$C$112,{idx})),"
+            f"'TIPS DATA'!$D$2:$D$101,"
+            f"INDEX('EVENT ASSIGNMENT'!$C$2:$C$101,{idx})),"
             f"SUMIFS('TIPS DATA'!$H$2:$H$101,"
             f"'TIPS DATA'!$A$2:$A$101,$B$10,"
             f"'TIPS DATA'!$C$2:$C$101,$E$10,"
-            f"'TIPS DATA'!$E$2:$E$101,INDEX('CONTRACT CALC'!$D$13:$D$112,{idx}))))"
+            f"'TIPS DATA'!$E$2:$E$101,"
+            f"INDEX('EVENT ASSIGNMENT'!$D$2:$D$101,{idx}))))"
         ),
     }
 
