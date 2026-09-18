@@ -93,68 +93,61 @@ def unmerge_overlapping(ws, min_row, max_row):
         ws.unmerge_cells(ref)
 
 
-def match_row_formula(k: int) -> str:
-    """Absolute EVENT ASSIGNMENT row for the k-th Event Date + Payee match.
-
-    Classic AGGREGATE only (no FILTER/dynamic arrays). FILTER formulas written
-    by openpyxl are often dropped when Excel repairs the workbook, which left
-    hidden column A blank and blanked every detail row that depended on it.
-    """
-    return (
-        "IFERROR(AGGREGATE(15,6,"
-        "ROW('EVENT ASSIGNMENT'!$A$2:$A$101)/"
-        "((N('EVENT ASSIGNMENT'!$A$2:$A$101)=N($B$10))*"
-        "('EVENT ASSIGNMENT'!$F$2:$F$101=$E$10))"
-        f",{k}),\"\")"
-    )
-
-
 def location_formulas(row: int, k: int) -> dict[str, str]:
     """Validated commission math for the k-th matching assignment.
 
-    SERVICE AREA (col B) is self-contained — it does not depend on helper col A —
-    so a blank helper cannot wipe the payout detail. CONTRACT CALC row =
-    EVENT ASSIGNMENT row + 11 (EA!2 ↔ CC!13).
+    Uses plain INDEX/MATCH against EVENT ASSIGNMENT helper key column K
+    (yyyymmdd|PAYEE|seq). No FILTER, no AGGREGATE arrays — formulas openpyxl
+    writes that Excel will not repair away.
+    CONTRACT CALC row = EVENT ASSIGNMENT data index + 12
+    (MATCH position 1 = EA row 2 = CC row 13).
     """
-    r = match_row_formula(k)  # absolute EA sheet row, e.g. 2
-    cc = f"({r})+11"  # absolute CONTRACT CALC sheet row
+    # Absolute key for this detail slot: date|payee|k
+    key = f'TEXT($B$10,"yyyymmdd")&"|"&$E$10&"|{k}"'
+    # Relative position within EA!$2:$101 (1 = first data row)
+    pos = (
+        f'IFERROR(MATCH({key},\'EVENT ASSIGNMENT\'!$K$2:$K$101,0),"")'
+    )
     return {
-        "A": f"={r}",
-        "B": f'=IFERROR(INDEX(\'EVENT ASSIGNMENT\'!$D:$D,{r}),"")',
+        "A": f"={pos}",
+        "B": (
+            f'=IF({pos}="","",'
+            f"IFERROR(INDEX('EVENT ASSIGNMENT'!$D$2:$D$101,{pos}),\"\"))"
+        ),
         "C": (
-            f'=IF(B{row}="","",'
-            f"IFERROR(INDEX('CONTRACT CALC'!$G:$G,{cc})"
-            f"*INDEX('CONTRACT CALC'!$F:$F,{cc}),\"\"))"
+            f'=IF(OR({pos}="",B{row}=""),"",'
+            f"IFERROR(INDEX('CONTRACT CALC'!$G$13:$G$112,{pos})"
+            f"*INDEX('CONTRACT CALC'!$F$13:$F$112,{pos}),\"\"))"
         ),
         "D": (
-            f'=IF(B{row}="","",'
-            f"IFERROR(INDEX('CONTRACT CALC'!$I:$I,{cc})"
-            f"*INDEX('CONTRACT CALC'!$F:$F,{cc}),\"\"))"
+            f'=IF(OR({pos}="",B{row}=""),"",'
+            f"IFERROR(INDEX('CONTRACT CALC'!$I$13:$I$112,{pos})"
+            f"*INDEX('CONTRACT CALC'!$F$13:$F$112,{pos}),\"\"))"
         ),
         "E": f'=IF(D{row}="","",D{row}*\'CONTRACT CALC\'!$B$4)',
         "F": (
-            f'=IF(B{row}="","",'
-            f"IFERROR(INDEX('CONTRACT CALC'!$H:$H,{cc})"
-            f"*INDEX('CONTRACT CALC'!$F:$F,{cc}),\"\"))"
+            f'=IF(OR({pos}="",B{row}=""),"",'
+            f"IFERROR(INDEX('CONTRACT CALC'!$H$13:$H$112,{pos})"
+            f"*INDEX('CONTRACT CALC'!$F$13:$F$112,{pos}),\"\"))"
         ),
         "G": f'=IF(F{row}="","",F{row}*\'CONTRACT CALC\'!$B$5)',
         "H": f'=IF(B{row}="","",N(E{row})+N(G{row}))',
         "I": (
-            f'=IF(B{row}="","",'
+            f'=IF(OR({pos}="",B{row}=""),"",'
             f'IF(COUNTIFS(\'TIPS DATA\'!$A$2:$A$101,$B$10,'
             f"'TIPS DATA'!$C$2:$C$101,$E$10,"
             f"'TIPS DATA'!$D$2:$D$101,"
-            f"INDEX('EVENT ASSIGNMENT'!$C:$C,{r}))>0,"
+            f"INDEX('EVENT ASSIGNMENT'!$C$2:$C$101,{pos}))>0,"
             f"SUMIFS('TIPS DATA'!$H$2:$H$101,"
             f"'TIPS DATA'!$A$2:$A$101,$B$10,"
             f"'TIPS DATA'!$C$2:$C$101,$E$10,"
             f"'TIPS DATA'!$D$2:$D$101,"
-            f"INDEX('EVENT ASSIGNMENT'!$C:$C,{r})),"
+            f"INDEX('EVENT ASSIGNMENT'!$C$2:$C$101,{pos})),"
             f"SUMIFS('TIPS DATA'!$H$2:$H$101,"
             f"'TIPS DATA'!$A$2:$A$101,$B$10,"
             f"'TIPS DATA'!$C$2:$C$101,$E$10,"
             f"'TIPS DATA'!$E$2:$E$101,"
-            f"INDEX('EVENT ASSIGNMENT'!$D:$D,{r}))))"
+            f"INDEX('EVENT ASSIGNMENT'!$D$2:$D$101,{pos}))))"
         ),
     }
 
@@ -174,6 +167,24 @@ def style_detail_row(ws, row: int, template_row: int = 18):
 
 def build():
     wb = load_workbook(SRC)
+
+    # --- EVENT ASSIGNMENT lookup keys (source helpers; not a new calc sheet) ---
+    # J = running seq for Event+Payee; K = yyyymmdd|PAYEE|seq for INDEX/MATCH.
+    ea = wb["EVENT ASSIGNMENT"]
+    ea["J1"] = "Payee Seq"
+    ea["K1"] = "Payout Lookup Key"
+    ea["J1"].font = Font(name="Aptos", size=10, bold=True)
+    ea["K1"].font = Font(name="Aptos", size=10, bold=True)
+    for r in range(2, 102):
+        # Seq restarts per Event Date + NPO within the assignment list
+        ea.cell(r, 10).value = (
+            f'=IF(OR(A{r}="",F{r}=""),"",'
+            f'COUNTIFS($A$2:A{r},A{r},$F$2:F{r},F{r}))'
+        )
+        ea.cell(r, 11).value = (
+            f'=IF(OR(A{r}="",F{r}="",J{r}=""),"",'
+            f'TEXT(A{r},"yyyymmdd")&"|"&F{r}&"|"&J{r})'
+        )
 
     # --- Rename ARVC → VENDOR PAYOUT (single reusable output template) ---
     ws = wb["ARVC"]
