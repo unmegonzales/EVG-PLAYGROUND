@@ -93,77 +93,68 @@ def unmerge_overlapping(ws, min_row, max_row):
         ws.unmerge_cells(ref)
 
 
-def match_index_formula(k: int) -> str:
-    """Return 1-based index into EVENT ASSIGNMENT / CONTRACT CALC data rows
-    for the k-th assignment matching Event Date ($B$10) and Payee ($E$10).
+def match_row_formula(k: int) -> str:
+    """Absolute EVENT ASSIGNMENT row for the k-th Event Date + Payee match.
 
-    Match against EVENT ASSIGNMENT (source values), not CONTRACT CALC formula
-    results — AGGREGATE cross-sheet array compares are unreliable in Excel and
-    were returning no rows. CONTRACT CALC rows mirror EVENT ASSIGNMENT 1:1
-    (EA row 2 ↔ CC row 13), so the same index pulls validated amounts.
+    Classic AGGREGATE only (no FILTER/dynamic arrays). FILTER formulas written
+    by openpyxl are often dropped when Excel repairs the workbook, which left
+    hidden column A blank and blanked every detail row that depended on it.
     """
-    # INT() normalizes date/time so dropdown dates still match source dates.
     return (
-        "IFERROR(INDEX(FILTER("
-        "ROW('EVENT ASSIGNMENT'!$A$2:$A$101)-ROW('EVENT ASSIGNMENT'!$A$2)+1,"
-        "(IFERROR(INT('EVENT ASSIGNMENT'!$A$2:$A$101),0)=INT($B$10))*"
-        "(TRIM('EVENT ASSIGNMENT'!$F$2:$F$101)=TRIM($E$10))"
-        f"),{k}),\"\")"
+        "IFERROR(AGGREGATE(15,6,"
+        "ROW('EVENT ASSIGNMENT'!$A$2:$A$101)/"
+        "((N('EVENT ASSIGNMENT'!$A$2:$A$101)=N($B$10))*"
+        "('EVENT ASSIGNMENT'!$F$2:$F$101=$E$10))"
+        f",{k}),\"\")"
     )
 
 
 def location_formulas(row: int, k: int) -> dict[str, str]:
-    """Validated commission math, driven by filtered CONTRACT CALC row."""
-    idx = f"$A{row}"
+    """Validated commission math for the k-th matching assignment.
+
+    SERVICE AREA (col B) is self-contained — it does not depend on helper col A —
+    so a blank helper cannot wipe the payout detail. CONTRACT CALC row =
+    EVENT ASSIGNMENT row + 11 (EA!2 ↔ CC!13).
+    """
+    r = match_row_formula(k)  # absolute EA sheet row, e.g. 2
+    cc = f"({r})+11"  # absolute CONTRACT CALC sheet row
     return {
-        # Hidden helper: nth matching assignment index for Event+Payee
-        "A": f"={match_index_formula(k)}",
-        # Service area from EVENT ASSIGNMENT (source), same index as CONTRACT CALC
-        "B": (
-            f'=IF({idx}="","",'
-            f"IFERROR(INDEX('EVENT ASSIGNMENT'!$D$2:$D$101,{idx}),\"\"))"
-        ),
-        # Allocated Net Sales = MSR Total Net × Allocation %
+        "A": f"={r}",
+        "B": f'=IFERROR(INDEX(\'EVENT ASSIGNMENT\'!$D:$D,{r}),"")',
         "C": (
-            f'=IF(OR({idx}="",B{row}=""),"",'
-            f"IFERROR(INDEX('CONTRACT CALC'!$G$13:$G$112,{idx})"
-            f"*INDEX('CONTRACT CALC'!$F$13:$F$112,{idx}),\"\"))"
+            f'=IF(B{row}="","",'
+            f"IFERROR(INDEX('CONTRACT CALC'!$G:$G,{cc})"
+            f"*INDEX('CONTRACT CALC'!$F:$F,{cc}),\"\"))"
         ),
-        # Food / Non-Alc Net Sales (allocated)
         "D": (
-            f'=IF(OR({idx}="",B{row}=""),"",'
-            f"IFERROR(INDEX('CONTRACT CALC'!$I$13:$I$112,{idx})"
-            f"*INDEX('CONTRACT CALC'!$F$13:$F$112,{idx}),\"\"))"
+            f'=IF(B{row}="","",'
+            f"IFERROR(INDEX('CONTRACT CALC'!$I:$I,{cc})"
+            f"*INDEX('CONTRACT CALC'!$F:$F,{cc}),\"\"))"
         ),
-        # 10% Food / Non-Alc Commission
         "E": f'=IF(D{row}="","",D{row}*\'CONTRACT CALC\'!$B$4)',
-        # Alcohol Net Sales (allocated)
         "F": (
-            f'=IF(OR({idx}="",B{row}=""),"",'
-            f"IFERROR(INDEX('CONTRACT CALC'!$H$13:$H$112,{idx})"
-            f"*INDEX('CONTRACT CALC'!$F$13:$F$112,{idx}),\"\"))"
+            f'=IF(B{row}="","",'
+            f"IFERROR(INDEX('CONTRACT CALC'!$H:$H,{cc})"
+            f"*INDEX('CONTRACT CALC'!$F:$F,{cc}),\"\"))"
         ),
-        # 8% Alcohol Commission
         "G": f'=IF(F{row}="","",F{row}*\'CONTRACT CALC\'!$B$5)',
-        # Total Commission
         "H": f'=IF(B{row}="","",N(E{row})+N(G{row}))',
-        # Gratuities from TIPS DATA (Location ID first, else description)
         "I": (
-            f'=IF(OR({idx}="",B{row}=""),"",'
+            f'=IF(B{row}="","",'
             f'IF(COUNTIFS(\'TIPS DATA\'!$A$2:$A$101,$B$10,'
             f"'TIPS DATA'!$C$2:$C$101,$E$10,"
             f"'TIPS DATA'!$D$2:$D$101,"
-            f"INDEX('EVENT ASSIGNMENT'!$C$2:$C$101,{idx}))>0,"
+            f"INDEX('EVENT ASSIGNMENT'!$C:$C,{r}))>0,"
             f"SUMIFS('TIPS DATA'!$H$2:$H$101,"
             f"'TIPS DATA'!$A$2:$A$101,$B$10,"
             f"'TIPS DATA'!$C$2:$C$101,$E$10,"
             f"'TIPS DATA'!$D$2:$D$101,"
-            f"INDEX('EVENT ASSIGNMENT'!$C$2:$C$101,{idx})),"
+            f"INDEX('EVENT ASSIGNMENT'!$C:$C,{r})),"
             f"SUMIFS('TIPS DATA'!$H$2:$H$101,"
             f"'TIPS DATA'!$A$2:$A$101,$B$10,"
             f"'TIPS DATA'!$C$2:$C$101,$E$10,"
             f"'TIPS DATA'!$E$2:$E$101,"
-            f"INDEX('EVENT ASSIGNMENT'!$D$2:$D$101,{idx}))))"
+            f"INDEX('EVENT ASSIGNMENT'!$D:$D,{r}))))"
         ),
     }
 
@@ -501,8 +492,8 @@ def build():
     ws.sheet_properties.pageSetUpPr.fitToPage = True
 
     # Column A helper width (not in print area)
-    ws.column_dimensions["A"].width = 4
-    ws.column_dimensions["A"].hidden = True
+    ws.column_dimensions["A"].width = 6
+    ws.column_dimensions["A"].hidden = False
 
     # --- Guardrail note on SET-UP (non-invasive) ---
     setup = wb["SET-UP & SUMMARY"]
