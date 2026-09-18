@@ -29,6 +29,8 @@ One row per group:
 5. **Export PDF** (the personalized record).
 6. Before next vendor: **zero H36:H41** (and clear notes). Optional: copy those amounts into `SUPPLEMENTAL DATA` if you want them to show again later as grey SAVED REF.
 
+Location detail on `VENDOR PAYOUT` is capped at **10 rows** (ultimate max per payee).
+
 Do **not** create a worksheet per NPO.
 
 ## Is CATEGORY MAP necessary?

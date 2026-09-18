@@ -6,7 +6,7 @@ Enhance user's V2 Vendor Payout workbook:
 2. Hybrid supplemental — editable on the statement for personal review/PDF;
    saved reference from SUPPLEMENTAL DATA; no per-NPO worksheets
 3. Wire SAP/BSS from NPO MASTER onto VENDOR PAYOUT
-4. Fix location seq slots 13–15 (V2 had 23/24/25)
+4. Cap location detail at 10 rows (ultimate max per payee)
 5. Clarify CATEGORY MAP is required for Food vs Alcohol classification
 
 Keeps one-way flow: SOURCE → CALCULATION → OUTPUT
