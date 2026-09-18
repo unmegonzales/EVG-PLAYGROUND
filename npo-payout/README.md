@@ -16,10 +16,12 @@ The output sheet never feeds values back into source or calculation tabs.
 
 1. **Update source data** — MSR export, event assignments, tips, category map.
 2. **Select Event + Payee** on `VENDOR PAYOUT` (`B10` Event Date, `E10` Payee/NPO).
-3. **Review payout** — location rows filter from `EVENT ASSIGNMENT` via `CONTRACT CALC` (2, 5, 20+ locations as assigned).
+3. **Review payout** — location rows look up `EVENT ASSIGNMENT` keys (`J` seq / `K` lookup key) and pull amounts from `CONTRACT CALC` (2, 5, 20+ locations as assigned).
 4. **Export PDF** — print area is set on `VENDOR PAYOUT`.
 
 Do **not** create a worksheet per NPO. Change Payee on the same template.
+
+If Excel opens the file as “Repaired”, discard that copy and re-download — use the latest `NPO_Payout_Vendor_Template.xlsx` from this folder.
 
 ## Preserved commission logic
 
