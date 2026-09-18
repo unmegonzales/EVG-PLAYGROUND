@@ -186,6 +186,59 @@ def build():
             f'TEXT(A{r},"yyyymmdd")&"|"&F{r}&"|"&J{r})'
         )
 
+    # --- SUPPLEMENTAL DATA (source): Event + Payee keyed adjustments ---
+    # Keeps Bonus / fees / incentives off the output sheet so switching Payee
+    # cannot carry a prior vendor's manual adjustments into the next statement.
+    if "SUPPLEMENTAL DATA" in wb.sheetnames:
+        wb.remove(wb["SUPPLEMENTAL DATA"])
+    supp = wb.create_sheet("SUPPLEMENTAL DATA")
+    # Place after TIPS DATA for source-tab grouping
+    try:
+        wb.move_sheet(supp, offset=len(wb.sheetnames) - 1 - wb.sheetnames.index("TIPS DATA"))
+    except Exception:
+        pass
+    headers = [
+        "Event Date",
+        "NPO",
+        "Sales Incentive",
+        "Culinary - Cook Fee",
+        "Minimum Donation",
+        "Bonus (Other)",
+        "Deductible POS Shortages",
+        "Uniform / Staffing / Cleaning Fees",
+        "Notes",
+    ]
+    for c, h in enumerate(headers, start=1):
+        cell = supp.cell(1, c, h)
+        cell.fill = PatternFill("solid", fgColor="FF17365D")
+        cell.font = Font(name="Aptos", size=10, bold=True, color="FFFFFFFF")
+    # Seed zero rows for the proof event; enter non-zero adjustments per Event + Payee here.
+    setup_date = wb["SET-UP & SUMMARY"]["B4"].value
+    for r, npo in enumerate(
+        ["ARVC", "AIRFORCE", "UNITED FIT", "DCVA", "DEL N CHEER", "RIO GRANDE RGHS", "VICTORY OUTREACH"],
+        start=2,
+    ):
+        supp.cell(r, 1).value = setup_date
+        supp.cell(r, 1).number_format = "mmmm d, yyyy"
+        supp.cell(r, 2).value = npo
+        for c in range(3, 9):
+            supp.cell(r, c).value = 0
+            supp.cell(r, c).number_format = MONEY
+    supp.cell(2, 9).value = (
+        "Enter vendor-specific adjustments by Event + Payee. "
+        "VENDOR PAYOUT reads these; it does not store them."
+    )
+    for col, width in enumerate([14, 18, 14, 16, 14, 14, 18, 22, 40], start=1):
+        supp.column_dimensions[get_column_letter(col)].width = width
+    # NPO validation
+    dv_supp = DataValidation(
+        type="list",
+        formula1="='SET-UP & SUMMARY'!$A$12:$A$18",
+        allow_blank=True,
+    )
+    dv_supp.add("B2:B101")
+    supp.add_data_validation(dv_supp)
+
     # --- Rename ARVC → VENDOR PAYOUT (single reusable output template) ---
     ws = wb["ARVC"]
     ws.title = "VENDOR PAYOUT"
@@ -375,11 +428,26 @@ def build():
     except ValueError:
         pass
 
-    for offset, (label, value) in enumerate(zip(old["supp_labels"], old["supp_values"])):
+    # Supplemental amounts come from SUPPLEMENTAL DATA by Event Date + Payee
+    # (SOURCE → OUTPUT). Switching Payee cannot carry over another vendor's bonus.
+    supp_cols = [
+        # (label, column letter on SUPPLEMENTAL DATA)
+        ("Sales Incentive", "C"),
+        ("Culinary - Cook Fee", "D"),
+        ("Minimum Donation", "E"),
+        ("Bonus (Other)", "F"),
+        ("Deductible POS Shortages", "G"),
+        ("Uniform / Staffing / Cleaning Fees", "H"),
+    ]
+    for offset, (label, col_letter) in enumerate(supp_cols):
         r = SUPP_START + offset
         ws.cell(r, 7).value = label
         ws.cell(r, 7).font = Font(name="Aptos", size=10, bold=True)
-        ws.cell(r, 9).value = value if value is not None else 0
+        ws.cell(r, 9).value = (
+            f"=IFERROR(SUMIFS('SUPPLEMENTAL DATA'!${col_letter}$2:${col_letter}$101,"
+            f"'SUPPLEMENTAL DATA'!$A$2:$A$101,$B$10,"
+            f"'SUPPLEMENTAL DATA'!$B$2:$B$101,$E$10),0)"
+        )
         ws.cell(r, 9).number_format = MONEY
         ws.cell(r, 9).font = BODY_NUM_FONT
         ws.cell(r, 9).border = THIN

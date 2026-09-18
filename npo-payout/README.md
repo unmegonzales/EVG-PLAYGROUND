@@ -14,9 +14,9 @@ The output sheet never feeds values back into source or calculation tabs.
 
 ## Workflow
 
-1. **Update source data** — MSR export, event assignments, tips, category map.
+1. **Update source data** — MSR export, event assignments, tips, supplemental adjustments, category map.
 2. **Select Event + Payee** on `VENDOR PAYOUT` (`B10` Event Date, `E10` Payee/NPO).
-3. **Review payout** — location rows look up `EVENT ASSIGNMENT` keys (`J` seq / `K` lookup key) and pull amounts from `CONTRACT CALC` (2, 5, 20+ locations as assigned).
+3. **Review payout** — location rows look up `EVENT ASSIGNMENT` keys (`J` seq / `K` lookup key) and pull amounts from `CONTRACT CALC` (2, 5, 20+ locations as assigned). Supplemental lines (Bonus, fees, etc.) come from `SUPPLEMENTAL DATA` for that same Event + Payee — they do **not** stick on the template when you switch vendors.
 4. **Export PDF** — print area is set on `VENDOR PAYOUT`.
 
 Do **not** create a worksheet per NPO. Change Payee on the same template.
