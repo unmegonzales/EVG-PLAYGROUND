@@ -22,7 +22,7 @@ Copilot’s **Developer Build Binder v4.0 Volume A** (pasted 2026-09-19) is the 
 | Topic | Copilot said | Live files show |
 |---|---|---|
 | Volume A shape | 7 chapters: architecture, lookups, core, category, contract, forms, build sequence | Kept as the binder chapter map (v6.0) |
-| $200 NPO minimum | Copilot A: per location auto. Copilot B: calc $125 → pay $200 | Excel: manual yellow line. **EMS Volume B freeze:** header-level `Max(calc, min)` as a process change |
+| $200 NPO minimum | Copilot A: per location auto. Copilot B: calc $125 → pay $200 | Excel: manual yellow statement line. Store `MinimumDonation`; do **not** auto-apply until Finance confirms |
 | Location key | LocationCode indexed; examples `FB106` `PIT104` | Official spaced codes (`FB 106`). PIT 101 is two MyVenue rows. Compact codes are not unique aliases |
 | Mini Melts | FB 113 / FB 113B in NPO template | Official FB 114 / FB 115 as of 9/14/26 |
 | Invoice | PDF name `MM-DD-YY - TYPE - AP UNM - InvoiceNumber.pdf` | Invoice number `UNM-MMDDYY-SHORTCODE` is what AP uses |

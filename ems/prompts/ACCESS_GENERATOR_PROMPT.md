@@ -37,7 +37,7 @@ Put them wherever the user asks. Default: a folder named `EMS` next to an `EMS R
 4. Unique: `LocationName`, `MyVenueCode`, `VendorShortCode`, `AliasName`, `ProductCode`.
 5. Rates are decimals (`0.10` = 10%, `0.7` = 70%).
 6. Do **not** implement settlement math, PDF, email, or reports in Alpha. Create Volume B tables and named `qry*` objects so the schema stays frozen.
-7. Do **not** auto-apply the $200 NPO minimum in Alpha. Volume B generate-settlement applies it at **header** level (`Max(calc, min)`), not per location.
+7. Do **not** auto-apply the $200 NPO minimum. Store the contract field and `MIN_DONATION` adjustment type. Copilot’s `Max(calc, min)` idea is not approved.
 8. Event status is forward-only: OPEN → FINANCE REVIEW → CLOSED.
 9. NPO and SUB are two `VendorType` values in one `tblVendor`.
 10. Seed from the CSVs. Do not type demo vendors like “Test NPO 1”.

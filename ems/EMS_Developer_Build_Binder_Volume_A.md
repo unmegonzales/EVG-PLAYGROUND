@@ -66,7 +66,7 @@ Build the foundation database and the screens needed to enter masters.
 3. Access bloat is illegal: no embedded spreadsheets, no copied BE per user, no pictures in the database.
 4. NPO and SUB share one vendor table and one location table. They do **not** share settlement math.
 5. Location matching is by **full MyVenue name / alias**, never by `LocationCode` alone.
-6. `$200` NPO minimum: today’s Excel is a **manual statement line**. Volume B **freezes EMS as header-level `Max(calc, min)`**. Do not auto-apply in Alpha. Implement in Volume B generate-settlement, not per location.
+6. `$200` NPO minimum is a **manual statement line** in the current Excel/PDF process. Store `MinimumDonation` and `MIN_DONATION` adjustment type. Do **not** auto-apply in Alpha or Volume B until Finance confirms.
 
 ---
 

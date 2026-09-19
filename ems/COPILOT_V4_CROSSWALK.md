@@ -31,7 +31,7 @@ Canonical build file: `EMS_Developer_Build_Binder_Volume_A.md`.
 | Vendor fields: name, short code, type, SAP, BSS, contact, email, CC, phone, active, notes | Also `CheckPayableTo`, `Address1` `City` `State` `PostalCode` (required on SUB statements), W9/COI/Contract **paths** |
 | `tblCategoryMap.ContractClass` Short Text `FOOD_NONALC` / `ALCOHOL` | `ContractClassID` → `tblContractClass` with `FOOD` `NA_BEV` `BEER` `LIQUOR` (NPO still rolls to FOOD_NONALC / ALCOHOL) |
 | Category examples only “FOOD SALES TAXABLE / LIQUOR SALES TAXABLE” | Eight locked product codes from the 9/5/26 MSR export |
-| `MinimumDonation` NPO 200 / SUB NULL | Stored on the contract. Excel does not auto-apply. **Volume B freeze:** header-level `Max(calc, min)` when generate-settlement runs |
+| `MinimumDonation` NPO 200 / SUB NULL | Stored on the contract. **Do not auto-apply.** Current Excel donation formula does not use it; it is a yellow statement line (`tblAdjustmentType` `MIN_DONATION`). Copilot Volume B’s `Max(calc, min)` is an open Finance decision, not a freeze |
 | Contract: four rates + min + expenses + dates | Also `CardFeeMaxRate` 0.03, `Active`, `Notes`. LAG 0.70/0.05, SUG 0.80/0.05 |
 | FE contains Reports | True as a class of object. **Alpha builds zero reports** |
 | FE contains Queries | Alpha may create list queries (`qryVendorActive`, `qryEventList`, …). No settlement queries |
@@ -42,7 +42,7 @@ Canonical build file: `EMS_Developer_Build_Binder_Volume_A.md`.
 ## Intentionally not taken from Copilot
 
 - Unique `LocationCode`
-- Auto-applied $200 NPO minimum **in Alpha** (Volume B generate-settlement does header-level min)
+- Auto-applied $200 NPO minimum (Excel does not; wait for Finance)
 - Single-file `EMS_v1_0.accdb`
 - Implementing Import MyVenue / Import Tips in Alpha
 - Implementing settlement math, PDF, or email in Alpha
@@ -60,7 +60,7 @@ Copilot’s Volume B chapter map is adopted in `EMS_Developer_Build_Binder_Volum
 | Detail ContractClass FOOD/NONALC/ALCOHOL | Four buckets on the detail row; NPO rolls up in queries |
 | tblExceptionLog | Adopted, plus `tblExceptionType` seed |
 | Query names qrySalesMapped … qryFinanceReview | Frozen names; SQL in Volume B Ch 12 |
-| $200 min overrides calc | Header-level `Max(calc, min)` — Excel does not do this today |
+| $200 min overrides calc | **Not frozen.** Live Excel is a manual yellow line. Store the field; do not code auto-min until Finance confirms |
 | CLOSED gates | Documented; Alpha may still advance status until engine is wired |
 | PDF / email / Power BI | Volume C |
 

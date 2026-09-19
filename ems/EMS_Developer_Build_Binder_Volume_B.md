@@ -25,7 +25,7 @@ If this binder and the JSON disagree on a field name or size, **JSON wins**. If 
 | NPO/SUB calculation rules | **Frozen** | Use live-file math, not Copilot’s one-rate gross example |
 | Exception types | **Frozen** | Add types later via seed, not by inventing tables |
 | Query names | **Frozen** | SQL bodies may be refined without renaming |
-| $200 NPO minimum | **Frozen as EMS rule** | Header-level `Max(calc, min)`. Today’s Excel does **not** do this — EMS is the intended change |
+| $200 NPO minimum | **Open — Finance** | Live Excel is a manual yellow line. Store `MinimumDonation`. Do not code auto-min until Finance confirms |
 | PDF / email / Power BI | **Not frozen** | Volume C |
 
 Construction rule: future changes are controlled revisions, not weekly schema rewrites.
@@ -347,23 +347,18 @@ That is the 9/5/26 workbook formula (`CONTRACT CALC!K`).
 
 Tips: `AllocatedTips` for same Event+Vendor+Location.
 
-**Minimum donation (EMS rule, header level):**
+**Minimum donation (not coded until Finance confirms):**
+
+Live Excel does **not** put `$200` in the donation formula. It is a yellow statement cell (`MIN_DONATION` adjustment). Copilot Volume B proposed header-level `Max(calc, min)`. That is **not** frozen.
+
+Volume B generate-settlement must:
 
 ```
-CalcDonation = Sum(detail.TotalCommission)
-MinDon       = tblVendorContract.MinimumDonation   ' 200 for NPO, Null for SUB
-
-If MinDon is not null AND CalcDonation < MinDon Then
-    Write tblSettlementAdjustment MIN_DONATION = MinDon - CalcDonation
-End If
-
-Header.CommissionAmount = CalcDonation
-Header.AmountDue = CommissionAmount + TipsAmount + other add-ons - deductions
+Donation = Sum(detail Food/Non-Alc and Alcohol commissions using live rates)
+AmountDue = Donation + Tips + manual adjustments (cook fee, min donation, bonus, shortages)
 ```
 
-Example from Copilot: calc $125, min $200 → $75 MIN_DONATION adjustment, AmountDue includes $200 donation plus tips/fees.
-
-Do **not** apply $200 per location unless Finance files a revision. Copilot Volume A said per location; Volume B’s example is settlement-level; live Excel is manual. Frozen = header-level.
+If Finance later approves auto-min, add `MIN_DONATION = MinimumDonation - CalcDonation` only when CalcDonation < MinimumDonation, **header level**, never per location.
 
 Cook fees, bonus, shortages stay **manual adjustments** (yellow cells today).
 
