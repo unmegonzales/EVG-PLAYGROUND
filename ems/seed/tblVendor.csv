@@ -1,0 +1,11 @@
+VendorShortCode,VendorName,VendorType,SAPID,BSSID,CheckPayableTo,PrimaryContact,Phone,EmailAddress,CCEmailAddress,Address1,City,State,PostalCode,Active,Notes
+ARVC,Albuquerque Rebels Volleyball Club,NPO,1013051,5487,Albuquerque Rebels Volleyball Club,,,,,,,,,1,SAP/BSS taken from NPO remit PDF UNM-120125-ARVC
+AIRFORCE,Air Force - Top 3,NPO,,,Air Force - Top 3,,,,,,,,,1,
+UNITED FIT,United Fit Bros,NPO,,,United Fit Bros,,,,,,,,,1,
+DCVA,Duke City Volleyball Association,NPO,,,Duke City Volleyball Association,,,,,,,,,1,
+DEL N CHEER,APS - Del Norte Cheer,NPO,,,APS - Del Norte Cheer,,,,,,,,,1,
+RIO GRANDE RGHS,APS - Rio Grande HS Football,NPO,,,APS - Rio Grande HS Football,,,,,,,,,1,
+VICTORY OUTREACH,Victory Outreach Albuquerque,NPO,,,Victory Outreach Albuquerque,,,,,,,,,1,
+DOJ,Desert Sky - Daughters of Job,NPO,,,Desert Sky - Daughters of Job,,,,,,,,,0,Incomplete in NPO MASTER (no Active/Check Payable). Seeded inactive until confirmed.
+LAG,Fuego Enterprises LLC,SUB,992855,5177,Fuego Enterprises LLC,,,,,700 Comanche Rd NE,Albuquerque,NM,87107,1,Pit stand PIT 107 / Set-Up code 107-LAGUNA. Laguna Burger.
+SUG,Destiny Marie Maestas,SUB,1028464,10809,Destiny Marie Maestas,,,,,533 61st Street NW,Albuquerque,NM,87105,1,Pit stand PIT 103 / Set-Up code 103-SHIVERS. Sugar Shivers. DBA as needed.

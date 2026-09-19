@@ -1,0 +1,10 @@
+ExceptionCode,ExceptionName,IsBlocking,AppliesTo,SortOrder,Active
+MISSING_LOCATION,Missing Location,1,ANY,10,1
+MISSING_VENDOR,Missing Vendor / no assignment,1,SALES,20,1
+MISSING_CATEGORY,Missing Category Map,1,SALES,30,1
+DUPLICATE_ASSIGNMENT,Duplicate Assignment,1,ASSIGNMENTS,40,1
+MISSING_CONTRACT,Missing Contract,1,SETTLEMENT,50,1
+ALLOCATION_NOT_100,Location allocation not 100%,1,ASSIGNMENTS,60,1
+NO_MSR_SALES,No MSR sales for assignment,0,SETTLEMENT,70,1
+UNMATCHED_TIPS,Unmatched tips row,1,TIPS,80,1
+MISSING_ALLOCATION,Missing allocation percent,1,ASSIGNMENTS,90,1

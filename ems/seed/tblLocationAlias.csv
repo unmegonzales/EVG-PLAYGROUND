@@ -1,0 +1,229 @@
+MyVenueCode,AliasName,AliasType,Notes
+86,AA - ADMINISTRATIVE TRANSACTIONS,OFFICIAL,Canonical MyVenue name
+86,AA,CODE,Unique location code
+5,BB 101 - BASEBALL TRAILER,OFFICIAL,Canonical MyVenue name
+5,BB 101,CODE,Unique location code
+13,FB 100 - TRAILER N CONCOURSE,OFFICIAL,Canonical MyVenue name
+13,FB 100,CODE,Unique location code
+81,FB 100B - MBP TRAILER N CONCOURSE,OFFICIAL,Canonical MyVenue name
+81,FB 100B,CODE,Unique location code
+6,FB 101 - STADIUM SIPS SHACK SW,OFFICIAL,Canonical MyVenue name
+6,FB 101,CODE,Unique location code
+7,FB 102 - TOWER SOUTH,OFFICIAL,Canonical MyVenue name
+7,FB 102,CODE,Unique location code
+8,FB 103 - TOWER NORTH,OFFICIAL,Canonical MyVenue name
+8,FB 103,CODE,Unique location code
+9,FB 104 - RED RALLY NORTH WEST,OFFICIAL,Canonical MyVenue name
+9,FB 104,CODE,Unique location code
+10,FB 105 - NW SPECIALTY - DAWG HOUSE 2.0,OFFICIAL,Canonical MyVenue name
+10,FB 105,CODE,Unique location code
+11,FB 106 - RED RALLY NORTH EAST,OFFICIAL,Canonical MyVenue name
+11,FB 106,CODE,Unique location code
+62,FB 107 - NE SPECIALTY - DAWG HOUSE,OFFICIAL,Canonical MyVenue name
+62,FB 107,CODE,Unique location code
+14,FB 108 - GRAB N GO - NW,OFFICIAL,Canonical MyVenue name
+14,FB 108,CODE,Unique location code
+15,FB 109 - MBP - NORTH EAST,OFFICIAL,Canonical MyVenue name
+15,FB 109,CODE,Unique location code
+84,FB 109B - MBP - NORTH EAST 2.0 POLE,OFFICIAL,Canonical MyVenue name
+84,FB 109B,CODE,Unique location code
+16,FB 110 - MBP - NORTH WEST (Shivers),OFFICIAL,Canonical MyVenue name
+16,FB 110,CODE,Unique location code
+30,FB 111 - MBP - NORTH WEST (PROMO),OFFICIAL,Canonical MyVenue name
+30,FB 111,CODE,Unique location code
+21,FB 112 - MBP - NE PEPSI TRAILER,OFFICIAL,Canonical MyVenue name
+21,FB 112,CODE,Unique location code
+73,FB 113 - MBP - STUDENT ZONE (SE),OFFICIAL,Canonical MyVenue name
+73,FB 113,CODE,Unique location code
+74,FB 114 - MBP - MINI MELTS (NW),OFFICIAL,Canonical MyVenue name
+74,FB 114,CODE,Unique location code
+85,FB 115 - MBP - MINI MELTS (NE),OFFICIAL,Canonical MyVenue name
+85,FB 115,CODE,Unique location code
+77,FB 117 - MBP ELOTICO CART (NW),OFFICIAL,Canonical MyVenue name
+77,FB 117,CODE,Unique location code
+78,FB 118 - MBP SW DOG CART,OFFICIAL,Canonical MyVenue name
+78,FB 118,CODE,Unique location code
+80,FB 119 - HAWK VENDORS,OFFICIAL,Canonical MyVenue name
+80,FB 119,CODE,Unique location code
+76,FB 120 - MBP N. SCOREBOARD WEST NO.1,OFFICIAL,Canonical MyVenue name
+76,FB 120,CODE,Unique location code
+89,FB 121 - MBP N. SCOREBOARD EAST NO.2,OFFICIAL,Canonical MyVenue name
+89,FB 121,CODE,Unique location code
+91,FB 122 - MBP - NORTH WEST (GATE),OFFICIAL,Canonical MyVenue name
+91,FB 122,CODE,Unique location code
+57,FB 151 - SUB SUGAR SHIVERS,OFFICIAL,Canonical MyVenue name
+57,FB 151,CODE,Unique location code
+90,FB 152 - SUB LAGUNA BURGER,OFFICIAL,Canonical MyVenue name
+90,FB 152,CODE,Unique location code
+38,FB 155 - SUB ISLAND NOODLES,OFFICIAL,Canonical MyVenue name
+38,FB 155,CODE,Unique location code
+17,FB 401 - PREM. PRESS LEVEL,OFFICIAL,Canonical MyVenue name
+17,FB 401,CODE,Unique location code
+18,FB 402 - PREM. ZIA 1,OFFICIAL,Canonical MyVenue name
+18,FB 402,CODE,Unique location code
+19,FB 403 - PREM. ZIA 2,OFFICIAL,Canonical MyVenue name
+19,FB 403,CODE,Unique location code
+20,FB 404 - PREM. END ZONE CLUB EZC,OFFICIAL,Canonical MyVenue name
+20,FB 404,CODE,Unique location code
+50,FB 405 - PREM-OUTSIDE EVENT PORTABLE,OFFICIAL,Canonical MyVenue name
+50,FB 405,CODE,Unique location code
+52,FB 406 - FIELD SUITES,OFFICIAL,Canonical MyVenue name
+52,FB 406,CODE,Unique location code
+71,PIT 100 - VENDING (HAWK),OFFICIAL,Canonical MyVenue name
+71,PIT 100,CODE,Unique location code
+31,PIT 101 - A - POP & POUR (Q),OFFICIAL,Canonical MyVenue name
+32,PIT 101 - B -  NACHOMAMA (R),OFFICIAL,Canonical MyVenue name
+33,PIT 102 - THE PIT STOP (U),OFFICIAL,Canonical MyVenue name
+33,PIT 102,CODE,Unique location code
+34,PIT 103 - SUB SUGAR SHIVERS (V),OFFICIAL,Canonical MyVenue name
+34,PIT 103,CODE,Unique location code
+35,PIT 104 - BURQUE BREWS (W),OFFICIAL,Canonical MyVenue name
+35,PIT 104,CODE,Unique location code
+36,PIT 105 - HOWL VODKA LEMONADE (Z),OFFICIAL,Canonical MyVenue name
+36,PIT 105,CODE,Unique location code
+37,PIT 106 - LOUIE'S DAWG HOUSE (C),OFFICIAL,Canonical MyVenue name
+37,PIT 106,CODE,Unique location code
+53,PIT 107 - SUB - LAGUNA BURGER (G),OFFICIAL,Canonical MyVenue name
+53,PIT 107,CODE,Unique location code
+39,PIT 108 - HOOP & GO (J),OFFICIAL,Canonical MyVenue name
+39,PIT 108,CODE,Unique location code
+40,PIT 109 - ALLEYOOP (L),OFFICIAL,Canonical MyVenue name
+40,PIT 109,CODE,Unique location code
+64,PIT 110 - PAPITAS (M),OFFICIAL,Canonical MyVenue name
+64,PIT 110,CODE,Unique location code
+58,PIT 111 - MBP ELEVATOR (Q),OFFICIAL,Canonical MyVenue name
+58,PIT 111,CODE,Unique location code
+54,PIT 112 - MBP NACHOMAMA (R),OFFICIAL,Canonical MyVenue name
+54,PIT 112,CODE,Unique location code
+55,PIT 113 - MBP SUGAR SHIVERS (V),OFFICIAL,Canonical MyVenue name
+55,PIT 113,CODE,Unique location code
+65,PIT 114 - MBP SUGAR SHIVERS 2.0 (V),OFFICIAL,Canonical MyVenue name
+65,PIT 114,CODE,Unique location code
+60,PIT 115 - MBP THE DAWG HOUSE (C),OFFICIAL,Canonical MyVenue name
+60,PIT 115,CODE,Unique location code
+56,PIT 116 - MBP LAGUNA (G),OFFICIAL,Canonical MyVenue name
+56,PIT 116,CODE,Unique location code
+61,PIT 117 - MBP 108 CORNER (J/L),OFFICIAL,Canonical MyVenue name
+61,PIT 117,CODE,Unique location code
+59,PIT 118 - MBP PRETZEL CART (C),OFFICIAL,Canonical MyVenue name
+59,PIT 118,CODE,Unique location code
+66,PIT 119 - MBP NACHO HANDICAP (R),OFFICIAL,Canonical MyVenue name
+66,PIT 119,CODE,Unique location code
+67,PIT 120 - MBP DAWG HOUSE HANDICAP (C),OFFICIAL,Canonical MyVenue name
+67,PIT 120,CODE,Unique location code
+68,PIT 121 - MBP LAGUNA HANDICAP (G),OFFICIAL,Canonical MyVenue name
+68,PIT 121,CODE,Unique location code
+69,PIT 122 - MBP COMMAND POST (U),OFFICIAL,Canonical MyVenue name
+69,PIT 122,CODE,Unique location code
+70,PIT 123 - MBP MAIN ENTRANCE (A),OFFICIAL,Canonical MyVenue name
+70,PIT 123,CODE,Unique location code
+88,PIT 124 - MBP MINI MELTS (J/L),OFFICIAL,Canonical MyVenue name
+88,PIT 124,CODE,Unique location code
+42,PIT 201 - PREM. 505 MARKET,OFFICIAL,Canonical MyVenue name
+42,PIT 201,CODE,Unique location code
+43,PIT 202 - PREM. WEST BAR,OFFICIAL,Canonical MyVenue name
+43,PIT 202,CODE,Unique location code
+44,PIT 203 - PREM. EAST BAR,OFFICIAL,Canonical MyVenue name
+44,PIT 203,CODE,Unique location code
+45,PIT 204 - PREM. LOBO BITES,OFFICIAL,Canonical MyVenue name
+45,PIT 204,CODE,Unique location code
+46,PIT 205 - PREM. LETTERMANS LOUNGE,OFFICIAL,Canonical MyVenue name
+46,PIT 205,CODE,Unique location code
+47,PIT 206 - PREM. SPEAKEASY,OFFICIAL,Canonical MyVenue name
+47,PIT 206,CODE,Unique location code
+48,PIT 207 - PREM. DESSERT CART MOBILE,OFFICIAL,Canonical MyVenue name
+48,PIT 207,CODE,Unique location code
+87,PIT 208 - PREM. MCDAVID LOUNGE,OFFICIAL,Canonical MyVenue name
+87,PIT 208,CODE,Unique location code
+2,WAREHOUSE - FOOTBALL (NE),OFFICIAL,Canonical MyVenue name
+3,WAREHOUSE - FOOTBALL (NW),OFFICIAL,Canonical MyVenue name
+4,WAREHOUSE - KITCHEN / CULINARY,OFFICIAL,Canonical MyVenue name
+1,WAREHOUSE - MAIN (THE PIT),OFFICIAL,Canonical MyVenue name
+72,WAREHOUSE - PANTRY - PREMIUM (THE PIT),OFFICIAL,Canonical MyVenue name
+12,ZZZ FB 107 - NE SPECIALTY - PAPAGAYOS LEMONADE,OFFICIAL,Canonical MyVenue name
+12,ZZZ FB 107,CODE,Unique location code
+51,ZZZ FB 112 - PALETA BAR,OFFICIAL,Canonical MyVenue name
+51,ZZZ FB 112,CODE,Unique location code
+75,zzz FB 114 - MBP - WATER (SE),OFFICIAL,Canonical MyVenue name
+75,zzz FB 114,CODE,Unique location code
+82,zzz FB 115 - MBP - WATER (NE),OFFICIAL,Canonical MyVenue name
+82,zzz FB 115,CODE,Unique location code
+83,ZZZ FB 116B - MBP - NORTH WEST 2.0 POLE,OFFICIAL,Canonical MyVenue name
+83,ZZZ FB 116B,CODE,Unique location code
+79,zzz FB 152 - SUB THE BEAN COFFEE,OFFICIAL,Canonical MyVenue name
+79,zzz FB 152,CODE,Unique location code
+41,ZZZ PIT 110 - SUB - BIG UNIQUE SANDWICHES,OFFICIAL,Canonical MyVenue name
+41,ZZZ PIT 110,CODE,Unique location code
+74,FB 113 - MBP - MINI MELTS (NW),LEGACY_NPO,"NPO V4 assigned Mini Melts NW to FB 113. Official 9/14/26 list: FB 113 is Student Zone; Mini Melts NW is FB 114. Import matcher must use alias, not code."
+74,MBP  MINI MELTS (NW),LEGACY_NPO,"NPO V4 assigned Mini Melts NW to FB 113. Official 9/14/26 list: FB 113 is Student Zone; Mini Melts NW is FB 114. Import matcher must use alias, not code."
+74,FB 113,LEGACY_NPO_CODE,"NPO V4 assigned Mini Melts NW to FB 113. Official 9/14/26 list: FB 113 is Student Zone; Mini Melts NW is FB 114. Import matcher must use alias, not code. NOT unique-safe; prefer full alias."
+85,FB 113B - MBP - MINI MELTS (NE),LEGACY_NPO,NPO V4 used FB 113B. Official list: Mini Melts NE is FB 115. FB 113B is not a current MyVenue location.
+85,MBP  MINI MELTS (NE),LEGACY_NPO,NPO V4 used FB 113B. Official list: Mini Melts NE is FB 115. FB 113B is not a current MyVenue location.
+85,FB 113B,LEGACY_NPO_CODE,NPO V4 used FB 113B. Official list: Mini Melts NE is FB 115. FB 113B is not a current MyVenue location. NOT unique-safe; prefer full alias.
+13,TRAILER N CONCOURSE,NPO_TEMPLATE,From NPO V4 SET-UP stand list
+81,MBP TRAILER N CONCOURSE,NPO_TEMPLATE,From NPO V4 SET-UP stand list
+6,STADIUM SIPS SHACK SW,NPO_TEMPLATE,From NPO V4 SET-UP stand list
+7,TOWER SOUTH,NPO_TEMPLATE,From NPO V4 SET-UP stand list
+8,TOWER NORTH,NPO_TEMPLATE,From NPO V4 SET-UP stand list
+9,RED RALLY NORTH WEST,NPO_TEMPLATE,From NPO V4 SET-UP stand list
+10,NW SPECIALTY DAWG 2.0,NPO_TEMPLATE,From NPO V4 SET-UP stand list
+10,FB 105 - NW SPECIALTY DAWG 2.0,NPO_TEMPLATE,From NPO V4 SET-UP stand list
+11,RED RALLY NORTH EAST,NPO_TEMPLATE,From NPO V4 SET-UP stand list
+62,NE SPECIALTY DAWG O.G.,NPO_TEMPLATE,From NPO V4 SET-UP stand list
+62,FB 107 - NE SPECIALTY DAWG O.G.,NPO_TEMPLATE,From NPO V4 SET-UP stand list
+14,GRAB N GO NW,NPO_TEMPLATE,From NPO V4 SET-UP stand list
+14,FB 108 - GRAB N GO NW,NPO_TEMPLATE,From NPO V4 SET-UP stand list
+15,MBP NORTH EAST,NPO_TEMPLATE,From NPO V4 SET-UP stand list
+15,FB 109 - MBP NORTH EAST,NPO_TEMPLATE,From NPO V4 SET-UP stand list
+84,MBP NORTH EAST 2.0 POLE,NPO_TEMPLATE,From NPO V4 SET-UP stand list
+84,FB 109B - MBP NORTH EAST 2.0 POLE,NPO_TEMPLATE,From NPO V4 SET-UP stand list
+16,MBP SHIVERS (NW),NPO_TEMPLATE,From NPO V4 SET-UP stand list
+16,FB 110 - MBP SHIVERS (NW),NPO_TEMPLATE,From NPO V4 SET-UP stand list
+30,MBP NE PEPSI TRAILER,NPO_TEMPLATE,From NPO V4 SET-UP stand list
+30,FB 111 - MBP NE PEPSI TRAILER,NPO_TEMPLATE,From NPO V4 SET-UP stand list
+21,MBP STUDENT ZONE (SE),NPO_TEMPLATE,From NPO V4 SET-UP stand list
+21,FB 112 - MBP STUDENT ZONE (SE),NPO_TEMPLATE,From NPO V4 SET-UP stand list
+73,MBP MINI MELTS (NW),NPO_TEMPLATE,From NPO V4 SET-UP stand list
+73,FB 113 - MBP MINI MELTS (NW),NPO_TEMPLATE,From NPO V4 SET-UP stand list
+74,MBP WATER (SE),NPO_TEMPLATE,From NPO V4 SET-UP stand list
+74,FB 114 - MBP WATER (SE),NPO_TEMPLATE,From NPO V4 SET-UP stand list
+85,MBP WATER (NE),NPO_TEMPLATE,From NPO V4 SET-UP stand list
+85,FB 115 - MBP WATER (NE),NPO_TEMPLATE,From NPO V4 SET-UP stand list
+77,MBP ELOTICO CART (NW),NPO_TEMPLATE,From NPO V4 SET-UP stand list
+78,MBP ELOTICO CART (SE),NPO_TEMPLATE,From NPO V4 SET-UP stand list
+78,FB 118 - MBP ELOTICO CART (SE),NPO_TEMPLATE,From NPO V4 SET-UP stand list
+80,HAWK VENDORS,NPO_TEMPLATE,From NPO V4 SET-UP stand list
+76,MBP N. SCOREBOARD,NPO_TEMPLATE,From NPO V4 SET-UP stand list
+76,FB 120 - MBP N. SCOREBOARD,NPO_TEMPLATE,From NPO V4 SET-UP stand list
+57,SUB SUGAR SHIVERS,NPO_TEMPLATE,From NPO V4 SET-UP stand list
+71,VENDING (HAWK),NPO_TEMPLATE,From NPO V4 SET-UP stand list
+31,A - POP & POUR,NPO_TEMPLATE,Disambiguated PIT 101-style duplicate code
+31,PIT 101 - A - POP & POUR,NPO_TEMPLATE,Disambiguated duplicate location code
+33,THE PIT STOP (U),NPO_TEMPLATE,From NPO V4 SET-UP stand list
+34,SUB SUGAR SHIVERS (V),NPO_TEMPLATE,From NPO V4 SET-UP stand list
+35,BURQUE BREWS (W),NPO_TEMPLATE,From NPO V4 SET-UP stand list
+36,HOWL VODKA LEMONADE (Z),NPO_TEMPLATE,From NPO V4 SET-UP stand list
+37,LOUIE'S DAWG HOUSE (C),NPO_TEMPLATE,From NPO V4 SET-UP stand list
+53,SUB - LAGUNA BURGER (G),NPO_TEMPLATE,From NPO V4 SET-UP stand list
+39,HOOP & GO (J),NPO_TEMPLATE,From NPO V4 SET-UP stand list
+40,ALLEYOOP (L),NPO_TEMPLATE,From NPO V4 SET-UP stand list
+64,PAPITAS (M),NPO_TEMPLATE,From NPO V4 SET-UP stand list
+58,MBP ELEVATOR (Q),NPO_TEMPLATE,From NPO V4 SET-UP stand list
+54,MBP NACHOMAMA (R),NPO_TEMPLATE,From NPO V4 SET-UP stand list
+55,MBP SUGAR SHIVERS (V),NPO_TEMPLATE,From NPO V4 SET-UP stand list
+65,MBP SUGAR SHIVERS (V) 2.0,NPO_TEMPLATE,From NPO V4 SET-UP stand list
+65,PIT 114 - MBP SUGAR SHIVERS (V) 2.0,NPO_TEMPLATE,From NPO V4 SET-UP stand list
+60,MBP THE DAWG HOUSE (C),NPO_TEMPLATE,From NPO V4 SET-UP stand list
+56,MBP LAGUNA (G),NPO_TEMPLATE,From NPO V4 SET-UP stand list
+61,MBP J/L CORNER (J/L),NPO_TEMPLATE,From NPO V4 SET-UP stand list
+61,PIT 117 - MBP J/L CORNER (J/L),NPO_TEMPLATE,From NPO V4 SET-UP stand list
+59,MBP PRETZEL CART,NPO_TEMPLATE,From NPO V4 SET-UP stand list
+59,PIT 118 - MBP PRETZEL CART,NPO_TEMPLATE,From NPO V4 SET-UP stand list
+66,MBP NACHO HANDICAP (R),NPO_TEMPLATE,From NPO V4 SET-UP stand list
+67,MBP DAWG HOUSE HANDICAP (C),NPO_TEMPLATE,From NPO V4 SET-UP stand list
+68,MBP LAGUNA HANDICAP (G),NPO_TEMPLATE,From NPO V4 SET-UP stand list
+69,MBP COMMAND POST (U),NPO_TEMPLATE,From NPO V4 SET-UP stand list
+70,MBP MAIN ENTRANCE (A),NPO_TEMPLATE,From NPO V4 SET-UP stand list
+32,B - NACHOMAMA,NPO_TEMPLATE,Disambiguated PIT 101 B vs A
+32,PIT 101 - B - NACHOMAMA,NPO_TEMPLATE,NPO EVENT ASSIGNMENT MSR string (no double space, no letter suffix)
+32,B -  NACHOMAMA,NPO_TEMPLATE,Matches SET-UP stand description spacing

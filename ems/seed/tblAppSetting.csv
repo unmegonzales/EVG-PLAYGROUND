@@ -1,0 +1,23 @@
+SettingKey,SettingValue,ValueType,Notes
+EntityName,UNM,TEXT,Levy UNM Athletics Hospitality
+CompanyLegalName,COMPASS GROUP USA | LEVY - UNM ATHLETICS,TEXT,Prints on settlement statements
+PrimaryTaxRate,0.07625,DOUBLE,NM tax on 9/5/26 MSR and 12/1/25 SUB packets
+SecondaryTaxRate,0,DOUBLE,
+CID,241,TEXT,Internal posting CID
+DefaultDepartment,36127,TEXT,"CONCESSIONS. Premium 36128, Specialty 36637, Admin 34964"
+NPOFoodNonAlcRate,0.10,DOUBLE,Default NPO food/non-alcohol donation rate
+NPOAlcoholRate,0.08,DOUBLE,Default NPO alcohol donation rate
+NPOMinimumDonation,200,CURRENCY,Manual statement add-on in current process; do not auto-apply until confirmed
+DefaultCardFeeMaxRate,0.03,DOUBLE,SUB card fees 3% max
+IceBagCost,3,CURRENCY,SUB ice $3 per bag
+InvoicePrefix,UNM,TEXT,Invoice UNM-MMDDYY-SHORTCODE
+GL_NPO_Donation,611225,TEXT,From ARVC 12/1/25 NPO PDF
+GL_Gratuities,212113,TEXT,NPO and SUB
+GL_SUB_FoodCommission,314009,TEXT,Food Vendor Commission (Sub. Expense)
+GL_SUB_NABevCommission,611120,TEXT,N/A Beverage Comm. (Temp. Services)
+GL_CardFees,694000,TEXT,Credit card charges
+GL_IceCOS,411054,TEXT,N/A Beverage (COS) ice bags
+DefaultPreparer,Abigail Tenorio,TEXT,Concessions Manager
+DefaultReviewer,Evan E. Gonzales,TEXT,Finance Manager on NPO PDF; also listed as SUB reviewer
+DefaultApprover,Ray Velasquez,TEXT,Director of Operations. Spelling varies Velasquez/Valasquez on source PDFs.
+RepositoryRoot,,TEXT,"UNC path or SharePoint path. EMS stores paths, not files."
