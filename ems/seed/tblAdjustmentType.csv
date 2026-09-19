@@ -1,0 +1,23 @@
+AdjustmentCode,AdjustmentName,AppliesTo,DefaultIsDeduction,DefaultGLCode,SortOrder,Active
+TIPS,Credit Card Gratuities,BOTH,0,212113,10,1
+COOK_FEE,Cook Fee ($50 Sous / $75 Regular),NPO,0,611225,20,1
+MIN_DONATION,Minimum Donation (<$200),NPO,0,611225,30,1
+BONUS,Bonus Donation / Bonus Misc.,BOTH,0,611225,40,1
+POS_SHORTAGE,Deductible POS Shortages,BOTH,1,,50,1
+UNIFORM_STAFF,Uniform / Staffing / Cleaning Fees,NPO,1,674102,60,1
+CLEANING_EXPENSE,Cleaning Fee - Expense,NPO,1,674102,70,1
+CARD_FEE,Card Fees 3% Max,SUB,1,694000,80,1
+ICE,N/A Beverage & Ice ($3/bag),SUB,1,411054,90,1
+FOOD_COS,Food (COS),SUB,1,410000,100,1
+NA_BEV_COS,N/A Beverage (COS),SUB,1,411054,110,1
+BEER_COS,Packaged Beer (COS),SUB,1,411109,120,1
+LIQUOR_COS,Liquor (COS),SUB,1,611082,130,1
+CLEANING_SUPPLIES,Cleaning Supplies,SUB,1,674102,140,1
+EQUIPMENT_RENTAL,Equipment Rental,SUB,1,653703,150,1
+LICENSES,Licenses / Permits,SUB,1,342030,160,1
+PROPANE,Propane / Fuel,SUB,1,653810,170,1
+RM,Repair & Maintenance,SUB,1,645225,180,1
+PRINTING,Printing,SUB,1,674701,190,1
+CONTRACT_LABOR,Contract Labor FOH,SUB,1,352092,200,1
+SUB_FOOD_COMM_GL,Food Vendor Commission (Sub. Expense),SUB,0,314009,5,1
+SUB_NABEV_COMM_GL,N/A Beverage Comm. (Temp. Services),SUB,0,611120,6,1

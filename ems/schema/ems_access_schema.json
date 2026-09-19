@@ -1,0 +1,2759 @@
+{
+  "product": "EMS",
+  "title": "Event Management System",
+  "organization": "UNM Athletics Hospitality / Levy",
+  "version": "5.0",
+  "volume": "A",
+  "generated": "2026-09-19",
+  "accessFiles": {
+    "backEnd": "EMS_BE.accdb",
+    "frontEnd": "EMS_FE.accdb",
+    "notes": "Per-user FE copies. Shared BE on network/SharePoint. Repository folders are outside Access; store paths only."
+  },
+  "alphaOutOfScope": [
+    "Settlement calculations",
+    "PDF generation",
+    "Draft email generation",
+    "Reports",
+    "MyVenue import parser UI logic"
+  ],
+  "lookupsFirst": true,
+  "tables": [
+    {
+      "name": "tblVendorType",
+      "purpose": "Vendor classifications. Create and seed before tblVendor.",
+      "phase": "A",
+      "notes": "",
+      "fields": [
+        {
+          "name": "VendorTypeID",
+          "type": "AutoNumber",
+          "required": false,
+          "primaryKey": true,
+          "autoNumber": true,
+          "unique": false,
+          "indexed": true,
+          "description": "Primary key"
+        },
+        {
+          "name": "VendorTypeName",
+          "type": "Short Text",
+          "required": true,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": true,
+          "indexed": true,
+          "description": "NPO or SUB",
+          "size": 50,
+          "allowZeroLength": true
+        },
+        {
+          "name": "VendorTypeDescription",
+          "type": "Short Text",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "Plain-language purpose",
+          "size": 255,
+          "allowZeroLength": true
+        }
+      ],
+      "seedFile": "seed/tblVendorType.csv"
+    },
+    {
+      "name": "tblEventType",
+      "purpose": "Event types. Create and seed before tblEvent.",
+      "phase": "A",
+      "notes": "",
+      "fields": [
+        {
+          "name": "EventTypeID",
+          "type": "AutoNumber",
+          "required": false,
+          "primaryKey": true,
+          "autoNumber": true,
+          "unique": false,
+          "indexed": true,
+          "description": ""
+        },
+        {
+          "name": "EventTypeName",
+          "type": "Short Text",
+          "required": true,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": true,
+          "indexed": true,
+          "description": "",
+          "size": 50,
+          "allowZeroLength": true
+        },
+        {
+          "name": "EventTypeShort",
+          "type": "Short Text",
+          "required": true,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": true,
+          "indexed": true,
+          "description": "Used in PDF file names: FB, MBB, WBB, CON, RNT, SPE, BB",
+          "size": 10,
+          "allowZeroLength": true
+        }
+      ],
+      "seedFile": "seed/tblEventType.csv"
+    },
+    {
+      "name": "tblEventStatus",
+      "purpose": "Event lifecycle. Do not add statuses without a change request.",
+      "phase": "A",
+      "notes": "Allowed progression: OPEN -> FINANCE REVIEW -> CLOSED. No skipping. No reverse without admin override later.",
+      "fields": [
+        {
+          "name": "StatusID",
+          "type": "AutoNumber",
+          "required": false,
+          "primaryKey": true,
+          "autoNumber": true,
+          "unique": false,
+          "indexed": true,
+          "description": ""
+        },
+        {
+          "name": "StatusName",
+          "type": "Short Text",
+          "required": true,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": true,
+          "indexed": true,
+          "description": "",
+          "size": 50,
+          "allowZeroLength": true
+        },
+        {
+          "name": "StatusSequence",
+          "type": "Number",
+          "required": true,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "1 OPEN, 2 FINANCE REVIEW, 3 CLOSED. Forward-only."
+        },
+        {
+          "name": "IsClosed",
+          "type": "Yes/No",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "",
+          "default": "No"
+        }
+      ],
+      "seedFile": "seed/tblEventStatus.csv"
+    },
+    {
+      "name": "tblContractClass",
+      "purpose": "Sales rate buckets. NPO rolls FOOD+NA_BEV and BEER+LIQUOR. SUB uses four rates.",
+      "phase": "A",
+      "notes": "",
+      "fields": [
+        {
+          "name": "ContractClassID",
+          "type": "AutoNumber",
+          "required": false,
+          "primaryKey": true,
+          "autoNumber": true,
+          "unique": false,
+          "indexed": true,
+          "description": ""
+        },
+        {
+          "name": "ContractClassName",
+          "type": "Short Text",
+          "required": true,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": true,
+          "indexed": true,
+          "description": "FOOD, NA_BEV, BEER, LIQUOR, IGNORE",
+          "size": 20,
+          "allowZeroLength": true
+        },
+        {
+          "name": "NPOClass",
+          "type": "Short Text",
+          "required": true,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "FOOD_NONALC, ALCOHOL, or IGNORE",
+          "size": 20,
+          "allowZeroLength": true
+        },
+        {
+          "name": "DefaultNPORate",
+          "type": "Double",
+          "required": true,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "",
+          "default": "0"
+        }
+      ],
+      "seedFile": "seed/tblContractClass.csv"
+    },
+    {
+      "name": "tblAppSetting",
+      "purpose": "Keyed configuration. Settings form reads/writes this table. No hardcoded rates in VBA.",
+      "phase": "A",
+      "notes": "",
+      "fields": [
+        {
+          "name": "SettingID",
+          "type": "AutoNumber",
+          "required": false,
+          "primaryKey": true,
+          "autoNumber": true,
+          "unique": false,
+          "indexed": true,
+          "description": ""
+        },
+        {
+          "name": "SettingKey",
+          "type": "Short Text",
+          "required": true,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": true,
+          "indexed": true,
+          "description": "",
+          "size": 50,
+          "allowZeroLength": true
+        },
+        {
+          "name": "SettingValue",
+          "type": "Short Text",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "",
+          "size": 255,
+          "allowZeroLength": true
+        },
+        {
+          "name": "ValueType",
+          "type": "Short Text",
+          "required": true,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "TEXT, DOUBLE, CURRENCY, YESNO",
+          "size": 20,
+          "default": "TEXT",
+          "allowZeroLength": true
+        },
+        {
+          "name": "Notes",
+          "type": "Short Text",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "",
+          "size": 255,
+          "allowZeroLength": true
+        }
+      ],
+      "seedFile": "seed/tblAppSetting.csv"
+    },
+    {
+      "name": "tblAdjustmentType",
+      "purpose": "Statement add-on / deduction lines for Phase 2. Create empty-capable now and seed types.",
+      "phase": "A",
+      "notes": "Used by tblSettlementAdjustment in Phase 2. Seed now so statement lines stay stable.",
+      "fields": [
+        {
+          "name": "AdjustmentTypeID",
+          "type": "AutoNumber",
+          "required": false,
+          "primaryKey": true,
+          "autoNumber": true,
+          "unique": false,
+          "indexed": true,
+          "description": ""
+        },
+        {
+          "name": "AdjustmentCode",
+          "type": "Short Text",
+          "required": true,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": true,
+          "indexed": true,
+          "description": "",
+          "size": 30,
+          "allowZeroLength": true
+        },
+        {
+          "name": "AdjustmentName",
+          "type": "Short Text",
+          "required": true,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "",
+          "size": 100,
+          "allowZeroLength": true
+        },
+        {
+          "name": "AppliesTo",
+          "type": "Short Text",
+          "required": true,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "NPO, SUB, or BOTH",
+          "size": 10,
+          "allowZeroLength": true
+        },
+        {
+          "name": "DefaultIsDeduction",
+          "type": "Yes/No",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "",
+          "default": "No"
+        },
+        {
+          "name": "DefaultGLCode",
+          "type": "Short Text",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "",
+          "size": 20,
+          "allowZeroLength": true
+        },
+        {
+          "name": "SortOrder",
+          "type": "Number",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "",
+          "default": "0"
+        },
+        {
+          "name": "Active",
+          "type": "Yes/No",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "",
+          "default": "Yes"
+        }
+      ],
+      "seedFile": "seed/tblAdjustmentType.csv"
+    },
+    {
+      "name": "tblVendor",
+      "purpose": "Master vendor repository for NPOs and subcontractors.",
+      "phase": "A",
+      "notes": "Short code is the join key to legacy Excel. Do not change ARVC/LAG/SUG once seeded.",
+      "fields": [
+        {
+          "name": "VendorID",
+          "type": "AutoNumber",
+          "required": false,
+          "primaryKey": true,
+          "autoNumber": true,
+          "unique": false,
+          "indexed": true,
+          "description": ""
+        },
+        {
+          "name": "VendorName",
+          "type": "Short Text",
+          "required": true,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": true,
+          "description": "Legal / full name",
+          "size": 255,
+          "allowZeroLength": true
+        },
+        {
+          "name": "VendorShortCode",
+          "type": "Short Text",
+          "required": true,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": true,
+          "indexed": true,
+          "description": "Payee key. Must match EVENT ASSIGNMENT NPO column and invoice suffix. Examples ARVC, LAG, SUG",
+          "size": 25,
+          "allowZeroLength": true
+        },
+        {
+          "name": "VendorTypeID",
+          "type": "Number",
+          "required": true,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "NPO or SUB",
+          "fk": {
+            "table": "tblVendorType",
+            "field": "VendorTypeID"
+          }
+        },
+        {
+          "name": "SAPID",
+          "type": "Short Text",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "SAP supplier number",
+          "size": 50,
+          "allowZeroLength": true
+        },
+        {
+          "name": "BSSID",
+          "type": "Short Text",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "Levy BSS / supplier #",
+          "size": 50,
+          "allowZeroLength": true
+        },
+        {
+          "name": "CheckPayableTo",
+          "type": "Short Text",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "Prints on statement. Defaults to VendorName",
+          "size": 255,
+          "allowZeroLength": true
+        },
+        {
+          "name": "PrimaryContact",
+          "type": "Short Text",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "",
+          "size": 255,
+          "allowZeroLength": true
+        },
+        {
+          "name": "Phone",
+          "type": "Short Text",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "",
+          "size": 50,
+          "allowZeroLength": true
+        },
+        {
+          "name": "EmailAddress",
+          "type": "Short Text",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "",
+          "size": 255,
+          "allowZeroLength": true
+        },
+        {
+          "name": "CCEmailAddress",
+          "type": "Short Text",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "Settlement CC list",
+          "size": 255,
+          "allowZeroLength": true
+        },
+        {
+          "name": "Address1",
+          "type": "Short Text",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "",
+          "size": 255,
+          "allowZeroLength": true
+        },
+        {
+          "name": "City",
+          "type": "Short Text",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "",
+          "size": 100,
+          "allowZeroLength": true
+        },
+        {
+          "name": "State",
+          "type": "Short Text",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "",
+          "size": 2,
+          "allowZeroLength": true
+        },
+        {
+          "name": "PostalCode",
+          "type": "Short Text",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "",
+          "size": 10,
+          "allowZeroLength": true
+        },
+        {
+          "name": "Active",
+          "type": "Yes/No",
+          "required": true,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "",
+          "default": "Yes"
+        },
+        {
+          "name": "W9Path",
+          "type": "Short Text",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "UNC/SharePoint path. Do not embed file.",
+          "size": 255,
+          "allowZeroLength": true
+        },
+        {
+          "name": "COIPath",
+          "type": "Short Text",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "",
+          "size": 255,
+          "allowZeroLength": true
+        },
+        {
+          "name": "ContractPath",
+          "type": "Short Text",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "",
+          "size": 255,
+          "allowZeroLength": true
+        },
+        {
+          "name": "Notes",
+          "type": "Long Text",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "Standing notes, not event-specific"
+        },
+        {
+          "name": "CreatedDate",
+          "type": "Date/Time",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "",
+          "default": "Now()"
+        },
+        {
+          "name": "CreatedBy",
+          "type": "Short Text",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "",
+          "size": 50,
+          "allowZeroLength": true
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "Date/Time",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": ""
+        },
+        {
+          "name": "ModifiedBy",
+          "type": "Short Text",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "",
+          "size": 50,
+          "allowZeroLength": true
+        }
+      ],
+      "seedFile": "seed/tblVendor.csv"
+    },
+    {
+      "name": "tblVendorContract",
+      "purpose": "Settlement rates. NPO rows use 10/10/8/8 and $200 min. SUB rows are vendor-specific.",
+      "phase": "A",
+      "notes": "If multiple contracts exist, settlement later uses the row where EffectiveDate<=EventDate AND (ExpirationDate is null OR ExpirationDate>=EventDate) AND Active=Yes.",
+      "fields": [
+        {
+          "name": "ContractID",
+          "type": "AutoNumber",
+          "required": false,
+          "primaryKey": true,
+          "autoNumber": true,
+          "unique": false,
+          "indexed": true,
+          "description": ""
+        },
+        {
+          "name": "VendorID",
+          "type": "Number",
+          "required": true,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": true,
+          "description": "",
+          "fk": {
+            "table": "tblVendor",
+            "field": "VendorID"
+          }
+        },
+        {
+          "name": "FoodRate",
+          "type": "Double",
+          "required": true,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "",
+          "default": "0",
+          "validationRule": ">=0 And <=1",
+          "validationText": "Rate must be between 0 and 1 (70% = 0.7)"
+        },
+        {
+          "name": "NonAlcoholRate",
+          "type": "Double",
+          "required": true,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "",
+          "default": "0",
+          "validationRule": ">=0 And <=1"
+        },
+        {
+          "name": "BeerRate",
+          "type": "Double",
+          "required": true,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "",
+          "default": "0",
+          "validationRule": ">=0 And <=1"
+        },
+        {
+          "name": "LiquorRate",
+          "type": "Double",
+          "required": true,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "",
+          "default": "0",
+          "validationRule": ">=0 And <=1"
+        },
+        {
+          "name": "MinimumDonation",
+          "type": "Currency",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "NPO $200 in current process. Null/0 for SUB. Do not auto-apply in Phase 1."
+        },
+        {
+          "name": "AllowExpenses",
+          "type": "Yes/No",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "SUB Yes (card fees, ice, COS). NPO No unless later required.",
+          "default": "No"
+        },
+        {
+          "name": "CardFeeMaxRate",
+          "type": "Double",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "SUB 0.03",
+          "default": "0"
+        },
+        {
+          "name": "EffectiveDate",
+          "type": "Date/Time",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "",
+          "default": "Date()"
+        },
+        {
+          "name": "ExpirationDate",
+          "type": "Date/Time",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": ""
+        },
+        {
+          "name": "Active",
+          "type": "Yes/No",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "",
+          "default": "Yes"
+        },
+        {
+          "name": "Notes",
+          "type": "Long Text",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": ""
+        }
+      ],
+      "seedFile": "seed/tblVendorContract.csv"
+    },
+    {
+      "name": "tblLocation",
+      "purpose": "Permanent MyVenue location library. LocationCode is NOT unique (PIT 101 is two locations).",
+      "phase": "A",
+      "notes": "",
+      "fields": [
+        {
+          "name": "LocationID",
+          "type": "AutoNumber",
+          "required": false,
+          "primaryKey": true,
+          "autoNumber": true,
+          "unique": false,
+          "indexed": true,
+          "description": ""
+        },
+        {
+          "name": "MyVenueCode",
+          "type": "Number",
+          "required": true,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": true,
+          "indexed": true,
+          "description": "Numeric Code column from MyVenue location export"
+        },
+        {
+          "name": "LocationName",
+          "type": "Short Text",
+          "required": true,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": true,
+          "indexed": true,
+          "description": "Full MyVenue Name, e.g. FB 106 - RED RALLY NORTH EAST. Primary match target.",
+          "size": 255,
+          "allowZeroLength": true
+        },
+        {
+          "name": "LocationCode",
+          "type": "Short Text",
+          "required": true,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": true,
+          "description": "FB 106, PIT 101. Duplicates allowed.",
+          "size": 50,
+          "allowZeroLength": true
+        },
+        {
+          "name": "LocationDescription",
+          "type": "Short Text",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "Text after first ' - '",
+          "size": 255,
+          "allowZeroLength": true
+        },
+        {
+          "name": "Venue",
+          "type": "Short Text",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": true,
+          "description": "Football Stadium, The Pit, Baseball, Other",
+          "size": 100,
+          "allowZeroLength": true
+        },
+        {
+          "name": "Department",
+          "type": "Short Text",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "",
+          "size": 100,
+          "allowZeroLength": true
+        },
+        {
+          "name": "Menu",
+          "type": "Short Text",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "",
+          "size": 255,
+          "allowZeroLength": true
+        },
+        {
+          "name": "POSProfile",
+          "type": "Short Text",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "",
+          "size": 100,
+          "allowZeroLength": true
+        },
+        {
+          "name": "Family",
+          "type": "Short Text",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "",
+          "size": 255,
+          "allowZeroLength": true
+        },
+        {
+          "name": "PriceLevel",
+          "type": "Short Text",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "",
+          "size": 50,
+          "allowZeroLength": true
+        },
+        {
+          "name": "IsWarehouse",
+          "type": "Yes/No",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "",
+          "default": "No"
+        },
+        {
+          "name": "Active",
+          "type": "Yes/No",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "No for ZZZ retired, warehouse, AA admin",
+          "default": "Yes"
+        },
+        {
+          "name": "Notes",
+          "type": "Long Text",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": ""
+        }
+      ],
+      "seedFile": "seed/tblLocation.csv"
+    },
+    {
+      "name": "tblLocationAlias",
+      "purpose": "Protects imports from MyVenue naming drift. Matcher uses AliasName exact, case-insensitive.",
+      "phase": "A",
+      "notes": "See seed/location_alias_conflicts.csv. Mini Melts NW was coded FB 113 in NPO V4; official is FB 114.",
+      "fields": [
+        {
+          "name": "AliasID",
+          "type": "AutoNumber",
+          "required": false,
+          "primaryKey": true,
+          "autoNumber": true,
+          "unique": false,
+          "indexed": true,
+          "description": ""
+        },
+        {
+          "name": "LocationID",
+          "type": "Number",
+          "required": true,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": true,
+          "description": "",
+          "fk": {
+            "table": "tblLocation",
+            "field": "LocationID"
+          }
+        },
+        {
+          "name": "AliasName",
+          "type": "Short Text",
+          "required": true,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": true,
+          "indexed": true,
+          "description": "Must be unique across the table. Includes official LocationName.",
+          "size": 255,
+          "allowZeroLength": true
+        },
+        {
+          "name": "AliasType",
+          "type": "Short Text",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "OFFICIAL, CODE, MSR, NPO_TEMPLATE, LEGACY_NPO",
+          "size": 25,
+          "allowZeroLength": true
+        },
+        {
+          "name": "Notes",
+          "type": "Short Text",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "",
+          "size": 255,
+          "allowZeroLength": true
+        }
+      ],
+      "seedFile": "seed/tblLocationAlias.csv"
+    },
+    {
+      "name": "tblCategoryMap",
+      "purpose": "Maps MyVenue product codes to contract class and default NPO rate.",
+      "phase": "A",
+      "notes": "Add new product codes here when MSR exports change. Do not delete codes; deactivate.",
+      "fields": [
+        {
+          "name": "CategoryMapID",
+          "type": "AutoNumber",
+          "required": false,
+          "primaryKey": true,
+          "autoNumber": true,
+          "unique": false,
+          "indexed": true,
+          "description": ""
+        },
+        {
+          "name": "ProductCode",
+          "type": "Short Text",
+          "required": true,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": true,
+          "indexed": true,
+          "description": "",
+          "size": 25,
+          "allowZeroLength": true
+        },
+        {
+          "name": "ProductDescription",
+          "type": "Short Text",
+          "required": true,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "",
+          "size": 255,
+          "allowZeroLength": true
+        },
+        {
+          "name": "ContractClassID",
+          "type": "Number",
+          "required": true,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "",
+          "fk": {
+            "table": "tblContractClass",
+            "field": "ContractClassID"
+          }
+        },
+        {
+          "name": "DefaultRate",
+          "type": "Double",
+          "required": true,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": ""
+        },
+        {
+          "name": "Active",
+          "type": "Yes/No",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "",
+          "default": "Yes"
+        },
+        {
+          "name": "Notes",
+          "type": "Short Text",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "",
+          "size": 255,
+          "allowZeroLength": true
+        }
+      ],
+      "seedFile": "seed/tblCategoryMap.csv"
+    },
+    {
+      "name": "tblEvent",
+      "purpose": "One row per event. Status starts OPEN.",
+      "phase": "A",
+      "notes": "Composite business key is EventDate + EventName. Do not create a unique index until duplicate same-day events are ruled out (football vs concert same date possible).",
+      "fields": [
+        {
+          "name": "EventID",
+          "type": "AutoNumber",
+          "required": false,
+          "primaryKey": true,
+          "autoNumber": true,
+          "unique": false,
+          "indexed": true,
+          "description": ""
+        },
+        {
+          "name": "EventDate",
+          "type": "Date/Time",
+          "required": true,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": true,
+          "description": ""
+        },
+        {
+          "name": "EventName",
+          "type": "Short Text",
+          "required": true,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "Football, MBB - NM HIGHLANDS",
+          "size": 255,
+          "allowZeroLength": true
+        },
+        {
+          "name": "InternalEventName",
+          "type": "Short Text",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "SUB workbook Internal Event Name/Notes, e.g. MEN'S BASKETBALL",
+          "size": 255,
+          "allowZeroLength": true
+        },
+        {
+          "name": "EventTypeID",
+          "type": "Number",
+          "required": true,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "",
+          "fk": {
+            "table": "tblEventType",
+            "field": "EventTypeID"
+          }
+        },
+        {
+          "name": "StatusID",
+          "type": "Number",
+          "required": true,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "",
+          "default": "1",
+          "fk": {
+            "table": "tblEventStatus",
+            "field": "StatusID"
+          }
+        },
+        {
+          "name": "TaxRate",
+          "type": "Double",
+          "required": true,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "",
+          "default": "0.07625"
+        },
+        {
+          "name": "Notes",
+          "type": "Long Text",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": ""
+        },
+        {
+          "name": "CreatedDate",
+          "type": "Date/Time",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "",
+          "default": "Now()"
+        },
+        {
+          "name": "CreatedBy",
+          "type": "Short Text",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "",
+          "size": 50,
+          "allowZeroLength": true
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "Date/Time",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": ""
+        },
+        {
+          "name": "ModifiedBy",
+          "type": "Short Text",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "",
+          "size": 50,
+          "allowZeroLength": true
+        },
+        {
+          "name": "ClosedDate",
+          "type": "Date/Time",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": ""
+        }
+      ],
+      "seedFile": null
+    },
+    {
+      "name": "tblEventAssignment",
+      "purpose": "Who owns which location for an event, and at what allocation %. Core of NPO engine. Form can wait; table must exist.",
+      "phase": "A",
+      "notes": "Unique index: EventID + LocationID + VendorID. Control rule (Phase 2): allocations for EventID+LocationID should sum to 1 when the location is operated.",
+      "fields": [
+        {
+          "name": "AssignmentID",
+          "type": "AutoNumber",
+          "required": false,
+          "primaryKey": true,
+          "autoNumber": true,
+          "unique": false,
+          "indexed": true,
+          "description": ""
+        },
+        {
+          "name": "EventID",
+          "type": "Number",
+          "required": true,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": true,
+          "description": "",
+          "fk": {
+            "table": "tblEvent",
+            "field": "EventID"
+          }
+        },
+        {
+          "name": "LocationID",
+          "type": "Number",
+          "required": true,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": true,
+          "description": "",
+          "fk": {
+            "table": "tblLocation",
+            "field": "LocationID"
+          }
+        },
+        {
+          "name": "VendorID",
+          "type": "Number",
+          "required": true,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": true,
+          "description": "",
+          "fk": {
+            "table": "tblVendor",
+            "field": "VendorID"
+          }
+        },
+        {
+          "name": "AllocationPct",
+          "type": "Double",
+          "required": true,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "",
+          "default": "1",
+          "validationRule": ">=0 And <=1",
+          "validationText": "Allocation must be 0 through 1 (100% = 1)"
+        },
+        {
+          "name": "PayeeSeq",
+          "type": "Number",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "Per-vendor sequence on the statement (1,2,3...)."
+        },
+        {
+          "name": "AssignmentStatus",
+          "type": "Short Text",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "",
+          "size": 50,
+          "default": "PROOF / INITIAL LOAD",
+          "allowZeroLength": true
+        },
+        {
+          "name": "Notes",
+          "type": "Long Text",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": ""
+        }
+      ],
+      "seedFile": null
+    },
+    {
+      "name": "tblImportBatch",
+      "purpose": "One row per file drop.",
+      "phase": "B",
+      "notes": "",
+      "fields": [
+        {
+          "name": "BatchID",
+          "type": "AutoNumber",
+          "required": false,
+          "primaryKey": true,
+          "autoNumber": true,
+          "unique": false,
+          "indexed": true,
+          "description": ""
+        },
+        {
+          "name": "EventID",
+          "type": "Number",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": true,
+          "description": "",
+          "fk": {
+            "table": "tblEvent",
+            "field": "EventID"
+          }
+        },
+        {
+          "name": "ImportType",
+          "type": "Short Text",
+          "required": true,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "MSR, TIPS, ASSIGNMENT",
+          "size": 20,
+          "allowZeroLength": true
+        },
+        {
+          "name": "SourceFileName",
+          "type": "Short Text",
+          "required": true,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "",
+          "size": 255,
+          "allowZeroLength": true
+        },
+        {
+          "name": "SourcePath",
+          "type": "Short Text",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "",
+          "size": 255,
+          "allowZeroLength": true
+        },
+        {
+          "name": "ImportedAt",
+          "type": "Date/Time",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "",
+          "default": "Now()"
+        },
+        {
+          "name": "ImportedBy",
+          "type": "Short Text",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "",
+          "size": 50,
+          "allowZeroLength": true
+        },
+        {
+          "name": "RecordCount",
+          "type": "Number",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "",
+          "default": "0"
+        },
+        {
+          "name": "ExceptionCount",
+          "type": "Number",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "",
+          "default": "0"
+        },
+        {
+          "name": "Status",
+          "type": "Short Text",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "IMPORTED, REVIEW, POSTED, REJECTED",
+          "size": 25,
+          "default": "IMPORTED",
+          "allowZeroLength": true
+        },
+        {
+          "name": "Notes",
+          "type": "Long Text",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": ""
+        }
+      ],
+      "seedFile": null
+    },
+    {
+      "name": "tblSalesImport",
+      "purpose": "Parsed MyVenue MSR category export (the 9/5/26 CSV shape).",
+      "phase": "B",
+      "notes": "",
+      "fields": [
+        {
+          "name": "SalesImportID",
+          "type": "AutoNumber",
+          "required": false,
+          "primaryKey": true,
+          "autoNumber": true,
+          "unique": false,
+          "indexed": true,
+          "description": ""
+        },
+        {
+          "name": "BatchID",
+          "type": "Number",
+          "required": true,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": true,
+          "description": "",
+          "fk": {
+            "table": "tblImportBatch",
+            "field": "BatchID"
+          }
+        },
+        {
+          "name": "EventID",
+          "type": "Number",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": true,
+          "description": "",
+          "fk": {
+            "table": "tblEvent",
+            "field": "EventID"
+          }
+        },
+        {
+          "name": "RawRow",
+          "type": "Number",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": ""
+        },
+        {
+          "name": "DepartmentRaw",
+          "type": "Short Text",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "",
+          "size": 255,
+          "allowZeroLength": true
+        },
+        {
+          "name": "LocationRaw",
+          "type": "Short Text",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": true,
+          "description": "Exact MSR location string before alias match",
+          "size": 255,
+          "allowZeroLength": true
+        },
+        {
+          "name": "LocationID",
+          "type": "Number",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": true,
+          "description": "",
+          "fk": {
+            "table": "tblLocation",
+            "field": "LocationID"
+          }
+        },
+        {
+          "name": "ProductCode",
+          "type": "Short Text",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": true,
+          "description": "",
+          "size": 25,
+          "allowZeroLength": true
+        },
+        {
+          "name": "ProductName",
+          "type": "Short Text",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "",
+          "size": 255,
+          "allowZeroLength": true
+        },
+        {
+          "name": "ContractClassID",
+          "type": "Number",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "",
+          "fk": {
+            "table": "tblContractClass",
+            "field": "ContractClassID"
+          }
+        },
+        {
+          "name": "Quantity",
+          "type": "Double",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": ""
+        },
+        {
+          "name": "GrossAmt",
+          "type": "Currency",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": ""
+        },
+        {
+          "name": "NetAmt",
+          "type": "Currency",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": ""
+        },
+        {
+          "name": "MatchStatus",
+          "type": "Short Text",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "MATCHED, UNMATCHED_LOCATION, UNMATCHED_PRODUCT, IGNORE",
+          "size": 25,
+          "default": "UNMATCHED",
+          "allowZeroLength": true
+        },
+        {
+          "name": "ExceptionNote",
+          "type": "Short Text",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "",
+          "size": 255,
+          "allowZeroLength": true
+        }
+      ],
+      "seedFile": null
+    },
+    {
+      "name": "tblTipsImport",
+      "purpose": "Gratuity import. NPO V4 TIPS DATA shape.",
+      "phase": "B",
+      "notes": "",
+      "fields": [
+        {
+          "name": "TipsImportID",
+          "type": "AutoNumber",
+          "required": false,
+          "primaryKey": true,
+          "autoNumber": true,
+          "unique": false,
+          "indexed": true,
+          "description": ""
+        },
+        {
+          "name": "BatchID",
+          "type": "Number",
+          "required": true,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": true,
+          "description": "",
+          "fk": {
+            "table": "tblImportBatch",
+            "field": "BatchID"
+          }
+        },
+        {
+          "name": "EventID",
+          "type": "Number",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": true,
+          "description": "",
+          "fk": {
+            "table": "tblEvent",
+            "field": "EventID"
+          }
+        },
+        {
+          "name": "VendorID",
+          "type": "Number",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "",
+          "fk": {
+            "table": "tblVendor",
+            "field": "VendorID"
+          }
+        },
+        {
+          "name": "VendorShortCodeRaw",
+          "type": "Short Text",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "",
+          "size": 25,
+          "allowZeroLength": true
+        },
+        {
+          "name": "LocationID",
+          "type": "Number",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "",
+          "fk": {
+            "table": "tblLocation",
+            "field": "LocationID"
+          }
+        },
+        {
+          "name": "LocationRaw",
+          "type": "Short Text",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "",
+          "size": 255,
+          "allowZeroLength": true
+        },
+        {
+          "name": "GrossTips",
+          "type": "Currency",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": ""
+        },
+        {
+          "name": "AllocationPct",
+          "type": "Double",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "",
+          "default": "1"
+        },
+        {
+          "name": "AllocatedTips",
+          "type": "Currency",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": ""
+        },
+        {
+          "name": "Notes",
+          "type": "Short Text",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "",
+          "size": 255,
+          "allowZeroLength": true
+        },
+        {
+          "name": "MatchStatus",
+          "type": "Short Text",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "",
+          "size": 25,
+          "default": "UNMATCHED",
+          "allowZeroLength": true
+        }
+      ],
+      "seedFile": null
+    },
+    {
+      "name": "tblSettlementHeader",
+      "purpose": "One settlement per vendor per event. Create table now; no calc in Alpha.",
+      "phase": "B",
+      "notes": "Unique index EventID+VendorID. InvoiceNumber formula: UNM- & Format(EventDate,'mmddyy') & '-' & VendorShortCode",
+      "fields": [
+        {
+          "name": "SettlementID",
+          "type": "AutoNumber",
+          "required": false,
+          "primaryKey": true,
+          "autoNumber": true,
+          "unique": false,
+          "indexed": true,
+          "description": ""
+        },
+        {
+          "name": "EventID",
+          "type": "Number",
+          "required": true,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": true,
+          "description": "",
+          "fk": {
+            "table": "tblEvent",
+            "field": "EventID"
+          }
+        },
+        {
+          "name": "VendorID",
+          "type": "Number",
+          "required": true,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": true,
+          "description": "",
+          "fk": {
+            "table": "tblVendor",
+            "field": "VendorID"
+          }
+        },
+        {
+          "name": "InvoiceNumber",
+          "type": "Short Text",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": true,
+          "indexed": true,
+          "description": "UNM-MMDDYY-SHORTCODE e.g. UNM-120125-ARVC",
+          "size": 50,
+          "allowZeroLength": true
+        },
+        {
+          "name": "SettlementType",
+          "type": "Short Text",
+          "required": true,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "NPO or SUB copied at freeze",
+          "size": 10,
+          "allowZeroLength": true
+        },
+        {
+          "name": "Status",
+          "type": "Short Text",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "DRAFT, REVIEW, APPROVED, SENT",
+          "size": 25,
+          "default": "DRAFT",
+          "allowZeroLength": true
+        },
+        {
+          "name": "FoodNet",
+          "type": "Currency",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "",
+          "default": "0"
+        },
+        {
+          "name": "NonAlcNet",
+          "type": "Currency",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "",
+          "default": "0"
+        },
+        {
+          "name": "BeerNet",
+          "type": "Currency",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "",
+          "default": "0"
+        },
+        {
+          "name": "LiquorNet",
+          "type": "Currency",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "",
+          "default": "0"
+        },
+        {
+          "name": "GroupNet",
+          "type": "Currency",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "",
+          "default": "0"
+        },
+        {
+          "name": "CommissionAmount",
+          "type": "Currency",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "",
+          "default": "0"
+        },
+        {
+          "name": "TipsAmount",
+          "type": "Currency",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "",
+          "default": "0"
+        },
+        {
+          "name": "AdjustmentAmount",
+          "type": "Currency",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "",
+          "default": "0"
+        },
+        {
+          "name": "AmountDue",
+          "type": "Currency",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "",
+          "default": "0"
+        },
+        {
+          "name": "StatementNotes",
+          "type": "Long Text",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": ""
+        },
+        {
+          "name": "PreparedBy",
+          "type": "Short Text",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "",
+          "size": 50,
+          "allowZeroLength": true
+        },
+        {
+          "name": "PreparedDate",
+          "type": "Date/Time",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": ""
+        },
+        {
+          "name": "ReviewedBy",
+          "type": "Short Text",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "",
+          "size": 50,
+          "allowZeroLength": true
+        },
+        {
+          "name": "ReviewedDate",
+          "type": "Date/Time",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": ""
+        },
+        {
+          "name": "ApprovedBy",
+          "type": "Short Text",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "",
+          "size": 50,
+          "allowZeroLength": true
+        },
+        {
+          "name": "ApprovedDate",
+          "type": "Date/Time",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": ""
+        },
+        {
+          "name": "PdfPath",
+          "type": "Short Text",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "",
+          "size": 255,
+          "allowZeroLength": true
+        },
+        {
+          "name": "CreatedDate",
+          "type": "Date/Time",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "",
+          "default": "Now()"
+        }
+      ],
+      "seedFile": null
+    },
+    {
+      "name": "tblSettlementDetail",
+      "purpose": "Per-location lines on a settlement.",
+      "phase": "B",
+      "notes": "",
+      "fields": [
+        {
+          "name": "SettlementDetailID",
+          "type": "AutoNumber",
+          "required": false,
+          "primaryKey": true,
+          "autoNumber": true,
+          "unique": false,
+          "indexed": true,
+          "description": ""
+        },
+        {
+          "name": "SettlementID",
+          "type": "Number",
+          "required": true,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": true,
+          "description": "",
+          "fk": {
+            "table": "tblSettlementHeader",
+            "field": "SettlementID"
+          }
+        },
+        {
+          "name": "LocationID",
+          "type": "Number",
+          "required": true,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "",
+          "fk": {
+            "table": "tblLocation",
+            "field": "LocationID"
+          }
+        },
+        {
+          "name": "AllocationPct",
+          "type": "Double",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "",
+          "default": "1"
+        },
+        {
+          "name": "FoodNet",
+          "type": "Currency",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "",
+          "default": "0"
+        },
+        {
+          "name": "NonAlcNet",
+          "type": "Currency",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "",
+          "default": "0"
+        },
+        {
+          "name": "BeerNet",
+          "type": "Currency",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "",
+          "default": "0"
+        },
+        {
+          "name": "LiquorNet",
+          "type": "Currency",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "",
+          "default": "0"
+        },
+        {
+          "name": "LocationNet",
+          "type": "Currency",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "",
+          "default": "0"
+        },
+        {
+          "name": "FoodCommission",
+          "type": "Currency",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "",
+          "default": "0"
+        },
+        {
+          "name": "NonAlcCommission",
+          "type": "Currency",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "",
+          "default": "0"
+        },
+        {
+          "name": "BeerCommission",
+          "type": "Currency",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "",
+          "default": "0"
+        },
+        {
+          "name": "LiquorCommission",
+          "type": "Currency",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "",
+          "default": "0"
+        },
+        {
+          "name": "TotalCommission",
+          "type": "Currency",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "",
+          "default": "0"
+        },
+        {
+          "name": "Gratuities",
+          "type": "Currency",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "",
+          "default": "0"
+        }
+      ],
+      "seedFile": null
+    },
+    {
+      "name": "tblSettlementAdjustment",
+      "purpose": "Cook fees, min donation, card fees, ice, shortages.",
+      "phase": "B",
+      "notes": "",
+      "fields": [
+        {
+          "name": "AdjustmentID",
+          "type": "AutoNumber",
+          "required": false,
+          "primaryKey": true,
+          "autoNumber": true,
+          "unique": false,
+          "indexed": true,
+          "description": ""
+        },
+        {
+          "name": "SettlementID",
+          "type": "Number",
+          "required": true,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": true,
+          "description": "",
+          "fk": {
+            "table": "tblSettlementHeader",
+            "field": "SettlementID"
+          }
+        },
+        {
+          "name": "AdjustmentTypeID",
+          "type": "Number",
+          "required": true,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "",
+          "fk": {
+            "table": "tblAdjustmentType",
+            "field": "AdjustmentTypeID"
+          }
+        },
+        {
+          "name": "Amount",
+          "type": "Currency",
+          "required": true,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "Store positive. Sign comes from AdjustmentType.DefaultIsDeduction.",
+          "default": "0"
+        },
+        {
+          "name": "GLCode",
+          "type": "Short Text",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "",
+          "size": 20,
+          "allowZeroLength": true
+        },
+        {
+          "name": "Notes",
+          "type": "Short Text",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "",
+          "size": 255,
+          "allowZeroLength": true
+        }
+      ],
+      "seedFile": null
+    },
+    {
+      "name": "tblDocumentRef",
+      "purpose": "Path registry. EMS stores references, never files.",
+      "phase": "B",
+      "notes": "",
+      "fields": [
+        {
+          "name": "DocumentID",
+          "type": "AutoNumber",
+          "required": false,
+          "primaryKey": true,
+          "autoNumber": true,
+          "unique": false,
+          "indexed": true,
+          "description": ""
+        },
+        {
+          "name": "VendorID",
+          "type": "Number",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "",
+          "fk": {
+            "table": "tblVendor",
+            "field": "VendorID"
+          }
+        },
+        {
+          "name": "EventID",
+          "type": "Number",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "",
+          "fk": {
+            "table": "tblEvent",
+            "field": "EventID"
+          }
+        },
+        {
+          "name": "SettlementID",
+          "type": "Number",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "",
+          "fk": {
+            "table": "tblSettlementHeader",
+            "field": "SettlementID"
+          }
+        },
+        {
+          "name": "DocumentType",
+          "type": "Short Text",
+          "required": true,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "W9, COI, CONTRACT, SETTLEMENT_PDF, IMPORT, OTHER",
+          "size": 25,
+          "allowZeroLength": true
+        },
+        {
+          "name": "DocumentPath",
+          "type": "Short Text",
+          "required": true,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "",
+          "size": 255,
+          "allowZeroLength": true
+        },
+        {
+          "name": "OriginalFileName",
+          "type": "Short Text",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "",
+          "size": 255,
+          "allowZeroLength": true
+        },
+        {
+          "name": "Notes",
+          "type": "Short Text",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "",
+          "size": 255,
+          "allowZeroLength": true
+        },
+        {
+          "name": "CreatedDate",
+          "type": "Date/Time",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "",
+          "default": "Now()"
+        }
+      ],
+      "seedFile": null
+    }
+  ],
+  "relationships": [
+    {
+      "from": "tblVendor.VendorTypeID",
+      "to": "tblVendorType.VendorTypeID",
+      "enforce": true,
+      "cascadeDelete": false
+    },
+    {
+      "from": "tblVendorContract.VendorID",
+      "to": "tblVendor.VendorID",
+      "enforce": true,
+      "cascadeDelete": false
+    },
+    {
+      "from": "tblLocationAlias.LocationID",
+      "to": "tblLocation.LocationID",
+      "enforce": true,
+      "cascadeDelete": true
+    },
+    {
+      "from": "tblCategoryMap.ContractClassID",
+      "to": "tblContractClass.ContractClassID",
+      "enforce": true,
+      "cascadeDelete": false
+    },
+    {
+      "from": "tblEvent.EventTypeID",
+      "to": "tblEventType.EventTypeID",
+      "enforce": true,
+      "cascadeDelete": false
+    },
+    {
+      "from": "tblEvent.StatusID",
+      "to": "tblEventStatus.StatusID",
+      "enforce": true,
+      "cascadeDelete": false
+    },
+    {
+      "from": "tblEventAssignment.EventID",
+      "to": "tblEvent.EventID",
+      "enforce": true,
+      "cascadeDelete": true
+    },
+    {
+      "from": "tblEventAssignment.LocationID",
+      "to": "tblLocation.LocationID",
+      "enforce": true,
+      "cascadeDelete": false
+    },
+    {
+      "from": "tblEventAssignment.VendorID",
+      "to": "tblVendor.VendorID",
+      "enforce": true,
+      "cascadeDelete": false
+    },
+    {
+      "from": "tblImportBatch.EventID",
+      "to": "tblEvent.EventID",
+      "enforce": true,
+      "cascadeDelete": false
+    },
+    {
+      "from": "tblSalesImport.BatchID",
+      "to": "tblImportBatch.BatchID",
+      "enforce": true,
+      "cascadeDelete": true
+    },
+    {
+      "from": "tblSalesImport.EventID",
+      "to": "tblEvent.EventID",
+      "enforce": false,
+      "cascadeDelete": false
+    },
+    {
+      "from": "tblSalesImport.LocationID",
+      "to": "tblLocation.LocationID",
+      "enforce": false,
+      "cascadeDelete": false
+    },
+    {
+      "from": "tblSalesImport.ContractClassID",
+      "to": "tblContractClass.ContractClassID",
+      "enforce": false,
+      "cascadeDelete": false
+    },
+    {
+      "from": "tblTipsImport.BatchID",
+      "to": "tblImportBatch.BatchID",
+      "enforce": true,
+      "cascadeDelete": true
+    },
+    {
+      "from": "tblTipsImport.EventID",
+      "to": "tblEvent.EventID",
+      "enforce": false,
+      "cascadeDelete": false
+    },
+    {
+      "from": "tblTipsImport.VendorID",
+      "to": "tblVendor.VendorID",
+      "enforce": false,
+      "cascadeDelete": false
+    },
+    {
+      "from": "tblTipsImport.LocationID",
+      "to": "tblLocation.LocationID",
+      "enforce": false,
+      "cascadeDelete": false
+    },
+    {
+      "from": "tblSettlementHeader.EventID",
+      "to": "tblEvent.EventID",
+      "enforce": true,
+      "cascadeDelete": false
+    },
+    {
+      "from": "tblSettlementHeader.VendorID",
+      "to": "tblVendor.VendorID",
+      "enforce": true,
+      "cascadeDelete": false
+    },
+    {
+      "from": "tblSettlementDetail.SettlementID",
+      "to": "tblSettlementHeader.SettlementID",
+      "enforce": true,
+      "cascadeDelete": true
+    },
+    {
+      "from": "tblSettlementDetail.LocationID",
+      "to": "tblLocation.LocationID",
+      "enforce": true,
+      "cascadeDelete": false
+    },
+    {
+      "from": "tblSettlementAdjustment.SettlementID",
+      "to": "tblSettlementHeader.SettlementID",
+      "enforce": true,
+      "cascadeDelete": true
+    },
+    {
+      "from": "tblSettlementAdjustment.AdjustmentTypeID",
+      "to": "tblAdjustmentType.AdjustmentTypeID",
+      "enforce": true,
+      "cascadeDelete": false
+    },
+    {
+      "from": "tblDocumentRef.VendorID",
+      "to": "tblVendor.VendorID",
+      "enforce": false,
+      "cascadeDelete": false
+    },
+    {
+      "from": "tblDocumentRef.EventID",
+      "to": "tblEvent.EventID",
+      "enforce": false,
+      "cascadeDelete": false
+    },
+    {
+      "from": "tblDocumentRef.SettlementID",
+      "to": "tblSettlementHeader.SettlementID",
+      "enforce": false,
+      "cascadeDelete": false
+    }
+  ],
+  "indexes": [
+    {
+      "table": "tblEventAssignment",
+      "name": "uk_assignment",
+      "fields": [
+        "EventID",
+        "LocationID",
+        "VendorID"
+      ],
+      "unique": true
+    },
+    {
+      "table": "tblSettlementHeader",
+      "name": "uk_settlement_event_vendor",
+      "fields": [
+        "EventID",
+        "VendorID"
+      ],
+      "unique": true
+    },
+    {
+      "table": "tblLocation",
+      "name": "ix_location_code",
+      "fields": [
+        "LocationCode"
+      ],
+      "unique": false
+    }
+  ]
+}

@@ -1,0 +1,4 @@
+LegacyCode,LegacyDescription,LegacyMSRLocation,MapsToMyVenueCode,MapsToLocationName,Severity,Notes
+FB 113,MBP  MINI MELTS (NW),FB 113 - MBP - MINI MELTS (NW),74,FB 114 - MBP - MINI MELTS (NW),HIGH,"NPO V4 assigned Mini Melts NW to FB 113. Official 9/14/26 list: FB 113 is Student Zone; Mini Melts NW is FB 114. Import matcher must use alias, not code. Seeded as LEGACY_NPO alias."
+FB 113B,MBP  MINI MELTS (NE),FB 113B - MBP - MINI MELTS (NE),85,FB 115 - MBP - MINI MELTS (NE),HIGH,NPO V4 used FB 113B. Official list: Mini Melts NE is FB 115. FB 113B is not a current MyVenue location. Seeded as LEGACY_NPO alias.
+PIT 101,B - NACHOMAMA,PIT 101 - B - NACHOMAMA,32,PIT 101 - B -  NACHOMAMA (R),HIGH,LocationCode PIT 101 is not unique. Aliases seeded to MyVenueCode 32. POP & POUR aliases seeded to MyVenueCode 31. Never match on code alone.

@@ -1,0 +1,8 @@
+EventTypeID,EventTypeName,EventTypeShort
+1,Football,FB
+2,MBB,MBB
+3,WBB,WBB
+4,Concert,CON
+5,Rental,RNT
+6,Special Event,SPE
+7,Baseball,BB

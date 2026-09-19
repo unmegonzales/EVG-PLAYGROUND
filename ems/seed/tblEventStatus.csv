@@ -1,0 +1,4 @@
+StatusID,StatusName,StatusSequence,IsClosed
+1,OPEN,1,0
+2,FINANCE REVIEW,2,0
+3,CLOSED,3,1

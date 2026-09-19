@@ -1,0 +1,11 @@
+VendorShortCode,FoodRate,NonAlcoholRate,BeerRate,LiquorRate,MinimumDonation,AllowExpenses,CardFeeMaxRate,Notes
+ARVC,0.1,0.1,0.08,0.08,200,0,0,"NPO standard rates. $200 min is a statement add-on, not auto-calc in current Excel."
+AIRFORCE,0.1,0.1,0.08,0.08,200,0,0,NPO standard
+UNITED FIT,0.1,0.1,0.08,0.08,200,0,0,NPO standard
+DCVA,0.1,0.1,0.08,0.08,200,0,0,NPO standard
+DEL N CHEER,0.1,0.1,0.08,0.08,200,0,0,NPO standard
+RIO GRANDE RGHS,0.1,0.1,0.08,0.08,200,0,0,NPO standard
+VICTORY OUTREACH,0.1,0.1,0.08,0.08,200,0,0,NPO standard
+DOJ,0.1,0.1,0.08,0.08,200,0,0,NPO standard; vendor inactive
+LAG,0.7,0.05,0,0,,1,0.03,From SUB Set-Up 12/01/25. Ice $3/bag billable.
+SUG,0.8,0.05,0,0,,1,0.03,From SUB Set-Up 12/01/25. Ice $3/bag billable.
