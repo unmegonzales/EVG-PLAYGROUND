@@ -1,8 +1,6 @@
--- EMS Access ACE/Jet DDL
--- Preferred path: Table Designer + Relationships window using ems_access_schema.json.
--- SQL is a fallback. If CREATE TABLE fails, create the table visually with the same fields.
+-- EMS Access ACE/Jet DDL (Volume A + B)
+-- Preferred path: Table Designer + Relationships using ems_access_schema.json.
 -- Number Field Size = Long Integer unless type is Double.
--- Yes/No stored as 0 / -1.
 
 CREATE TABLE tblVendorType (
     [VendorTypeID] COUNTER,
@@ -192,6 +190,8 @@ CREATE TABLE tblEventAssignment (
     [PayeeSeq] LONG,
     [AssignmentStatus] TEXT(50) DEFAULT 'PROOF / INITIAL LOAD',
     [Notes] MEMO,
+    [Headcount] LONG,
+    [SourceBatchID] LONG,
     CONSTRAINT pk_tblEventAssignment PRIMARY KEY ([AssignmentID])
 );
 
@@ -203,10 +203,11 @@ CREATE TABLE tblImportBatch (
     [SourceFileName] TEXT(255) NOT NULL,
     [SourcePath] TEXT(255),
     [ImportedAt] DATETIME DEFAULT Now(),
-    [ImportedBy] TEXT(50),
+    [ImportedBy] TEXT(100),
     [RecordCount] LONG DEFAULT 0,
+    [SuccessCount] LONG DEFAULT 0,
     [ExceptionCount] LONG DEFAULT 0,
-    [Status] TEXT(25) DEFAULT 'IMPORTED',
+    [Status] TEXT(25) DEFAULT 'Completed',
     [Notes] MEMO,
     CONSTRAINT pk_tblImportBatch PRIMARY KEY ([BatchID])
 );
@@ -228,11 +229,36 @@ CREATE TABLE tblSalesImport (
     [NetAmt] CURRENCY,
     [MatchStatus] TEXT(25) DEFAULT 'UNMATCHED',
     [ExceptionNote] TEXT(255),
+    [SalesDate] DATETIME,
+    [ImportTimestamp] DATETIME DEFAULT Now(),
     CONSTRAINT pk_tblSalesImport PRIMARY KEY ([SalesImportID])
 );
 
 CREATE INDEX ix_tblSalesImport_LocationRaw ON tblSalesImport ([LocationRaw]);
 CREATE INDEX ix_tblSalesImport_ProductCode ON tblSalesImport ([ProductCode]);
+
+CREATE TABLE tblAssignmentImport (
+    [AssignmentImportID] COUNTER,
+    [BatchID] LONG NOT NULL,
+    [EventID] LONG,
+    [RawRow] LONG,
+    [LocationRaw] TEXT(255),
+    [LocationCodeRaw] TEXT(50),
+    [LocationID] LONG,
+    [VendorShortCodeRaw] TEXT(25),
+    [VendorNameRaw] TEXT(255),
+    [VendorID] LONG,
+    [AllocationPct] DOUBLE DEFAULT 1,
+    [Headcount] LONG,
+    [PayeeSeq] LONG,
+    [AssignmentStatusRaw] TEXT(50),
+    [MatchStatus] TEXT(25) DEFAULT 'UNMATCHED',
+    [ExceptionNote] TEXT(255),
+    [PostedYN] YESNO DEFAULT 0,
+    [Notes] MEMO,
+    CONSTRAINT pk_tblAssignmentImport PRIMARY KEY ([AssignmentImportID])
+);
+
 
 CREATE TABLE tblTipsImport (
     [TipsImportID] COUNTER,
@@ -245,6 +271,7 @@ CREATE TABLE tblTipsImport (
     [GrossTips] CURRENCY,
     [AllocationPct] DOUBLE DEFAULT 1,
     [AllocatedTips] CURRENCY,
+    [EmployeeCount] LONG,
     [Notes] TEXT(255),
     [MatchStatus] TEXT(25) DEFAULT 'UNMATCHED',
     CONSTRAINT pk_tblTipsImport PRIMARY KEY ([TipsImportID])
@@ -257,7 +284,8 @@ CREATE TABLE tblSettlementHeader (
     [VendorID] LONG NOT NULL,
     [InvoiceNumber] TEXT(50),
     [SettlementType] TEXT(10) NOT NULL,
-    [Status] TEXT(25) DEFAULT 'DRAFT',
+    [TotalGrossSales] CURRENCY DEFAULT 0,
+    [Status] TEXT(25) DEFAULT 'Draft',
     [FoodNet] CURRENCY DEFAULT 0,
     [NonAlcNet] CURRENCY DEFAULT 0,
     [BeerNet] CURRENCY DEFAULT 0,
@@ -297,6 +325,10 @@ CREATE TABLE tblSettlementDetail (
     [LiquorCommission] CURRENCY DEFAULT 0,
     [TotalCommission] CURRENCY DEFAULT 0,
     [Gratuities] CURRENCY DEFAULT 0,
+    [RateFood] DOUBLE DEFAULT 0,
+    [RateNonAlc] DOUBLE DEFAULT 0,
+    [RateBeer] DOUBLE DEFAULT 0,
+    [RateLiquor] DOUBLE DEFAULT 0,
     CONSTRAINT pk_tblSettlementDetail PRIMARY KEY ([SettlementDetailID])
 );
 
@@ -309,6 +341,38 @@ CREATE TABLE tblSettlementAdjustment (
     [GLCode] TEXT(20),
     [Notes] TEXT(255),
     CONSTRAINT pk_tblSettlementAdjustment PRIMARY KEY ([AdjustmentID])
+);
+
+
+CREATE TABLE tblExceptionType (
+    [ExceptionTypeID] COUNTER,
+    [ExceptionCode] TEXT(40) NOT NULL,
+    [ExceptionName] TEXT(100) NOT NULL,
+    [IsBlocking] YESNO DEFAULT -1,
+    [AppliesTo] TEXT(20),
+    [SortOrder] LONG DEFAULT 0,
+    [Active] YESNO DEFAULT -1,
+    CONSTRAINT pk_tblExceptionType PRIMARY KEY ([ExceptionTypeID])
+);
+
+CREATE UNIQUE INDEX uk_tblExceptionType_ExceptionCode ON tblExceptionType ([ExceptionCode]);
+
+CREATE TABLE tblExceptionLog (
+    [ExceptionID] COUNTER,
+    [EventID] LONG NOT NULL,
+    [BatchID] LONG,
+    [ExceptionTypeID] LONG NOT NULL,
+    [SourceTable] TEXT(50),
+    [SourcePK] LONG,
+    [VendorID] LONG,
+    [LocationID] LONG,
+    [ProductCode] TEXT(25),
+    [Description] MEMO,
+    [Resolved] YESNO DEFAULT 0,
+    [ResolvedBy] TEXT(50),
+    [ResolvedDate] DATETIME,
+    [CreatedDate] DATETIME DEFAULT Now(),
+    CONSTRAINT pk_tblExceptionLog PRIMARY KEY ([ExceptionID])
 );
 
 

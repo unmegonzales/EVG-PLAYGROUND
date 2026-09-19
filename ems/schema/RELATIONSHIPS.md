@@ -15,10 +15,15 @@ Cascade **delete** only where a child cannot exist without the parent (aliases, 
 | tblEventAssignment.EventID | tblEvent.EventID | Yes | Yes |
 | tblEventAssignment.LocationID | tblLocation.LocationID | Yes | No |
 | tblEventAssignment.VendorID | tblVendor.VendorID | Yes | No |
+| tblEventAssignment.SourceBatchID | tblImportBatch.BatchID | No | No |
 | tblImportBatch.EventID | tblEvent.EventID | Yes | No |
 | tblSalesImport.BatchID | tblImportBatch.BatchID | Yes | Yes |
 | tblSalesImport.LocationID | tblLocation.LocationID | No (unmatched imports allowed) | No |
 | tblSalesImport.ContractClassID | tblContractClass.ContractClassID | No | No |
+| tblAssignmentImport.BatchID | tblImportBatch.BatchID | Yes | Yes |
+| tblAssignmentImport.EventID | tblEvent.EventID | No | No |
+| tblAssignmentImport.VendorID | tblVendor.VendorID | No | No |
+| tblAssignmentImport.LocationID | tblLocation.LocationID | No | No |
 | tblTipsImport.BatchID | tblImportBatch.BatchID | Yes | Yes |
 | tblTipsImport.VendorID | tblVendor.VendorID | No | No |
 | tblTipsImport.LocationID | tblLocation.LocationID | No | No |
@@ -28,6 +33,11 @@ Cascade **delete** only where a child cannot exist without the parent (aliases, 
 | tblSettlementDetail.LocationID | tblLocation.LocationID | Yes | No |
 | tblSettlementAdjustment.SettlementID | tblSettlementHeader.SettlementID | Yes | Yes |
 | tblSettlementAdjustment.AdjustmentTypeID | tblAdjustmentType.AdjustmentTypeID | Yes | No |
+| tblExceptionLog.EventID | tblEvent.EventID | Yes | No |
+| tblExceptionLog.BatchID | tblImportBatch.BatchID | No | No |
+| tblExceptionLog.ExceptionTypeID | tblExceptionType.ExceptionTypeID | Yes | No |
+| tblExceptionLog.VendorID | tblVendor.VendorID | No | No |
+| tblExceptionLog.LocationID | tblLocation.LocationID | No | No |
 | tblDocumentRef.VendorID | tblVendor.VendorID | No | No |
 | tblDocumentRef.EventID | tblEvent.EventID | No | No |
 | tblDocumentRef.SettlementID | tblSettlementHeader.SettlementID | No | No |
@@ -37,3 +47,8 @@ Cascade **delete** only where a child cannot exist without the parent (aliases, 
 - `tblEventAssignment (EventID, LocationID, VendorID)`
 - `tblSettlementHeader (EventID, VendorID)`
 - `tblLocation.LocationCode` is indexed, **not unique**
+- `tblExceptionType.ExceptionCode` unique
+
+## Calc source rule
+
+`tblAssignmentImport` is staging only. Settlement math reads **posted** `tblEventAssignment`.

@@ -2,8 +2,8 @@
   "product": "EMS",
   "title": "Event Management System",
   "organization": "UNM Athletics Hospitality / Levy",
-  "version": "5.0",
-  "volume": "A",
+  "version": "5.1",
+  "volume": "A+B",
   "generated": "2026-09-19",
   "accessFiles": {
     "backEnd": "EMS_BE.accdb",
@@ -15,7 +15,7 @@
     "PDF generation",
     "Draft email generation",
     "Reports",
-    "MyVenue import parser UI logic"
+    "Working MyVenue / Tips / Assignment import parsers"
   ],
   "lookupsFirst": true,
   "tables": [
@@ -1415,15 +1415,39 @@
           "unique": false,
           "indexed": false,
           "description": ""
+        },
+        {
+          "name": "Headcount",
+          "type": "Number",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "Optional staffing count from assignment import"
+        },
+        {
+          "name": "SourceBatchID",
+          "type": "Number",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": true,
+          "description": "Batch that posted this row",
+          "fk": {
+            "table": "tblImportBatch",
+            "field": "BatchID"
+          }
         }
       ],
       "seedFile": null
     },
     {
       "name": "tblImportBatch",
-      "purpose": "One row per file drop.",
+      "purpose": "Tracks every import. Critical for auditing.",
       "phase": "B",
-      "notes": "",
+      "notes": "ImportType: SALES, ASSIGNMENTS, TIPS. Status: Completed, Partial, Failed.",
       "fields": [
         {
           "name": "BatchID",
@@ -1457,7 +1481,7 @@
           "autoNumber": false,
           "unique": false,
           "indexed": false,
-          "description": "MSR, TIPS, ASSIGNMENT",
+          "description": "SALES, ASSIGNMENTS, TIPS",
           "size": 20,
           "allowZeroLength": true
         },
@@ -1505,7 +1529,7 @@
           "unique": false,
           "indexed": false,
           "description": "",
-          "size": 50,
+          "size": 100,
           "allowZeroLength": true
         },
         {
@@ -1517,6 +1541,17 @@
           "unique": false,
           "indexed": false,
           "description": "",
+          "default": "0"
+        },
+        {
+          "name": "SuccessCount",
+          "type": "Number",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "Rows matched",
           "default": "0"
         },
         {
@@ -1538,9 +1573,9 @@
           "autoNumber": false,
           "unique": false,
           "indexed": false,
-          "description": "IMPORTED, REVIEW, POSTED, REJECTED",
+          "description": "Completed, Partial, Failed",
           "size": 25,
-          "default": "IMPORTED",
+          "default": "Completed",
           "allowZeroLength": true
         },
         {
@@ -1560,7 +1595,7 @@
       "name": "tblSalesImport",
       "purpose": "Parsed MyVenue MSR category export (the 9/5/26 CSV shape).",
       "phase": "B",
-      "notes": "",
+      "notes": "LocationRaw is Copilot LocationName and is immutable. NetAmt is NPO settlement base.",
       "fields": [
         {
           "name": "SalesImportID",
@@ -1740,9 +1775,254 @@
           "description": "",
           "size": 255,
           "allowZeroLength": true
+        },
+        {
+          "name": "SalesDate",
+          "type": "Date/Time",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "Optional; EventDate is authoritative"
+        },
+        {
+          "name": "ImportTimestamp",
+          "type": "Date/Time",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "",
+          "default": "Now()"
         }
       ],
       "seedFile": null
+    },
+    {
+      "name": "tblAssignmentImport",
+      "purpose": "Staging for staffing/ownership imports. Never the calculation source. Post matched rows to tblEventAssignment.",
+      "phase": "B",
+      "notes": "Copilot tblAssignmentImport. Calc uses posted tblEventAssignment only.",
+      "seedFile": null,
+      "fields": [
+        {
+          "name": "AssignmentImportID",
+          "type": "AutoNumber",
+          "required": false,
+          "primaryKey": true,
+          "autoNumber": true,
+          "unique": false,
+          "indexed": true,
+          "description": ""
+        },
+        {
+          "name": "BatchID",
+          "type": "Number",
+          "required": true,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": true,
+          "description": "",
+          "fk": {
+            "table": "tblImportBatch",
+            "field": "BatchID"
+          }
+        },
+        {
+          "name": "EventID",
+          "type": "Number",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": true,
+          "description": "",
+          "fk": {
+            "table": "tblEvent",
+            "field": "EventID"
+          }
+        },
+        {
+          "name": "RawRow",
+          "type": "Number",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": ""
+        },
+        {
+          "name": "LocationRaw",
+          "type": "Short Text",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "Immutable source location string",
+          "size": 255,
+          "allowZeroLength": true
+        },
+        {
+          "name": "LocationCodeRaw",
+          "type": "Short Text",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "",
+          "size": 50,
+          "allowZeroLength": true
+        },
+        {
+          "name": "LocationID",
+          "type": "Number",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": true,
+          "description": "",
+          "fk": {
+            "table": "tblLocation",
+            "field": "LocationID"
+          }
+        },
+        {
+          "name": "VendorShortCodeRaw",
+          "type": "Short Text",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "",
+          "size": 25,
+          "allowZeroLength": true
+        },
+        {
+          "name": "VendorNameRaw",
+          "type": "Short Text",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "",
+          "size": 255,
+          "allowZeroLength": true
+        },
+        {
+          "name": "VendorID",
+          "type": "Number",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": true,
+          "description": "",
+          "fk": {
+            "table": "tblVendor",
+            "field": "VendorID"
+          }
+        },
+        {
+          "name": "AllocationPct",
+          "type": "Double",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "",
+          "default": "1",
+          "validationRule": ">=0 And <=1",
+          "validationText": "Allocation must be 0 through 1"
+        },
+        {
+          "name": "Headcount",
+          "type": "Number",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "Optional"
+        },
+        {
+          "name": "PayeeSeq",
+          "type": "Number",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": ""
+        },
+        {
+          "name": "AssignmentStatusRaw",
+          "type": "Short Text",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "",
+          "size": 50,
+          "allowZeroLength": true
+        },
+        {
+          "name": "MatchStatus",
+          "type": "Short Text",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "",
+          "size": 25,
+          "default": "UNMATCHED",
+          "allowZeroLength": true
+        },
+        {
+          "name": "ExceptionNote",
+          "type": "Short Text",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "",
+          "size": 255,
+          "allowZeroLength": true
+        },
+        {
+          "name": "PostedYN",
+          "type": "Yes/No",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "Yes after copied to tblEventAssignment",
+          "default": "No"
+        },
+        {
+          "name": "Notes",
+          "type": "Long Text",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": ""
+        }
+      ]
     },
     {
       "name": "tblTipsImport",
@@ -1869,7 +2149,17 @@
           "autoNumber": false,
           "unique": false,
           "indexed": false,
-          "description": ""
+          "description": "Copilot TipAmount. This is the payable tip."
+        },
+        {
+          "name": "EmployeeCount",
+          "type": "Number",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "Optional. Copilot Volume B field."
         },
         {
           "name": "Notes",
@@ -1903,7 +2193,7 @@
       "name": "tblSettlementHeader",
       "purpose": "One settlement per vendor per event. Create table now; no calc in Alpha.",
       "phase": "B",
-      "notes": "Unique index EventID+VendorID. InvoiceNumber formula: UNM- & Format(EventDate,'mmddyy') & '-' & VendorShortCode",
+      "notes": "Unique EventID+VendorID. Status: Draft, Reviewed, Approved, Paid. Invoice UNM-mmddyy-SHORTCODE",
       "fields": [
         {
           "name": "SettlementID",
@@ -1968,6 +2258,17 @@
           "allowZeroLength": true
         },
         {
+          "name": "TotalGrossSales",
+          "type": "Currency",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "Copilot TotalGrossSales",
+          "default": "0"
+        },
+        {
           "name": "Status",
           "type": "Short Text",
           "required": false,
@@ -1975,9 +2276,9 @@
           "autoNumber": false,
           "unique": false,
           "indexed": false,
-          "description": "DRAFT, REVIEW, APPROVED, SENT",
+          "description": "Draft, Reviewed, Approved, Paid",
           "size": 25,
-          "default": "DRAFT",
+          "default": "Draft",
           "allowZeroLength": true
         },
         {
@@ -2185,7 +2486,7 @@
       "name": "tblSettlementDetail",
       "purpose": "Per-location lines on a settlement.",
       "phase": "B",
-      "notes": "",
+      "notes": "One row per settlement+location. Four class nets/commissions; NPO rolls FOOD+NA_BEV and BEER+LIQUOR.",
       "fields": [
         {
           "name": "SettlementDetailID",
@@ -2356,6 +2657,50 @@
           "indexed": false,
           "description": "",
           "default": "0"
+        },
+        {
+          "name": "RateFood",
+          "type": "Double",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "Snapshot FoodRate used",
+          "default": "0"
+        },
+        {
+          "name": "RateNonAlc",
+          "type": "Double",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "Snapshot NonAlcoholRate used",
+          "default": "0"
+        },
+        {
+          "name": "RateBeer",
+          "type": "Double",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "Snapshot BeerRate used",
+          "default": "0"
+        },
+        {
+          "name": "RateLiquor",
+          "type": "Double",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "Snapshot LiquorRate used",
+          "default": "0"
         }
       ],
       "seedFile": null
@@ -2441,6 +2786,271 @@
         }
       ],
       "seedFile": null
+    },
+    {
+      "name": "tblExceptionType",
+      "purpose": "Frozen exception codes for finance review.",
+      "phase": "B",
+      "notes": "Add types via seed, not by renaming this table.",
+      "seedFile": "seed/tblExceptionType.csv",
+      "fields": [
+        {
+          "name": "ExceptionTypeID",
+          "type": "AutoNumber",
+          "required": false,
+          "primaryKey": true,
+          "autoNumber": true,
+          "unique": false,
+          "indexed": true,
+          "description": ""
+        },
+        {
+          "name": "ExceptionCode",
+          "type": "Short Text",
+          "required": true,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": true,
+          "indexed": true,
+          "description": "",
+          "size": 40,
+          "allowZeroLength": true
+        },
+        {
+          "name": "ExceptionName",
+          "type": "Short Text",
+          "required": true,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "",
+          "size": 100,
+          "allowZeroLength": true
+        },
+        {
+          "name": "IsBlocking",
+          "type": "Yes/No",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "No for warnings such as NO_MSR_SALES",
+          "default": "Yes"
+        },
+        {
+          "name": "AppliesTo",
+          "type": "Short Text",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "SALES, ASSIGNMENTS, TIPS, SETTLEMENT, ANY",
+          "size": 20,
+          "allowZeroLength": true
+        },
+        {
+          "name": "SortOrder",
+          "type": "Number",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "",
+          "default": "0"
+        },
+        {
+          "name": "Active",
+          "type": "Yes/No",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "",
+          "default": "Yes"
+        }
+      ]
+    },
+    {
+      "name": "tblExceptionLog",
+      "purpose": "Captures processing issues. Do not delete; resolve.",
+      "phase": "B",
+      "notes": "Copilot Chapter 11. Required or Finance will hate the system.",
+      "seedFile": null,
+      "fields": [
+        {
+          "name": "ExceptionID",
+          "type": "AutoNumber",
+          "required": false,
+          "primaryKey": true,
+          "autoNumber": true,
+          "unique": false,
+          "indexed": true,
+          "description": ""
+        },
+        {
+          "name": "EventID",
+          "type": "Number",
+          "required": true,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": true,
+          "description": "",
+          "fk": {
+            "table": "tblEvent",
+            "field": "EventID"
+          }
+        },
+        {
+          "name": "BatchID",
+          "type": "Number",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": true,
+          "description": "",
+          "fk": {
+            "table": "tblImportBatch",
+            "field": "BatchID"
+          }
+        },
+        {
+          "name": "ExceptionTypeID",
+          "type": "Number",
+          "required": true,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": true,
+          "description": "",
+          "fk": {
+            "table": "tblExceptionType",
+            "field": "ExceptionTypeID"
+          }
+        },
+        {
+          "name": "SourceTable",
+          "type": "Short Text",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "",
+          "size": 50,
+          "allowZeroLength": true
+        },
+        {
+          "name": "SourcePK",
+          "type": "Number",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": ""
+        },
+        {
+          "name": "VendorID",
+          "type": "Number",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "",
+          "fk": {
+            "table": "tblVendor",
+            "field": "VendorID"
+          }
+        },
+        {
+          "name": "LocationID",
+          "type": "Number",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "",
+          "fk": {
+            "table": "tblLocation",
+            "field": "LocationID"
+          }
+        },
+        {
+          "name": "ProductCode",
+          "type": "Short Text",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "",
+          "size": 25,
+          "allowZeroLength": true
+        },
+        {
+          "name": "Description",
+          "type": "Long Text",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": ""
+        },
+        {
+          "name": "Resolved",
+          "type": "Yes/No",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "",
+          "default": "No"
+        },
+        {
+          "name": "ResolvedBy",
+          "type": "Short Text",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "",
+          "size": 50,
+          "allowZeroLength": true
+        },
+        {
+          "name": "ResolvedDate",
+          "type": "Date/Time",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": ""
+        },
+        {
+          "name": "CreatedDate",
+          "type": "Date/Time",
+          "required": false,
+          "primaryKey": false,
+          "autoNumber": false,
+          "unique": false,
+          "indexed": false,
+          "description": "",
+          "default": "Now()"
+        }
+      ]
     },
     {
       "name": "tblDocumentRef",
@@ -2649,6 +3259,30 @@
       "cascadeDelete": false
     },
     {
+      "from": "tblAssignmentImport.BatchID",
+      "to": "tblImportBatch.BatchID",
+      "enforce": true,
+      "cascadeDelete": true
+    },
+    {
+      "from": "tblAssignmentImport.EventID",
+      "to": "tblEvent.EventID",
+      "enforce": false,
+      "cascadeDelete": false
+    },
+    {
+      "from": "tblAssignmentImport.LocationID",
+      "to": "tblLocation.LocationID",
+      "enforce": false,
+      "cascadeDelete": false
+    },
+    {
+      "from": "tblAssignmentImport.VendorID",
+      "to": "tblVendor.VendorID",
+      "enforce": false,
+      "cascadeDelete": false
+    },
+    {
       "from": "tblTipsImport.BatchID",
       "to": "tblImportBatch.BatchID",
       "enforce": true,
@@ -2725,6 +3359,42 @@
       "to": "tblSettlementHeader.SettlementID",
       "enforce": false,
       "cascadeDelete": false
+    },
+    {
+      "from": "tblEventAssignment.SourceBatchID",
+      "to": "tblImportBatch.BatchID",
+      "enforce": false,
+      "cascadeDelete": false
+    },
+    {
+      "from": "tblExceptionLog.EventID",
+      "to": "tblEvent.EventID",
+      "enforce": true,
+      "cascadeDelete": false
+    },
+    {
+      "from": "tblExceptionLog.BatchID",
+      "to": "tblImportBatch.BatchID",
+      "enforce": false,
+      "cascadeDelete": false
+    },
+    {
+      "from": "tblExceptionLog.ExceptionTypeID",
+      "to": "tblExceptionType.ExceptionTypeID",
+      "enforce": true,
+      "cascadeDelete": false
+    },
+    {
+      "from": "tblExceptionLog.VendorID",
+      "to": "tblVendor.VendorID",
+      "enforce": false,
+      "cascadeDelete": false
+    },
+    {
+      "from": "tblExceptionLog.LocationID",
+      "to": "tblLocation.LocationID",
+      "enforce": false,
+      "cascadeDelete": false
     }
   ],
   "indexes": [
@@ -2754,6 +3424,65 @@
         "LocationCode"
       ],
       "unique": false
+    }
+  ],
+  "notes": "Volume A follows Copilot v4.0 chapter map with live-file corrections. Create all JSON tables now. Phase B import/settlement/exception log stay empty except seeded lookups. Do not auto-apply the $200 NPO minimum.",
+  "copilotVolumeA": {
+    "sourceVersion": "4.0",
+    "title": "Foundation Architecture & User Interface",
+    "chapters": [
+      "1 System Architecture",
+      "2 Lookup Tables",
+      "3 Core Table Specifications",
+      "4 Category Mapping Engine",
+      "5 Contract Table",
+      "6 Form Architecture",
+      "7 Build Sequence"
+    ],
+    "tableCount": 23,
+    "alphaStopsAfterBuildStep": 7
+  },
+  "freeze": {
+    "volumeA": "frozen",
+    "volumeBSchema": "frozen_80_percent",
+    "volumeBMath": "frozen_from_live_files",
+    "volumeC": "not_started"
+  },
+  "queries": [
+    {
+      "name": "qrySalesMapped",
+      "purpose": "ProductCode \u2192 ContractClass",
+      "phase": "B"
+    },
+    {
+      "name": "qryLocationResolved",
+      "purpose": "LocationRaw \u2192 LocationID via alias",
+      "phase": "B"
+    },
+    {
+      "name": "qryVendorAssigned",
+      "purpose": "Location \u2192 posted vendor + allocation",
+      "phase": "B"
+    },
+    {
+      "name": "qrySettlementCalculation",
+      "purpose": "Allocated net by event/vendor/location/class",
+      "phase": "B"
+    },
+    {
+      "name": "qrySettlementSummary",
+      "purpose": "Vendor totals",
+      "phase": "B"
+    },
+    {
+      "name": "qryFinanceReview",
+      "purpose": "Event review package",
+      "phase": "B"
+    },
+    {
+      "name": "qryExceptionOpen",
+      "purpose": "Unresolved exceptions",
+      "phase": "B"
     }
   ]
 }

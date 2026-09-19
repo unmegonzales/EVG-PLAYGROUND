@@ -10,13 +10,16 @@ Natural keys are used in the CSV files (`VendorShortCode`, `MyVenueCode`, `Produ
 4. `tblContractClass.csv`
 5. `tblAppSetting.csv`
 6. `tblAdjustmentType.csv`
-7. `tblLocation.csv` (match `MyVenueCode`, `LocationName`, `LocationCode`, …)
-8. `tblLocationAlias.csv` — after locations exist, look up `LocationID` from `MyVenueCode`
-9. `tblVendor.csv` — look up `VendorTypeID` from `VendorType` name (`NPO` / `SUB`)
-10. `tblVendorContract.csv` — look up `VendorID` from `VendorShortCode`
-11. `tblCategoryMap.csv` — look up `ContractClassID` from `ContractClass` name (`FOOD`, `NA_BEV`, `BEER`, `LIQUOR`)
+7. `tblExceptionType.csv`
+8. `tblLocation.csv` (match `MyVenueCode`, `LocationName`, `LocationCode`, …)
+9. `tblLocationAlias.csv` — after locations exist, look up `LocationID` from `MyVenueCode`
+10. `tblVendor.csv` — look up `VendorTypeID` from `VendorType` name (`NPO` / `SUB`)
+11. `tblVendorContract.csv` — look up `VendorID` from `VendorShortCode`
+12. `tblCategoryMap.csv` — look up `ContractClassID` from `ContractClass` name (`FOOD`, `NA_BEV`, `BEER`, `LIQUOR`)
 
 `location_alias_conflicts.csv` is documentation only. Do not import it as a table.
+
+Do not seed `tblAssignmentImport`, `tblSalesImport`, `tblTipsImport`, or settlement tables. They must exist and stay empty in Alpha.
 
 ## Rules
 

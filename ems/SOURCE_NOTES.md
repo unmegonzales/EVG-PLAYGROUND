@@ -2,11 +2,14 @@
 
 These notes record what was taken from live UNM files versus Copilot chat. The Access generator should treat live files as truth.
 
+Copilot’s **Developer Build Binder v4.0 Volume A** (pasted 2026-09-19) is the chapter map for this package. Field-level truth is still the live workbooks. Full diff: `COPILOT_V4_CROSSWALK.md`.
+
 ## Files ingested
 
 | File | Role |
 |---|---|
-| EMS Project Manager Action Plan | Construction order, FE/BE split, alpha definition, Copilot Volume A sketch |
+| Copilot EMS Developer Build Binder v4.0 Volume A | Chapter 1–7 outline: FE/BE, lookups, core tables, category map, contracts, forms, build sequence |
+| EMS Project Manager Action Plan | Construction order, FE/BE split, alpha definition, earlier Copilot Volume A sketch |
 | NPO Payout Vendor Template final-V4 | Live NPO engine: assignment, category map, tips, donation formula, vendor aliases |
 | MyVenue Location List All UNM 09-14-26 | 81-location master |
 | MSR Location Payout CSV 09-05-26 | Nested MyVenue export shape and product codes |
@@ -18,12 +21,18 @@ These notes record what was taken from live UNM files versus Copilot chat. The A
 
 | Topic | Copilot said | Live files show |
 |---|---|---|
-| $200 NPO minimum | Automatic per assigned location | Manual statement line; Excel donation formula does not use it |
-| Location key | LocationCode unique | PIT 101 is two MyVenue rows |
+| Volume A shape | 7 chapters: architecture, lookups, core, category, contract, forms, build sequence | Kept as the binder chapter map (v6.0) |
+| $200 NPO minimum | Copilot A: per location auto. Copilot B: calc $125 → pay $200 | Excel: manual yellow line. **EMS Volume B freeze:** header-level `Max(calc, min)` as a process change |
+| Location key | LocationCode indexed; examples `FB106` `PIT104` | Official spaced codes (`FB 106`). PIT 101 is two MyVenue rows. Compact codes are not unique aliases |
 | Mini Melts | FB 113 / FB 113B in NPO template | Official FB 114 / FB 115 as of 9/14/26 |
 | Invoice | PDF name `MM-DD-YY - TYPE - AP UNM - InvoiceNumber.pdf` | Invoice number `UNM-MMDDYY-SHORTCODE` is what AP uses |
 | SUB | “vendor-specific contract rates” (correct) | Four buckets + tax strip + card fee 3% max + ice $3/bag |
 | Event types | Six types | Add Baseball (`BB 101` exists) |
+| Category class | Free-text `FOOD_NONALC` / `ALCOHOL` on tblCategoryMap | FK to `tblContractClass` (FOOD / NA_BEV / BEER / LIQUOR) |
+| Import Center | Volume A form: Import MyVenue, Import Tips, status/count/exceptions | Alpha shell only; parsers are Volume B |
+| Vendor form name | `frmVendorMaster` | Object `frmVendor`, caption Vendor Master |
+| NPO math | Copilot B: Gross × one % | **Net** × 10% food/non-alc + 8% alcohol × AllocationPct |
+| Assignments | Copilot B: vendor + location only | Posted `tblEventAssignment` with AllocationPct; staging `tblAssignmentImport` |
 | ARVC SAP/BSS | Blank in NPO MASTER | 1013051 / 5487 on 12/01/25 PDF |
 
 ## NPO 9/5/26 proof totals (do not seed as settlements)
